@@ -21,13 +21,13 @@ public class CriarBibliotecaWindow extends JFrame implements MouseListener, Mous
         setTitle("Crie sua biblioteca");
         setLayout(null);
         setMinimumSize(new Dimension(screenSize.width, screenSize.height));
-        
+
         //Para Teste:
         //setMinimumSize(new Dimension(300, 300));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        estante.setBackground(Color.red);
+        estante.setBackground(Color.RED);
         estante.setBounds(10, 10, 110, 40);
         estante.addMouseListener(this);
         estante.addMouseMotionListener(this);
@@ -58,7 +58,12 @@ public class CriarBibliotecaWindow extends JFrame implements MouseListener, Mous
             posicao.setX(estante.getX());
             posicao.setY(estante.getY());
         }
-    }
+        
+        estante.setLocation(estante.getX() < 10 ? 10 : estante.getX(), estante.getY());	
+        estante.setLocation(estante.getX() > 1245 ? 1245 : estante.getX(), estante.getY());	
+        estante.setLocation(estante.getX(), estante.getY() < 10 ? 10 : estante.getY());	
+        estante.setLocation(estante.getX(), estante.getY() > 655 ? 655 : estante.getY());	
+     }
     
     @Override
     public void mouseClicked(MouseEvent e) {
