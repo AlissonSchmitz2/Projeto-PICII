@@ -1,9 +1,9 @@
-package com.biblioteca.view;
+package br.com.projetopicii.view;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-import com.biblioteca.model.PosicaoEstante;
+import br.com.projetopicii.model.PosicaoEstante;
 
 public class CriarBibliotecaWindow extends JFrame implements MouseListener, MouseMotionListener{
 	private static final long serialVersionUID = -6766594202823918036L;

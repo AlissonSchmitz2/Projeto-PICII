@@ -1,4 +1,4 @@
-package com.biblioteca.model;
+package br.com.projetopicii.model;
 
 public class PosicaoEstante {
 	private int x,y,largura,altura;
