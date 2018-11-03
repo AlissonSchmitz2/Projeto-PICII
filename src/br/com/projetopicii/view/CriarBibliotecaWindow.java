@@ -1,98 +1,128 @@
 package br.com.projetopicii.view;
 import java.awt.*;
-import java.awt.event.*;
+import java.util.HashMap;
+
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
+
 import javax.swing.*;
 
-import br.com.projetopicii.model.PosicaoEstante;
+import br.com.projetopicii.model.EstanteBiblioteca;
+import br.com.projetopicii.model.TerminalPesquisa;
+import br.com.projetopicii.threads.ThreadSubirListaEstante;
 
-public class CriarBibliotecaWindow extends JFrame implements MouseListener, MouseMotionListener{
+public class CriarBibliotecaWindow extends JFrame {
 	private static final long serialVersionUID = -6766594202823918036L;
-	
-	private int startDragX, startDragY;
-    private boolean inDrag = false;
-    private JPanel estante = new JPanel();
-    private PosicaoEstante posicao = new PosicaoEstante();
+	        
+    //private JLabel wallpaper;
+	private Image bImage;
+        
+    private JPanel painelEstantes = new JPanel();
+   
+    //HashMap: Key -> Referência da estante / Value -> Objeto estante.
+    private HashMap<String, EstanteBiblioteca> listaDeEstantes = new HashMap<>();
     
-    public CriarBibliotecaWindow() {
-        
-        //Setar o tamanho
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        
-        setTitle("Crie sua biblioteca");
+    //Estantes.
+    private EstanteBiblioteca estanteBiblioteca;
+    
+    //Terminal de pesquisa.
+    private TerminalPesquisa terminalPesquisa = new TerminalPesquisa();
+    
+    //Dados para criação das estantes.
+    private String[] referencias;
+    
+    //Thread para subir as estantes ao retirar alguma do painel.
+    ThreadSubirListaEstante threadSubirListaEstante;
+    
+    //Tamanho da tela.
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    
+    NewContentPane teste;
+    
+    public CriarBibliotecaWindow(String[] referencias) {   
+    	
+    	this.bImage = this.createImage(this.getClass().getResource("/br/com/projetopicii/pictures/FundoBiblioteca.png"));
+    	this.referencias = referencias;
+    	
+        setTitle("Construção da Biblioteca");
+        super.setContentPane(teste = new NewContentPane());
         setLayout(null);
-        setMinimumSize(new Dimension(screenSize.width, screenSize.height));
-
-        //Para Teste:
-        //setMinimumSize(new Dimension(300, 300));
+        setBounds(new Rectangle(0, 0, screenSize.width, screenSize.height));
+        setExtendedState(MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
         
-        estante.setBackground(Color.RED);
-        estante.setBounds(10, 10, 110, 40);
-        estante.addMouseListener(this);
-        estante.addMouseMotionListener(this);
-        add(estante);
+        criarComponentes();
+        
         setVisible(true);
     }
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        // not interested
+    
+    private void criarComponentes() {
     	
-    }
-    @Override
-    public void mouseExited(MouseEvent e) {
-        // not interested
-    }
-    @Override
-    public void mousePressed(MouseEvent e) {
-        startDragX = e.getX();
-        startDragY = e.getY();
+    	painelEstantes.setPreferredSize(new Dimension(160, screenSize.height));
+    	painelEstantes.setBackground(Color.WHITE);
+    	painelEstantes.setLayout(null);
+    	painelEstantes.setBorder(BorderFactory.createTitledBorder("Estantes"));
+    	painelEstantes.setBackground((new Color(245, 245, 245)));
+    	
+    	int y = 25;
+    	
+    	for(int i = 0; i < referencias.length; i++) {
+    		estanteBiblioteca = new EstanteBiblioteca();
+    		estanteBiblioteca.setBackground(Color.WHITE);
+    		estanteBiblioteca.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, false));
+            estanteBiblioteca.setBounds(15, y, 110, 40);
+            
+    		estanteBiblioteca.setThisPanel(estanteBiblioteca);
+    		estanteBiblioteca.setCriarBibliotecaWindow(this);
+            estanteBiblioteca.ativarCliqueMouse();
+            estanteBiblioteca.setReferencia(referencias[i]);
+            estanteBiblioteca.setCoordenadaY(y);
+    		
+            listaDeEstantes.put(referencias[i], estanteBiblioteca);
+            
+    		y += 60;
+            painelEstantes.add(estanteBiblioteca);
+    	}
+    	
+    	//Terminal de Pesquisa.
+    	terminalPesquisa.setarTerminal(this);
+    	
+    	//Thread.
+    	threadSubirListaEstante = new ThreadSubirListaEstante(listaDeEstantes, referencias);
+    	  
+    	
+    	JScrollPane scrollPane = new JScrollPane(painelEstantes);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setBounds(0, 0, 160, screenSize.height - 60);
+        getContentPane().add(scrollPane);
+        
     }
     
-    //
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        if (inDrag) {
-            System.out.println("Alterado posições para: " + estante.getX() + ", " + estante.getY());
-            inDrag = false;
-            posicao.setX(estante.getX());
-            posicao.setY(estante.getY());
+    private Image createImage(URL url){
+        return Toolkit.getDefaultToolkit().createImage(url);
+    }
+    
+    @SuppressWarnings("serial")
+	private class NewContentPane extends JPanel{
+        protected void paintComponent(final Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(bImage, 0, 0, this);
         }
         
-        estante.setLocation(estante.getX() < 10 ? 10 : estante.getX(), estante.getY());	
-        estante.setLocation(estante.getX() > 1245 ? 1245 : estante.getX(), estante.getY());	
-        estante.setLocation(estante.getX(), estante.getY() < 10 ? 10 : estante.getY());	
-        estante.setLocation(estante.getX(), estante.getY() > 655 ? 655 : estante.getY());	
-     }
-    
-    @Override
-    public void mouseClicked(MouseEvent e) {
-    	
-    	System.out.println(estante.getX()+ "  " + estante.getY() + "   " + e.getX() + "  " + e.getY());
-    	estante.setBounds(posicao.getX(), posicao.getY(),estante.getHeight(),estante.getWidth());
-    	
-    }
-    
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        int newX = estante.getX() + (e.getX() - startDragX);
-        int newY = estante.getY() + (e.getY() - startDragY);
-        estante.setLocation(newX, newY);
-        inDrag = true;
-    }
-    
-    @Override
-    public void mouseMoved(MouseEvent arg0) {
-        // not interested
     }
         
     public static void main(String[] args) {
-        
-    	java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CriarBibliotecaWindow();
-            }
-        });
     	
+    	String[] referenciasTeste = new String[5];
+    	
+    	for(int i = 0; i < 5; i++) {
+    		referenciasTeste[i] = "Ref: teste" + i;
+    	}
+    	
+    	new CriarBibliotecaWindow(referenciasTeste);    	
     }
 }
