@@ -29,11 +29,19 @@ public class TerminalPesquisa extends JLabel implements MouseListener, MouseMoti
 	public void setarTerminal(CriarBibliotecaWindow criarBibliotecaWindow) {
 		ImageIcon icone = new ImageIcon(this.getClass().getResource("/br/com/projetopicii/pictures/TerminalPesquisa.png"));
 		this.setIcon(icone);
-		setBounds(screenSize.width / 2, (screenSize.height / 2) + 250, 90, 90);
+		setToolTipText("Terminal de Pesquisa");
+		setBounds(screenSize.width / 2, (screenSize.height / 2) + 230, 90, 90);
 		criarBibliotecaWindow.getContentPane().add(this);
+		
+		posicaoTerminal.setX(screenSize.width / 2);
+		posicaoTerminal.setY((screenSize.height / 2) + 250);
 		
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
+	}
+	
+	public PosicaoComponente getPosicaoTerminal() {
+		return posicaoTerminal;
 	}
 	
 	@Override
@@ -56,7 +64,7 @@ public class TerminalPesquisa extends JLabel implements MouseListener, MouseMoti
     @Override
     public void mouseReleased(MouseEvent e) {
         if (inDrag) {
-            System.out.println("Alterado posições para: " + this.getX() + ", " + this.getY());
+            System.out.println("Terminal de pesquisa alterado para: " + " X: " + this.getX() + " Y: " + this.getY());
             
             inDrag = false;
             posicaoTerminal.setX(this.getX());

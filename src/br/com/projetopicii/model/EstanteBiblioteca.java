@@ -100,24 +100,33 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
     @Override
     public void mouseReleased(MouseEvent e) {
         if (inDrag) {
-            System.out.println("Alterado posições para: " + this.getX() + ", " + this.getY());
+            System.out.println("Estante " + labelReferencia.getText() + " alterada para: " + "X: " + this.getX() + " Y: " + this.getY());
             
             inDrag = false;
             posicaoEstante.setX(this.getX());
             posicaoEstante.setY(this.getY());
+            
+            if(criarBibliotecaWindow.isInformacao2()) {
+            	criarBibliotecaWindow.removerInformacao2();
+            	criarBibliotecaWindow.setInformacao2(false);
+            	criarBibliotecaWindow.repaint();  
+            	criarBibliotecaWindow.inserirInformacao3();
+            }
         }
-                        
-        //Limite lado esquerdo.
-        this.setLocation ((int) ( (this.getX() < 162 && !ativarMovimentoMouse) ? 180 : this.getX()), this.getY());	
         
-        //Limite lado direito.
-        this.setLocation((int) (this.getX() > screenSize.getWidth() - 110 ? screenSize.getWidth() - 120 : this.getX()), this.getY());	
-        //Limite superior.
-        
-        this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());	
-        
-        //Limite inferior        
-        this.setLocation(this.getX(), (int) (this.getY() > screenSize.getHeight() - 110 ? screenSize.getHeight() - 120 : this.getY()));	
+        if(!ativarMovimentoMouse) {
+	        //Limite lado esquerdo.
+	        this.setLocation ((int) ( (this.getX() < 162) ? 180 : this.getX()), this.getY());	
+	        
+	        //Limite lado direito.
+	        this.setLocation((int) (this.getX() > screenSize.getWidth() - 110 ? screenSize.getWidth() - 120 : this.getX()), this.getY());	
+	        //Limite superior.
+	        
+	        this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());	
+	        
+	        //Limite inferior        
+	        this.setLocation(this.getX(), (int) (this.getY() > screenSize.getHeight() - 110 ? screenSize.getHeight() - 120 : this.getY()));	
+        }
      }
     
     @Override
@@ -132,8 +141,22 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
             item1.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
+                	
+                	if(criarBibliotecaWindow.isInformacao1()) {
+                		criarBibliotecaWindow.removerInformacao1();
+                		criarBibliotecaWindow.setInformacao1(false);
+                		criarBibliotecaWindow.repaint();
+                		criarBibliotecaWindow.inserirInformacao2();
+                	}
+                	
+                	//Mantém a estante vertical caso ela seja posicionada assim.
+                	if(vertical) {
+                		setBounds(200, 70, thisPanel.getWidth(),thisPanel.getHeight());
+                	} else {
+                		setBounds(200, 70, 110, 45);
+                	}      
+                	
                 	criarBibliotecaWindow.getContentPane().add(thisPanel);
-                	setBounds(200, 70, 110, 45);
                 	
                 	posicaoEstante.setX(200);
                 	posicaoEstante.setY(70);

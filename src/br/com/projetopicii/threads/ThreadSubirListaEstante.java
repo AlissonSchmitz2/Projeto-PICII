@@ -9,7 +9,6 @@ public class ThreadSubirListaEstante {
 	
 	//Dados primários.
 	private HashMap<String, EstanteBiblioteca> listaDeEstantes;
-	private String[] referencias;
 	
 	//Auxiliares.
 	private ArrayList<Integer> coordenadasAnteriores = new ArrayList<>();
@@ -18,7 +17,6 @@ public class ThreadSubirListaEstante {
 	public ThreadSubirListaEstante(HashMap<String, EstanteBiblioteca> listaDeEstantes, String[] referencias) {
 		
 		this.listaDeEstantes = listaDeEstantes;
-		this.referencias = referencias;
 		
 		for(int i = 0; i < referencias.length; i++) {
 			arrayReferencias.add(referencias[i]);
@@ -48,13 +46,10 @@ public class ThreadSubirListaEstante {
 							
 							//se for false, quer dizer que a estante foi removida do painel de estantes.
 							if(!listaDeEstantes.get(arrayReferencias.get(i)).getAtivarMovimentoMouse()) {
-								
-								//System.out.println("Estante removida: " + arrayReferencias.get(i));
-								
+																
 								//verifica se é a ultima estante do painel. Se não for, sobe.
 								if(i + 1 >= arrayReferencias.size()) {
 									
-									//System.out.println("entrou " + listaDeEstantes.get(arrayReferencias.get(i)) + " " + arrayReferencias.get(i));
 									listaDeEstantes.remove(arrayReferencias.get(i));
 									arrayReferencias.remove(i);
 								} else {
@@ -77,12 +72,10 @@ public class ThreadSubirListaEstante {
 		int estanteAbaixo = indiceEstanteMovida +1;
 		for(int j = estanteAbaixo; j < arrayReferencias.size(); j++) {
 				
-		
 			if(listaDeEstantes.get(arrayReferencias.get(j)) != null && listaDeEstantes.get(arrayReferencias.get(estanteAcima)) != null) {
 					
 				listaDeEstantes.get(arrayReferencias.get(j)).setBounds(15, listaDeEstantes.get(arrayReferencias.get(estanteAcima)).getCoordenadaY(), 110, 40);
-				System.out.println("Estante " + arrayReferencias.get(j) +": movida para: " + listaDeEstantes.get(arrayReferencias.get(estanteAcima)).getCoordenadaY());
-					
+				
 				coordenadasAnteriores.add(listaDeEstantes.get(arrayReferencias.get(estanteAcima)).getCoordenadaY());
 					
 				estanteAcima++;
@@ -90,12 +83,11 @@ public class ThreadSubirListaEstante {
 		}
 					
 		int indiceCoordenadas = 0;
-		for(int j = estanteAbaixo; j < arrayReferencias.size(); j++) {
-				
+		
+		for(int j = estanteAbaixo; j < arrayReferencias.size(); j++) {				
 				
 			if(listaDeEstantes.get(arrayReferencias.get(j)) != null ) {
 									
-				//System.out.println("Coordenada da estante: " + arrayReferencias.get(j) + " alterada para: " + coordenadasAnteriores.get(z) + "----------------\n");
 				listaDeEstantes.get(arrayReferencias.get(j)).setCoordenadaY(coordenadasAnteriores.get(indiceCoordenadas));
 					
 				indiceCoordenadas++;
@@ -103,8 +95,8 @@ public class ThreadSubirListaEstante {
 		}
 						
 		coordenadasAnteriores.clear();
-		listaDeEstantes.remove(referencias[indiceEstanteMovida]);
-		arrayReferencias.remove(indiceEstanteMovida);		
+		listaDeEstantes.remove(arrayReferencias.get(indiceEstanteMovida));
+		arrayReferencias.remove(indiceEstanteMovida);
 		
 	}
 }
