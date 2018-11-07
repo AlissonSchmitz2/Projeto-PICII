@@ -6,12 +6,12 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.net.URL;
 
 import javax.swing.*;
 
 import br.com.projetopicii.model.EstanteBiblioteca;
 import br.com.projetopicii.model.TerminalPesquisa;
+import br.com.projetopicii.pictures.ImageController;
 import br.com.projetopicii.threads.ThreadSubirListaEstante;
 
 public class CriarBibliotecaWindow extends JFrame {
@@ -19,9 +19,6 @@ public class CriarBibliotecaWindow extends JFrame {
 	        
     //Imagens e Icons.
 	private Image fundoBiblioteca;
-	private ImageIcon iconBalao1;
-	private ImageIcon iconBalao2;
-	private ImageIcon iconBalao3;
 	
 	//Balões do tutorial.
 	private JLabel labelBalao1;	
@@ -61,7 +58,7 @@ public class CriarBibliotecaWindow extends JFrame {
     
     public CriarBibliotecaWindow(String[] referencias) {   
     	
-    	this.fundoBiblioteca = this.createImage(this.getClass().getResource("/br/com/projetopicii/pictures/FundoBiblioteca.png"));
+    	this.fundoBiblioteca = ImageController.FundoBiblioteca.getImage();
     	this.referencias = referencias;
     	
         setTitle("Construção da Biblioteca");
@@ -126,16 +123,23 @@ public class CriarBibliotecaWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO: Salvar as posições das estantes e do terminal no banco de dados.
-								
-				System.out.println("-----TESTE POSIÇÕES PARA SALVAR-----");
-				for(int i = 0; i < listaDeEstantes.size(); i++) {
-					
-					System.out.println("Estante " + referencias[i] + ": X: " + listaDeEstantes.get(referencias[i]).getPosicaoEstante().getX() 
-							+ " Y: " + listaDeEstantes.get(referencias[i]).getPosicaoEstante().getY());
-				}
 				
-				System.out.println("Terminal de Pesquisa: X: " + terminalPesquisa.getPosicaoTerminal().getX() + " Y: " + terminalPesquisa.getPosicaoTerminal().getY() );
+				if(painelEstantes.getComponentCount() != 0) {
+					
+					JOptionPane.showMessageDialog(rootPane, "Todas as estantes devem ser posicionadas antes de salvar.", "",
+							JOptionPane.ERROR_MESSAGE, null);
+				} else { 
+					// TODO: Salvar as posições das estantes e do terminal no banco de dados.
+					
+					System.out.println("-----TESTE POSIÇÕES PARA SALVAR-----");
+					for(int i = 0; i < listaDeEstantes.size(); i++) {
+						
+						System.out.println("Estante " + referencias[i] + ": X: " + listaDeEstantes.get(referencias[i]).getPosicaoEstante().getX() 
+								+ " Y: " + listaDeEstantes.get(referencias[i]).getPosicaoEstante().getY());
+					}
+					
+					System.out.println("Terminal de Pesquisa: X: " + terminalPesquisa.getPosicaoTerminal().getX() + " Y: " + terminalPesquisa.getPosicaoTerminal().getY() );
+				}
 			}
 		});
         btnSalvar.setBounds((int) screenSize.getWidth() - 150, 160, 130 , 25);
@@ -143,25 +147,19 @@ public class CriarBibliotecaWindow extends JFrame {
         
         //COMPONENTES DO TUTORIAL.
         
-        iconBalao1 = new ImageIcon(this.getClass().getResource("/br/com/projetopicii/pictures/Informação1.png"));
-        
         labelBalao1 = new JLabel();
         labelBalao1.setBounds(170, -10, 225, 245);
-        labelBalao1.setIcon(iconBalao1);
-        
+        labelBalao1.setIcon(ImageController.informacao1);        
         getContentPane().add(labelBalao1);
         
-        iconBalao2 = new ImageIcon(this.getClass().getResource("/br/com/projetopicii/pictures/Informação2.png"));
         
         labelBalao2 = new JLabel();
         labelBalao2.setBounds(370, -10, 225, 245);
-        labelBalao2.setIcon(iconBalao2);
-        
-        iconBalao3 = new ImageIcon(this.getClass().getResource("/br/com/projetopicii/pictures/Informação3.png"));
+        labelBalao2.setIcon(ImageController.informacao2);
         
         labelBalao3 = new JLabel();
         labelBalao3.setBounds(570, -10, 245, 225);
-        labelBalao3.setIcon(iconBalao3); 
+        labelBalao3.setIcon(ImageController.informacao3); 
         
         btnFimTutorial = new JButton(new AbstractAction("Finalizar Tutorial") {
 			private static final long serialVersionUID = -6855202875453107191L;
@@ -176,10 +174,6 @@ public class CriarBibliotecaWindow extends JFrame {
 		});
         btnFimTutorial.setBounds(680, 155, 130, 25);        
         
-    }
-    
-    private Image createImage(URL url){
-        return Toolkit.getDefaultToolkit().createImage(url);
     }
     
     @SuppressWarnings("serial")

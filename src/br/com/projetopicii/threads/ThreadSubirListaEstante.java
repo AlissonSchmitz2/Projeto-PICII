@@ -32,33 +32,38 @@ public class ThreadSubirListaEstante {
 			@Override
 			public void run() {
 				
-				while (!Thread.currentThread().isInterrupted()) {
-					try {
-						Thread.sleep(200);
-					} catch (InterruptedException e) {
-						e.printStackTrace();;
-					}
-										
-					
-					for(int i = 0; i < arrayReferencias.size(); i++) {						
+				try {
+					while (!Thread.currentThread().isInterrupted()) {
+						try {
+							Thread.sleep(200);
+						} catch (InterruptedException e) {
+							throw e;
+						}					
 						
-						if(listaDeEstantes.get(arrayReferencias.get(i)) != null) {
+						for(int i = 0; i < arrayReferencias.size(); i++) {						
 							
-							//se for false, quer dizer que a estante foi removida do painel de estantes.
-							if(!listaDeEstantes.get(arrayReferencias.get(i)).getAtivarMovimentoMouse()) {
-																
-								//verifica se é a ultima estante do painel. Se não for, sobe.
-								if(i + 1 >= arrayReferencias.size()) {
-									
-									listaDeEstantes.remove(arrayReferencias.get(i));
-									arrayReferencias.remove(i);
-								} else {
-									subirEstantes(i);
+							if(listaDeEstantes.get(arrayReferencias.get(i)) != null) {
+								
+								//se for false, quer dizer que a estante foi removida do painel de estantes.
+								if(!listaDeEstantes.get(arrayReferencias.get(i)).getAtivarMovimentoMouse()) {
+																	
+									//verifica se é a ultima estante do painel. Se não for, sobe.
+									if(i + 1 >= arrayReferencias.size()) {
+										
+										listaDeEstantes.remove(arrayReferencias.get(i));
+										arrayReferencias.remove(i);
+									} else {
+										subirEstantes(i);
+									}
 								}
 							}
 						}
+						
 					}
-					
+				}
+				catch (InterruptedException ex) {
+					System.out.println(Thread.currentThread().getName()+" parou. Recriando ... ");
+					startThread();
 				}
 			}
 		},"MoverEstantesParaCima").start();		

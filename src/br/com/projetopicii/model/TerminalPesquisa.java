@@ -6,9 +6,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import br.com.projetopicii.pictures.ImageController;
 import br.com.projetopicii.view.CriarBibliotecaWindow;
 
 public class TerminalPesquisa extends JLabel implements MouseListener, MouseMotionListener{
@@ -27,8 +27,7 @@ public class TerminalPesquisa extends JLabel implements MouseListener, MouseMoti
 	private PosicaoComponente posicaoTerminal = new PosicaoComponente();	
 
 	public void setarTerminal(CriarBibliotecaWindow criarBibliotecaWindow) {
-		ImageIcon icone = new ImageIcon(this.getClass().getResource("/br/com/projetopicii/pictures/TerminalPesquisa.png"));
-		this.setIcon(icone);
+		this.setIcon(ImageController.TerminalPesquisa);
 		setToolTipText("Terminal de Pesquisa");
 		setBounds(screenSize.width / 2, (screenSize.height / 2) + 230, 90, 90);
 		criarBibliotecaWindow.getContentPane().add(this);
@@ -72,16 +71,20 @@ public class TerminalPesquisa extends JLabel implements MouseListener, MouseMoti
         }
                         
         //Limite lado esquerdo.
-        this.setLocation ((int) ( (this.getX() < 162) ? 180 : this.getX()), this.getY());	
+        this.setLocation ((int) ( (this.getX() < 162) ? 180 : this.getX()), this.getY());
+        this.getPosicaoTerminal().setX((this.getX() < 162) ? 180 : this.getX());
         
         //Limite lado direito.
-        this.setLocation((int) (this.getX() > screenSize.getWidth() - 80 ? screenSize.getWidth() - 110 : this.getX()), this.getY());	
-        //Limite superior.
+        this.setLocation((int) (this.getX() > screenSize.getWidth() - 80 ? screenSize.getWidth() - 110 : this.getX()), this.getY());
+        this.getPosicaoTerminal().setX( (int) ((this.getX() > screenSize.getWidth() - 80) ? screenSize.getWidth() - 110 : this.getX()));
         
+        //Limite superior.        
         this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());	
+        this.getPosicaoTerminal().setY( (this.getY() < 10) ? 10 : this.getY()); 
         
         //Limite inferior        
         this.setLocation(this.getX(), (int) (this.getY() > screenSize.getHeight() - 143 ? screenSize.getHeight() - 160 : this.getY()));	
+        this.getPosicaoTerminal().setY( (int) ((this.getY() > screenSize.getHeight() - 143) ? screenSize.getHeight() - 160 : this.getY()));
      }
     
     @Override

@@ -115,17 +115,21 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
         }
         
         if(!ativarMovimentoMouse) {
-	        //Limite lado esquerdo.
-	        this.setLocation ((int) ( (this.getX() < 162) ? 180 : this.getX()), this.getY());	
-	        
-	        //Limite lado direito.
-	        this.setLocation((int) (this.getX() > screenSize.getWidth() - 110 ? screenSize.getWidth() - 120 : this.getX()), this.getY());	
-	        //Limite superior.
-	        
-	        this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());	
-	        
-	        //Limite inferior        
-	        this.setLocation(this.getX(), (int) (this.getY() > screenSize.getHeight() - 110 ? screenSize.getHeight() - 120 : this.getY()));	
+        	//Limite lado esquerdo.
+            this.setLocation ((int) ( (this.getX() < 162) ? 180 : this.getX()), this.getY());
+            this.getPosicaoEstante().setX((this.getX() < 162) ? 180 : this.getX());
+            
+            //Limite lado direito.
+            this.setLocation((int) (this.getX() > screenSize.getWidth() - 110 ? screenSize.getWidth() - 130 : this.getX()), this.getY());
+            this.getPosicaoEstante().setX( (int) ((this.getX() > screenSize.getWidth() - 110) ? screenSize.getWidth() - 130 : this.getX()));
+            
+            //Limite superior.        
+            this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());	
+            this.getPosicaoEstante().setY( (this.getY() < 10) ? 10 : this.getY()); 
+            
+            //Limite inferior        
+            this.setLocation(this.getX(), (int) (this.getY() > screenSize.getHeight() - 110 ? screenSize.getHeight() - 120 : this.getY()));	
+            this.getPosicaoEstante().setY( (int) ((this.getY() > screenSize.getHeight() - 110) ? screenSize.getHeight() - 120 : this.getY()));	
         }
      }
     
