@@ -20,9 +20,6 @@ import br.com.projetopicii.threads.ThreadSubirListaEstante;
 public class CriarBibliotecaWindow extends JFrame {
 	private static final long serialVersionUID = -6766594202823918036L;
 
-	// Imagens e Icons.
-	private Image fundoBiblioteca;
-
 	// Balões do tutorial.
 	private JLabel labelBalao1;
 	private JLabel labelBalao2;
@@ -58,8 +55,7 @@ public class CriarBibliotecaWindow extends JFrame {
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 	public CriarBibliotecaWindow(String[] referencias) {
-
-		this.fundoBiblioteca = ImageController.FundoBiblioteca.getImage();
+		
 		this.referencias = referencias;
 		setTitle("Construção da Biblioteca");
 		super.setContentPane(new NewContentPane());
@@ -182,7 +178,7 @@ public class CriarBibliotecaWindow extends JFrame {
 	private class NewContentPane extends JPanel {
 		protected void paintComponent(final Graphics g) {
 			super.paintComponent(g);
-			g.drawImage(fundoBiblioteca, 0, 0, this);
+			g.drawImage(ImageController.FundoBiblioteca.getImage(), 0, 0, this);
 		}
 
 	}
