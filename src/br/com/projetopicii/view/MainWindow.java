@@ -91,7 +91,7 @@ public class MainWindow extends JFrame{
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setBounds(new Rectangle(0, 0, 796, 713));
 		this.setFocusableWindowState(true);			
-		//super.setContentPane(new NewContentPane());
+		super.setContentPane(new NewContentPane());
 		this.setLayout(null);
 		this.setExtendedState(Frame.MAXIMIZED_BOTH);
 		
@@ -109,6 +109,7 @@ public class MainWindow extends JFrame{
 		txfBusca.setToolTipText("Digite a informação a ser pesquisada");	
 		txfBusca.addKeyListener(acao);
 		getContentPane().add(txfBusca);
+		txfBusca.requestFocus();
 		
 		btnBuscar = new JButton(new AbstractAction("Buscar") {
 			private static final long serialVersionUID = -998996978922572909L;
@@ -142,7 +143,7 @@ public class MainWindow extends JFrame{
 		getContentPane().add(labelDescricao);
 		
 		r_titulo = new JRadioButton("Título");
-		r_titulo.setBackground(new Color(250, 250, 250));
+		r_titulo.setOpaque(false);
 		r_titulo.setBounds((int) (screenSize.getWidth() / 2) - 230, (int) (screenSize.getHeight() / 2) - 270, 20, 25);
 		radiosBusca.add(r_titulo);
 		r_titulo.setSelected(true);
@@ -153,7 +154,7 @@ public class MainWindow extends JFrame{
 		getContentPane().add(labelDescricao);
 		
 		r_autor = new JRadioButton("Autor");
-		r_autor.setBackground(new Color(250, 250, 250));
+		r_autor.setOpaque(false);
 		r_autor.setBounds((int) (screenSize.getWidth() / 2) - 170, (int) (screenSize.getHeight() / 2) - 270, 20, 25);
 		radiosBusca.add(r_autor);
 		getContentPane().add(r_autor);
@@ -163,7 +164,7 @@ public class MainWindow extends JFrame{
 		getContentPane().add(labelDescricao);
 		
 		r_genero = new JRadioButton("Gênero");
-		r_genero.setBackground(new Color(250, 250, 250));
+		r_genero.setOpaque(false);
 		r_genero.setBounds((int) (screenSize.getWidth() / 2) - 110, (int) (screenSize.getHeight() / 2) - 270, 20, 25);
 		radiosBusca.add(r_genero);
 		getContentPane().add(r_genero);
@@ -208,12 +209,12 @@ public class MainWindow extends JFrame{
 	
 	private JMenuItem getMenuItemBuscarLivro() {
 		JMenuItem menuItem = new JMenuItem();
-		menuItem.setText("Buscar Livro");
+		menuItem.setText("Buscar Livros");
 		menuItem.setFont(getDefaultFont());
 
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO: fechar todos os internal frames abertos.
+				//TODO: fechar todos os internal frames abertos.;
 			}
 		});
 
@@ -264,19 +265,19 @@ public class MainWindow extends JFrame{
 	private Font getDefaultFont() {
 		return new java.awt.Font("Dialog", java.awt.Font.PLAIN, 12);
 	}
-	
+		
 	public static void main(final String[] args) {
 		//Abrir janela principal no centro da tela.
 		new MainWindow().setLocationRelativeTo(null);
 	}
 	
-//	@SuppressWarnings("serial")
-//	private class NewContentPane extends JPanel {
-//		protected void paintComponent(final Graphics g) {
-//			super.paintComponent(g);
-//			g.drawImage(ImageController.teste.getImage(), 0, 0, this);
-//		}
-//
-//	}
+	@SuppressWarnings("serial")
+	private class NewContentPane extends JPanel {
+		protected void paintComponent(final Graphics g) {
+			super.paintComponent(g);
+			g.drawImage(ImageController.findMyBook.getImage(), 0, 0, this);
+		}
+
+	}
 
 }
