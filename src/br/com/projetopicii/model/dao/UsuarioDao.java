@@ -11,22 +11,21 @@ import br.com.projetopicii.view.CadastrarPrimeiroUser;
 import br.com.projetopicii.view.LoginWindow;
 import br.com.projetopicii.view.MainWindow;
 
-
 public class UsuarioDao {
 
 	Connection con = ConnectionFactory.getConnection();
 	PreparedStatement stmt = null;
 	ResultSet rS = null;
 	LoginWindow lW = null;
-	
+
 	public UsuarioDao() {
-		
+
 	}
-	
+
 	public UsuarioDao(LoginWindow lW) {
 		this.lW = lW;
 	}
-	
+
 	public void checkLogin(Usuario usuario) {
 
 		try {
@@ -38,7 +37,7 @@ public class UsuarioDao {
 				rS = stmt.executeQuery();
 				if (rS.next()) {
 					new CadastrarPrimeiroUser().setVisible(true);
-					
+
 				}
 			} else {
 
@@ -55,7 +54,7 @@ public class UsuarioDao {
 		} catch (SQLException e) {
 			// TODO: Lançar exception correta
 		} finally {
-			ConnectionFactory.closeConnection(con, stmt);
+			ConnectionFactory.closeConnection(con, stmt, rS);
 		}
 
 	}
@@ -70,7 +69,7 @@ public class UsuarioDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
+		} finally {
 			ConnectionFactory.closeConnection(con, stmt);
 		}
 	}
@@ -79,22 +78,20 @@ public class UsuarioDao {
 		new MainWindow().setVisible(true);
 		lW.setVisible(false);
 	}
-	
+
 	public void registerUser(Usuario usuario) {
 		try {
 			stmt = con.prepareStatement("insert into usuario (usuario,senha) values(?,?)");
 			stmt.setString(1, usuario.getLogin());
 			stmt.setString(2, usuario.getSenha());
-			
+
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
+		} finally {
 			ConnectionFactory.closeConnection(con, stmt);
 		}
-		
+
 	}
 
 }
-
