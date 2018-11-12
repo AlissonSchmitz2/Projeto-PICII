@@ -19,7 +19,7 @@ import br.com.projetopicii.threads.ThreadSubirListaEstante;
 
 public class CriarBibliotecaWindow extends JFrame {
 	private static final long serialVersionUID = -6766594202823918036L;
-
+	
 	// Balões do tutorial.
 	private JLabel labelBalao1;
 	private JLabel labelBalao2;
@@ -32,7 +32,10 @@ public class CriarBibliotecaWindow extends JFrame {
 	// Botões.
 	private JButton btnFimTutorial;
 	private JButton btnSalvar;
-
+	
+	static //Classe que faz conexão com banco.
+	EstanteDao estante = new EstanteDao();
+	
 	// Painel para as estantes.
 	private JPanel painelEstantes = new JPanel();
 
@@ -130,10 +133,13 @@ public class CriarBibliotecaWindow extends JFrame {
 
 					System.out.println("-----TESTE POSIÇÕES PARA SALVAR-----");
 					for (int i = 0; i < listaDeEstantes.size(); i++) {
-
+						int coordenadaX = listaDeEstantes.get(referencias[i]).getPosicaoEstante().getX();
+						int coordenadaY = listaDeEstantes.get(referencias[i]).getPosicaoEstante().getY();
+						
 						System.out.println("Estante " + referencias[i] + ": X: "
-								+ listaDeEstantes.get(referencias[i]).getPosicaoEstante().getX() + " Y: "
-								+ listaDeEstantes.get(referencias[i]).getPosicaoEstante().getY());
+								+ coordenadaX + " Y: "
+								+ coordenadaY);
+						estante.atualizarCoordenadas(referencias[i],coordenadaX,coordenadaY);
 					}
 
 					System.out.println("Terminal de Pesquisa: X: " + terminalPesquisa.getPosicaoTerminal().getX()
@@ -226,18 +232,21 @@ public class CriarBibliotecaWindow extends JFrame {
 	// Main para teste.
 	public static void main(String[] args) {
 		//TODO:Tornar banco de dados acessivel a todos membro da equipe para poder executar os comandos abaixo;
-		/*
-		 * String[] referencias;
-		 * 
-		 * EstanteDao estante = new EstanteDao(); referencias = estante.pegarEstantes();
-		 */
-
+		
+		  String[] referencias;
+		 
+		 referencias = estante.pegarEstantes();
+		 
+		 for(String r : referencias) {
+			 System.out.println(r);
+		 }
+		 
 		String[] referenciasTeste = new String[5];
 
 		for (int i = 0; i < 5; i++) {
 			referenciasTeste[i] = "Ref: teste" + i;
 		}
 
-		new CriarBibliotecaWindow(referenciasTeste);
+		new CriarBibliotecaWindow(referencias);
 	}
 }
