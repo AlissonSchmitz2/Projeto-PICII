@@ -22,7 +22,7 @@ public class LoginWindow extends JFrame {
 	
 	LoginWindow() {
 		setSize(300, 200);
-		setTitle("Controle de livros");
+		setTitle("Find my book");
 		setLayout(null);
 		setResizable(false);
 		criarComponentes();
