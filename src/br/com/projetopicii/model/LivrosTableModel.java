@@ -50,8 +50,8 @@ public class LivrosTableModel extends AbstractTableModel {
 	}
 	
 	//Adiciona dados a tabela.
-	public void addRow(Livro livros) {
-		this.dados.add(livros);
+	public void addRow(ArrayList<Livro> arrayLivros) {
+		this.dados.addAll(arrayLivros);
 		
 		//Atualiza a tabela quando há mudança nos dados.
 		this.fireTableDataChanged();

@@ -15,7 +15,9 @@ public class ImageController extends ImageIcon {
 
 	public static final ImageController TerminalPesquisa = ImageLoad("biblioteca/TerminalPesquisa.png");
 	
-	public static final ImageController findMyBook = ImageLoad("biblioteca/FindMyBook.png");
+	public static final ImageController findMyBook_1366x768 = ImageLoad("biblioteca/FindMyBook_1366x768.png");
+	
+	public static final ImageController findMyBook_1920x1080 = ImageLoad("biblioteca/FindMyBook_1920x1080.png");
 
 	private ImageController() {
 
