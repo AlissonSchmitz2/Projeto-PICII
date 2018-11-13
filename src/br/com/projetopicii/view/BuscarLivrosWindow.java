@@ -27,6 +27,8 @@ import javax.swing.table.TableModel;
 import br.com.projetopicii.auxiliaries.CellRenderer;
 import br.com.projetopicii.model.LivrosTableModel;
 import br.com.projetopicii.model.bean.Livro;
+import br.com.projetopicii.model.dao.EstanteDao;
+import br.com.projetopicii.model.dao.LivroDao;
 import br.com.projetopicii.pictures.ImageController;
 
 public class BuscarLivrosWindow extends AbstractWindowFrame {
@@ -69,6 +71,10 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 		super.setClosable(false);
 		setContentPane(new NewContentPane());
 		setLayout(null);
+		
+		//LivroDao lD = new LivroDao();
+		//arrayLivros = lD.pegarLivrosCadastrados();
+		//((LivrosTableModel) livrosTableModel).addRow(arrayLivros);;
 		criarComponentes();
 	}
 	
