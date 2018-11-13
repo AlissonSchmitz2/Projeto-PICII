@@ -1,6 +1,5 @@
 package br.com.projetopicii.view;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Rectangle;
@@ -17,11 +16,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
-public class MainWindow extends JFrame{
+public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 2630247367422389726L;
 	
 	//Componentes Janela Principal.
-	private JMenu menuBiblioteca;
+	private JMenu menuAdministrador;
 	private JMenu menuHome;
 	private JDesktopPane desktop;	
 	
@@ -36,7 +35,6 @@ public class MainWindow extends JFrame{
 		desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
 		desktop.setVisible(true);
 		setContentPane(desktop);
-		desktop.setBackground(new Color(250, 250, 250));
 		
 		inicializar();		
 		
@@ -65,18 +63,18 @@ public class MainWindow extends JFrame{
 	private JMenuBar getWindowMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.add(getMenuHome());
-		menuBar.add(getMenuBiblioteca());
+		menuBar.add(getMenuAdministrador());
 		return menuBar;
 	}
 	
-	// Menu Biblioteca
-	private JMenu getMenuBiblioteca() {
-		menuBiblioteca = new JMenu();
-		menuBiblioteca.setText("Biblioteca");
-		menuBiblioteca.setFont(getDefaultFont());
-		menuBiblioteca.add(getMenuItemEditarMapa());
+	// Menu Administrador
+	private JMenu getMenuAdministrador() {
+		menuAdministrador = new JMenu();
+		menuAdministrador.setText("Administrador");
+		menuAdministrador.setFont(getDefaultFont());
+		menuAdministrador.add(getMenuItemRealizarLogin());
 
-		return menuBiblioteca;
+		return menuAdministrador;
 	}
 	
 	// Menu Home
@@ -105,14 +103,18 @@ public class MainWindow extends JFrame{
 		return menuItem;
 	}
 	
-	private JMenuItem getMenuItemEditarMapa() {
+	private JMenuItem getMenuItemRealizarLogin() {
 		JMenuItem menuItem = new JMenuItem();
-		menuItem.setText("Editar Mapa");
+		menuItem.setText("Realizar Login");
 		menuItem.setFont(getDefaultFont());
 
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO: Abrir janela para edição do mapa da biblioteca.
+				//TODO: Abrir janela para login do usuário administrador.
+				
+				//Abrir janela do administrador caso o login esteja correto.
+				new AdministradorMainWindow();
+				dispose();
 			}
 		});
 

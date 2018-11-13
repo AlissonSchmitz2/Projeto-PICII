@@ -33,7 +33,7 @@ public class LivroDao {
 				livro.setGenero(auxLivros[2]);
 				livro.setAnoLancamento(auxLivros[3]);
 				livro.setNumPaginas(Integer.parseInt(auxLivros[4]));
-				livro.setIdioma("Portugues");
+				livro.setIdioma("Português");
 				listaLivro.add(livro);
 				itensLivro = "";
 			}
