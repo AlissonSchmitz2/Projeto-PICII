@@ -30,6 +30,7 @@ public class AdministradorMainWindow extends JFrame {
 	// Frames
 	BuscarLivrosWindow frameBuscarLivrosWindow;
 	CadastrarEstanteWindow frameCadastrarEstanteWindow;
+	CadastrarLivrosWindow frameCadastrarLivrosWindow;
 	
 	public AdministradorMainWindow() {
 		super();
@@ -227,8 +228,8 @@ public class AdministradorMainWindow extends JFrame {
 
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO: Abrir janela para cadastro de livros.
-
+				frameCadastrarLivrosWindow = new CadastrarLivrosWindow(desktop);
+				abrirFrame(frameCadastrarLivrosWindow);
 			}
 		});
 
