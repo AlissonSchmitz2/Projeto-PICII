@@ -118,6 +118,8 @@ public class AdministradorMainWindow extends JFrame {
 		menuAdministrador = new JMenu();
 		menuAdministrador.setText("Administrador");
 		menuAdministrador.setFont(getDefaultFont());
+		menuAdministrador.add(getMenuItemCadastrarAdm());
+		menuAdministrador.add(getMenuItemListarAdm());
 		menuAdministrador.add(getMenuItemDeslogar());
 
 		return menuAdministrador;
@@ -133,6 +135,36 @@ public class AdministradorMainWindow extends JFrame {
 
 				new MainWindow();
 				dispose();
+			}
+		});
+
+		return menuItem;
+	}
+	
+	private JMenuItem getMenuItemCadastrarAdm() {
+		JMenuItem menuItem = new JMenuItem();
+		menuItem.setText("Cadastrar");
+		menuItem.setFont(getDefaultFont());
+
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//TODO: Abrir frame para cadastro de administradores.
+			}
+		});
+
+		return menuItem;
+	}
+	
+	private JMenuItem getMenuItemListarAdm() {
+		JMenuItem menuItem = new JMenuItem();
+		menuItem.setText("Listar");
+		menuItem.setFont(getDefaultFont());
+
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//TODO: Abrir frame para listagem de administradores.
 			}
 		});
 

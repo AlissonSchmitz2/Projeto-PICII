@@ -26,8 +26,7 @@ public class MainWindow extends JFrame {
 	
 	//Frames
 	BuscarLivrosWindow frameBuscarLivrosWindow;
-	
-	
+		
 	public MainWindow() {
 		super();
 			
