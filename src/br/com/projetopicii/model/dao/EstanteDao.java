@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.projetopicii.connection.ConnectionFactory;
+import br.com.projetopicii.model.bean.Estante;
 
 public class EstanteDao {
 
@@ -15,8 +16,10 @@ public class EstanteDao {
 	PreparedStatement stmt = null;
 	ResultSet rS = null;
 	String[] listaEstante;
+	ArrayList<Estante> arrayEstantes = new ArrayList<>();
+	LivroDao livroDao = new LivroDao();
 
-	public String[] pegarEstantes() {
+	public String[] pegarNomeEstantes() {
 
 		try {
 
@@ -39,11 +42,43 @@ public class EstanteDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} //finally {
+		} // finally {
 //			ConnectionFactory.closeConnection(con, stmt, rS);
 //		}
-				
+
 		return listaEstante;
+	}
+
+	public ArrayList<Estante> pegarArrayEstantes() {
+
+		try {
+			stmt = con.prepareStatement("Select * from estante");
+			rS = stmt.executeQuery();
+
+			String itensEstante = "";
+			while (rS.next()) {
+				for (int i = 1; i < 5; i++) {
+					itensEstante += rS.getString(i) + ";";
+				}
+				String[] auxEstantes = itensEstante.split(";");
+
+				Estante estante = new Estante();
+				estante.setId(Integer.parseInt(auxEstantes[0]));
+				estante.setLivros(livroDao.pegarLivrosCadastrados(Integer.parseInt(auxEstantes[0])));
+				estante.setNome(auxEstantes[1]);
+				estante.setCoordenadaX(Integer.parseInt(auxEstantes[2]));
+				estante.setCoordenadaY(Integer.parseInt(auxEstantes[3]));
+
+				arrayEstantes.add(estante);
+				itensEstante = "";
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return arrayEstantes;
 	}
 
 	public int pegarQuantidadeEstante() {
@@ -64,16 +99,14 @@ public class EstanteDao {
 
 	public void atualizarCoordenadas(String referencia, int coordenadaX, int coordenadaY) {
 		try {
-			stmt = con.prepareStatement("update estante set coordenadaX = ?,coordenadaY = ? where nome = ?");
-			//stmt = con.prepareStatement("update usuario set usuario = ?,senha = ? where id = 1");
+			stmt = con.prepareStatement("update estante set coordenadax = ?, coordenaday = ? where nome = ?");
 			stmt.setInt(1, coordenadaX);
 			stmt.setInt(2, coordenadaY);
-			System.out.println(referencia);
 			stmt.setString(3, referencia);
 
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		}
 	}
 }

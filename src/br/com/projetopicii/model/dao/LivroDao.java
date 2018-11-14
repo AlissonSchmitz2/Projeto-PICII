@@ -15,11 +15,10 @@ public class LivroDao {
 	ResultSet rS = null;
 	ArrayList<Livro> listaLivro = new ArrayList<Livro>();
 
+	// Recupera todos os livros cadastrados.
 	public ArrayList<Livro> pegarLivrosCadastrados() {
 		try {
 			stmt = con.prepareStatement("Select * from livro");
-//			stmt = con.prepareStatement("Select * from livro where titulo = ?");
-//			stmt.setString(1, valorBusca);
 			rS = stmt.executeQuery();
 
 			String itensLivro = "";
@@ -41,12 +40,14 @@ public class LivroDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return listaLivro;
 	}
 
+	// Recupera os livros cadastrados de acordo com o valor de busca e a coluna
+	// desejada.
 	public ArrayList<Livro> pegarLivrosCadastrados(String valorBusca, String coluna) {
 		try {
 
@@ -73,9 +74,65 @@ public class LivroDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return listaLivro;
 	}
+
+	// Recupera os livros localizados em determinada estante.
+	public ArrayList<Livro> pegarLivrosCadastrados(int idEstante) {
+		try {
+			listaLivro = new ArrayList<>();
+
+			stmt = con.prepareStatement("SELECT * FROM livro WHERE id_estante = ?");
+			stmt.setInt(1, idEstante);
+			rS = stmt.executeQuery();
+
+			String itensLivro = "";
+			while (rS.next()) {
+				for (int i = 2; i < 7; i++) {
+					itensLivro += rS.getString(i) + ";";
+				}
+				String[] auxLivros = itensLivro.split(";");
+
+				Livro livro = new Livro();
+				livro.setTitulo(auxLivros[0]);
+				livro.setAutor(auxLivros[1]);
+				livro.setGenero(auxLivros[2]);
+				livro.setAnoLancamento(auxLivros[3]);
+				livro.setNumPaginas(Integer.parseInt(auxLivros[4]));
+				livro.setIdioma("Português");
+				listaLivro.add(livro);
+				itensLivro = "";
+			}
+
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		return listaLivro;
+	}
+	
+	// Retorna o id da estante que contém determinado livro.
+	public int pegarIdEstante(String titulo) {
+		
+		int idEstante = -1;
+		try {
+			stmt = con.prepareStatement("Select id_estante from livro where titulo = ?");
+			stmt.setString(1, titulo);
+			rS = stmt.executeQuery();
+			
+			while(rS.next()) {
+				idEstante = Integer.parseInt(rS.getString("id_estante"));
+			}
+
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+			
+		return idEstante;		
+	}
+	
 }

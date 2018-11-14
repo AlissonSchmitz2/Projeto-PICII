@@ -1,11 +1,9 @@
 package br.com.projetopicii.view;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 
@@ -14,12 +12,13 @@ import javax.swing.*;
 import br.com.projetopicii.model.EstanteBiblioteca;
 import br.com.projetopicii.model.TerminalPesquisa;
 import br.com.projetopicii.model.dao.EstanteDao;
+import br.com.projetopicii.model.dao.TerminalDao;
 import br.com.projetopicii.pictures.ImageController;
 import br.com.projetopicii.threads.ThreadSubirListaEstante;
 
 public class CriarBibliotecaWindow extends JFrame {
 	private static final long serialVersionUID = -6766594202823918036L;
-	
+
 	// Balões do tutorial.
 	private JLabel labelBalao1;
 	private JLabel labelBalao2;
@@ -32,10 +31,11 @@ public class CriarBibliotecaWindow extends JFrame {
 	// Botões.
 	private JButton btnFimTutorial;
 	private JButton btnSalvar;
-	
-	static //Classe que faz conexão com banco.
-	EstanteDao estante = new EstanteDao();
-	
+
+	// Classe que faz conexão com banco.
+	private static EstanteDao estanteDao = new EstanteDao();
+	private static TerminalDao terminalDao = new TerminalDao();
+
 	// Painel para as estantes.
 	private JPanel painelEstantes = new JPanel();
 
@@ -58,7 +58,7 @@ public class CriarBibliotecaWindow extends JFrame {
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 	public CriarBibliotecaWindow(String[] referencias) {
-		
+
 		this.referencias = referencias;
 		setTitle("Construção da Biblioteca");
 		super.setContentPane(new NewContentPane());
@@ -129,22 +129,28 @@ public class CriarBibliotecaWindow extends JFrame {
 					JOptionPane.showMessageDialog(rootPane, "Todas as estantes devem ser posicionadas antes de salvar.",
 							"", JOptionPane.ERROR_MESSAGE, null);
 				} else {
-					// TODO: Salvar as posições das estantes e do terminal no banco de dados.
 
-					//System.out.println("-----TESTE POSIÇÕES PARA SALVAR-----");
 					for (int i = 0; i < listaDeEstantes.size(); i++) {
 						int coordenadaX = listaDeEstantes.get(referencias[i]).getPosicaoEstante().getX();
 						int coordenadaY = listaDeEstantes.get(referencias[i]).getPosicaoEstante().getY();
-						
-						estante.atualizarCoordenadas(referencias[i],coordenadaX,coordenadaY);
-						
-//						System.out.println("Estante " + referencias[i] + ": X: "
-//								+ coordenadaX + " Y: "
-//								+ coordenadaY);						
+
+						try {
+							estanteDao.atualizarCoordenadas(referencias[i], coordenadaX, coordenadaY);
+						} catch(Exception e1) {
+							JOptionPane.showMessageDialog(rootPane, "Ocorreu um erro ao tentar salvar as estantes",
+									"", JOptionPane.ERROR_MESSAGE, null);
+						}
 					}
 
-					System.out.println("Terminal de Pesquisa: X: " + terminalPesquisa.getPosicaoTerminal().getX()
-							+ " Y: " + terminalPesquisa.getPosicaoTerminal().getY());
+					try {
+						terminalDao.atualizarCoordenadas(terminalPesquisa.getPosicaoTerminal().getX(),
+								terminalPesquisa.getPosicaoTerminal().getY());
+	
+						JOptionPane.showMessageDialog(null, "Biblioteca salva com sucesso!");
+					} catch(Exception e1) {
+						JOptionPane.showMessageDialog(rootPane, "Ocorreu um erro ao tentar salvar o terminal de pesquisa",
+								"", JOptionPane.ERROR_MESSAGE, null);
+					}
 				}
 			}
 		});
@@ -232,20 +238,13 @@ public class CriarBibliotecaWindow extends JFrame {
 
 	// Main para teste.
 	public static void main(String[] args) {
-		//TODO:Tornar banco de dados acessivel a todos membro da equipe para poder executar os comandos abaixo;
-		
-		  String[] referencias;
-		 
-		 referencias = estante.pegarEstantes();
-		 
-		 for(String r : referencias) {
-			 System.out.println(r);
-		 }
-		 
-		String[] referenciasTeste = new String[5];
 
-		for (int i = 0; i < 5; i++) {
-			referenciasTeste[i] = "Ref: teste" + i;
+		String[] referencias;
+
+		referencias = estanteDao.pegarNomeEstantes();
+
+		for (String r : referencias) {
+			System.out.println(r);
 		}
 
 		new CriarBibliotecaWindow(referencias);

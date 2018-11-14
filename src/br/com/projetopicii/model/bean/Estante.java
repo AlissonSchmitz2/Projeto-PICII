@@ -1,19 +1,20 @@
 package br.com.projetopicii.model.bean;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Estante {
 	
-	private List<Livro> livros = new ArrayList<Livro>();
+	private ArrayList<Livro> livros = new ArrayList<Livro>();
+	private int id;
+	private String nome;
 	private int coordenadaX;
 	private int coordenadaY;
 	
-	public List<Livro> getLivros() {
+	public ArrayList<Livro> getLivros() {
 		return livros;
 	}
 
-	public void setLivros(List<Livro> livros) {
+	public void setLivros(ArrayList<Livro> livros) {
 		this.livros = livros;
 	}
 
@@ -32,6 +33,21 @@ public class Estante {
 	public void setCoordenadaY(int coordenadaY) {
 		this.coordenadaY = coordenadaY;
 	}
-	
-	
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}	
+		
 }

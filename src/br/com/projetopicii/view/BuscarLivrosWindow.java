@@ -8,12 +8,16 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -56,6 +60,12 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 
 	// Tamanho da Tela.
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	
+	// Desktop tela principal.
+	private JDesktopPane desktop;
+	
+	// Frames
+	private ResultadoCaminhoWindow frameResultadoCaminhoWindow;
 
 	// Tecla ENTER.
 	KeyAdapter acao = new KeyAdapter() {
@@ -67,7 +77,7 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 		}
 	};
 
-	public BuscarLivrosWindow() {
+	public BuscarLivrosWindow(JDesktopPane desktop) {
 
 		super("Consultar Acervo");
 		super.setClosable(false);
@@ -76,6 +86,8 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 
 		arrayLivros = livroDao.pegarLivrosCadastrados();
 		((LivrosTableModel) livrosTableModel).addRow(arrayLivros);
+		
+		this.desktop = desktop;
 
 		criarComponentes();
 	}
@@ -149,7 +161,8 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO: Abrir a tela do caminho a ser seguido com as estantes pintadas.
-
+				frameResultadoCaminhoWindow = new ResultadoCaminhoWindow(tituloSelecionado);
+				abrirFrame(frameResultadoCaminhoWindow);
 			}
 		});
 		btnGerarLocalizacao.setBounds((int) (screenSize.getWidth() / 2) + 255, (int) (screenSize.getHeight() / 2) - 235,
@@ -225,6 +238,8 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 				if (e.getClickCount() == 2) {
 
 					// TODO: Abrir a tela do caminho a ser seguido com as estantes pintadas.
+					frameResultadoCaminhoWindow = new ResultadoCaminhoWindow(tituloSelecionado);
+					abrirFrame(frameResultadoCaminhoWindow);
 				}
 			}
 		});
@@ -258,5 +273,32 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 			}
 		}
 
+	}
+	
+	private void abrirFrame(AbstractWindowFrame frame) {		
+		boolean frameJaExiste = false;
+
+		// Percorre todos os frames adicionados
+		for (JInternalFrame addedFrame : desktop.getAllFrames()) {
+			// Se o frame a ser adicionado já estiver aberto
+			if (addedFrame.getTitle().equals(frame.getTitle())) {				
+				frame = (AbstractWindowFrame) addedFrame;
+				frameJaExiste = true;
+
+				break;
+			}
+		}
+
+		try {
+			if (!frameJaExiste) {
+				desktop.add(frame);
+			}
+
+			frame.setSelected(true);
+			frame.setMaximum(true);
+			frame.setVisible(true);
+		} catch (PropertyVetoException e) {
+			JOptionPane.showMessageDialog(rootPane, "Houve um erro ao abrir a janela", "", JOptionPane.ERROR_MESSAGE, null);
+		}
 	}
 }

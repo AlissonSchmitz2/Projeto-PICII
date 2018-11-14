@@ -54,7 +54,7 @@ public class AdministradorMainWindow extends JFrame {
 		this.setBounds(new Rectangle(0, 0, 1200, 700));
 		this.setFocusableWindowState(true);
 
-		frameBuscarLivrosWindow = new BuscarLivrosWindow();
+		frameBuscarLivrosWindow = new BuscarLivrosWindow(desktop);
 		abrirFrame(frameBuscarLivrosWindow);
 	}
 
@@ -180,7 +180,7 @@ public class AdministradorMainWindow extends JFrame {
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				frameBuscarLivrosWindow = new BuscarLivrosWindow();
+				frameBuscarLivrosWindow = new BuscarLivrosWindow(desktop);
 				abrirFrame(frameBuscarLivrosWindow);
 			}
 		});
