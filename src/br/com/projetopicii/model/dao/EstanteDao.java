@@ -33,16 +33,16 @@ public class EstanteDao {
 			int j = 0;
 
 			while (rS.next()) {
-				for (int i = 1; i <= columnCount; i++) {
-					final Object value = rS.getObject(i);
-					listaEstante[j] = value.toString();
-				}
+				listaEstante[j] = rS.getString("nome");
 				j++;
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		} //finally {
+//			ConnectionFactory.closeConnection(con, stmt, rS);
+//		}
+				
 		return listaEstante;
 	}
 
@@ -66,8 +66,9 @@ public class EstanteDao {
 		try {
 			stmt = con.prepareStatement("update estante set coordenadaX = ?,coordenadaY = ? where nome = ?");
 			//stmt = con.prepareStatement("update usuario set usuario = ?,senha = ? where id = 1");
-			stmt.setLong(1, coordenadaX);
-			stmt.setLong(2, coordenadaY);
+			stmt.setInt(1, coordenadaX);
+			stmt.setInt(2, coordenadaY);
+			System.out.println(referencia);
 			stmt.setString(3, referencia);
 
 			stmt.executeUpdate();

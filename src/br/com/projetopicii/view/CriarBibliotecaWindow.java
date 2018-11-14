@@ -131,15 +131,16 @@ public class CriarBibliotecaWindow extends JFrame {
 				} else {
 					// TODO: Salvar as posições das estantes e do terminal no banco de dados.
 
-					System.out.println("-----TESTE POSIÇÕES PARA SALVAR-----");
+					//System.out.println("-----TESTE POSIÇÕES PARA SALVAR-----");
 					for (int i = 0; i < listaDeEstantes.size(); i++) {
 						int coordenadaX = listaDeEstantes.get(referencias[i]).getPosicaoEstante().getX();
 						int coordenadaY = listaDeEstantes.get(referencias[i]).getPosicaoEstante().getY();
 						
-						System.out.println("Estante " + referencias[i] + ": X: "
-								+ coordenadaX + " Y: "
-								+ coordenadaY);
 						estante.atualizarCoordenadas(referencias[i],coordenadaX,coordenadaY);
+						
+//						System.out.println("Estante " + referencias[i] + ": X: "
+//								+ coordenadaX + " Y: "
+//								+ coordenadaY);						
 					}
 
 					System.out.println("Terminal de Pesquisa: X: " + terminalPesquisa.getPosicaoTerminal().getX()
