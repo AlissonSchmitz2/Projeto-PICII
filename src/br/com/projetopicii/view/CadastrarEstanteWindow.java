@@ -5,50 +5,41 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JDesktopPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import br.com.projetopicii.model.dao.EstanteDao;
 
 public class CadastrarEstanteWindow extends AbstractWindowFrame{
 
 	private static final long serialVersionUID = -7382690220432259644L;
 
 		private JLabel labes;
-		private JTextField txfRef, txfEstante;
+		private JTextField txfEstante;
 		private JButton btnLimpar, btnSalvar;
-	
-		//Desktop.
-		private JDesktopPane desktop;
 		
-		public CadastrarEstanteWindow(JDesktopPane desktop) {		
+		private EstanteDao estanteDao = new EstanteDao();
+		
+		public CadastrarEstanteWindow() {		
 			super("Cadastrar Estante");
-			this.desktop = desktop;
 			setBackground(new Color(250, 250, 250));
 			criarComponentes();
 		}
 		
 		private void criarComponentes() {
-			labes = new JLabel("Referência:");
+			
+			labes = new JLabel("Estante:");
 			labes.setBounds(15, 10, 250, 25);
 			getContentPane().add(labes);
 			
-			txfRef = new JTextField();
-			txfRef.setBounds(15, 30, 200, 25);
-			txfRef.setToolTipText("Informe a referência");
-			getContentPane().add(txfRef);
-			
-			labes = new JLabel("Estante:");
-			labes.setBounds(15, 60, 250, 25);
-			getContentPane().add(labes);
-			
 			txfEstante = new JTextField();
-			txfEstante.setBounds(15, 80, 200, 25);
-			txfEstante.setToolTipText("Informe o nome da estante");
+			txfEstante.setBounds(15, 30, 200, 25);
+			txfEstante.setToolTipText("Informe a referência da estante");
 			getContentPane().add(txfEstante);
 		
 			btnSalvar = new JButton("Salvar");
-			btnSalvar.setBounds(15, 130, 95, 25);
+			btnSalvar.setBounds(15, 80, 95, 25);
 			btnSalvar.setToolTipText("Clique aqui para salvar");
 			getContentPane().add(btnSalvar);
 			btnSalvar.addActionListener(new ActionListener() {
@@ -60,7 +51,7 @@ public class CadastrarEstanteWindow extends AbstractWindowFrame{
 			});
 			
 			btnLimpar = new JButton("Limpar");
-			btnLimpar.setBounds(120, 130, 95, 25);
+			btnLimpar.setBounds(120, 80, 95, 25);
 			btnLimpar.setToolTipText("Clique aqui para limpar o campo");
 			getContentPane().add(btnLimpar);
 			btnLimpar.addActionListener(new ActionListener() {
@@ -80,11 +71,20 @@ public class CadastrarEstanteWindow extends AbstractWindowFrame{
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-			//TODO: Cadastrar estante
+			
+			try {
+				estanteDao.cadastrarEstante(txfEstante.getText());
+				JOptionPane.showMessageDialog(null, "Estante salva com sucesso!");
+				limparCampos();
+			} catch(Exception e1) {
+				JOptionPane.showMessageDialog(rootPane, "Houve um erro ao tentar salvar a estante.",
+						"", JOptionPane.ERROR_MESSAGE, null);
+				e1.printStackTrace();
+			}
 		}
 		
 		private boolean validarCampos() {
-			if(txfEstante.getText().isEmpty() | txfRef.getText().isEmpty()) {
+			if(txfEstante.getText().isEmpty()) {
 				return true;
 			}
 			
@@ -93,6 +93,5 @@ public class CadastrarEstanteWindow extends AbstractWindowFrame{
 		
 		private void limparCampos() {
 			txfEstante.setText("");
-			txfRef.setText("");
 		}
 }

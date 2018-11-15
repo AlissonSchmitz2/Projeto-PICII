@@ -197,7 +197,7 @@ public class AdministradorMainWindow extends JFrame {
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				frameCadastrarEstanteWindow = new CadastrarEstanteWindow(desktop);
+				frameCadastrarEstanteWindow = new CadastrarEstanteWindow();
 				abrirFrame(frameCadastrarEstanteWindow);
 				
 			}
@@ -228,7 +228,7 @@ public class AdministradorMainWindow extends JFrame {
 
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frameCadastrarLivrosWindow = new CadastrarLivrosWindow(desktop);
+				frameCadastrarLivrosWindow = new CadastrarLivrosWindow();
 				abrirFrame(frameCadastrarLivrosWindow);
 			}
 		});

@@ -40,7 +40,7 @@ public class LivroDao {
 			}
 
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
 		}
 		return listaLivro;
@@ -74,7 +74,7 @@ public class LivroDao {
 			}
 
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
 		}
 		return listaLivro;
@@ -108,31 +108,49 @@ public class LivroDao {
 			}
 
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
 		}
 		return listaLivro;
 	}
-	
+
 	// Retorna o id da estante que contém determinado livro.
 	public int pegarIdEstante(String titulo) {
-		
+
 		int idEstante = -1;
 		try {
 			stmt = con.prepareStatement("Select id_estante from livro where titulo = ?");
 			stmt.setString(1, titulo);
 			rS = stmt.executeQuery();
-			
-			while(rS.next()) {
+
+			while (rS.next()) {
 				idEstante = Integer.parseInt(rS.getString("id_estante"));
 			}
 
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
 		}
-			
-		return idEstante;		
+
+		return idEstante;
 	}
-	
+
+	// Cadastra um novo livro.
+	public void cadastrarLivro(String titulo, String autor, String genero, int ano_lancamento, int num_pag, int id_estante) {
+
+		try {
+			stmt = con.prepareStatement("insert into livro (titulo, autor, genero, ano_lancamento, numero_paginas, id_estante) values (?, ?, ?, ?, ?, ?)");
+			stmt.setString(1, titulo);
+			stmt.setString(2, autor);
+			stmt.setString(3, genero);
+			stmt.setInt(4, ano_lancamento);
+			stmt.setInt(5, num_pag);
+			stmt.setInt(6, id_estante);
+
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

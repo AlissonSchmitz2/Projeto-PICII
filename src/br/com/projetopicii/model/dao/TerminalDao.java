@@ -36,10 +36,9 @@ public class TerminalDao {
 	
 	public void atualizarCoordenadas(int coordenadaX, int coordenadaY) {
 		try {
-			stmt = con.prepareStatement("update terminalpesquisa set coordenadax = ?, coordenaday = ? where id = ?");
+			stmt = con.prepareStatement("update terminalpesquisa set coordenadax = ?, coordenaday = ?");
 			stmt.setInt(1, coordenadaX);
 			stmt.setInt(2, coordenadaY);
-			stmt.setInt(3, 0);
 
 			stmt.executeUpdate();
 		} catch (SQLException e) {

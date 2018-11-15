@@ -126,8 +126,9 @@ public class CriarBibliotecaWindow extends JFrame {
 
 				if (painelEstantes.getComponentCount() != 0) {
 
-					JOptionPane.showMessageDialog(rootPane, "Todas as estantes devem ser posicionadas antes de salvar.",
-							"", JOptionPane.ERROR_MESSAGE, null);
+					JOptionPane.showMessageDialog(rootPane, 
+							"Todas as estantes devem ser posicionadas antes de salvar!", "Alerta",
+							JOptionPane.WARNING_MESSAGE);
 				} else {
 
 					for (int i = 0; i < listaDeEstantes.size(); i++) {

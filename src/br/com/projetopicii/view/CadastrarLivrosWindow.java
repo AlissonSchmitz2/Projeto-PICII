@@ -6,12 +6,15 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 
 import javax.swing.JButton;
-import javax.swing.JDesktopPane;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
+
+import br.com.projetopicii.model.dao.EstanteDao;
+import br.com.projetopicii.model.dao.LivroDao;
 
 public class CadastrarLivrosWindow extends AbstractWindowFrame{
 
@@ -20,15 +23,15 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 	private JLabel labes;
 	private JTextField txfTitulo, txfAutor, txfGenero;
 	private JFormattedTextField txfAnoLancamento, txfNumeroPag;
-	//Idestante
+	private JComboBox<String> cbxEstantes;
 	private JButton btnLimpar, btnSalvar;
-
-	//Desktop.
-	private JDesktopPane desktop;
 	
-	public CadastrarLivrosWindow(JDesktopPane desktop) {		
+	private EstanteDao estanteDao = new EstanteDao();
+	private LivroDao livroDao = new LivroDao();
+	private String nomeEstantes[];
+	
+	public CadastrarLivrosWindow() {		
 		super("Cadastrar Livros");
-		this.desktop = desktop;
 		setBackground(new Color(250, 250, 250));
 		criarComponentes();
 	}
@@ -86,20 +89,36 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 			e1.printStackTrace();
 			}
 		
+		labes = new JLabel("Estante");
+		labes.setBounds(15, 260, 250, 25);
+		getContentPane().add(labes);
+		
+		cbxEstantes = new JComboBox<>();
+		cbxEstantes.setToolTipText("Selecione uma estante para o livro");
+		cbxEstantes.addItem("-Selecione-");
+		nomeEstantes = estanteDao.pegarNomeEstantes();
+		
+		for(int i = 0; i < nomeEstantes.length; i++) {
+			
+			cbxEstantes.addItem(nomeEstantes[i]);
+		}
+		cbxEstantes.setBounds(15, 280, 200, 25);
+		getContentPane().add(cbxEstantes);
+		
 		btnSalvar = new JButton("Salvar");
-		btnSalvar.setBounds(15, 280, 95, 25);
+		btnSalvar.setBounds(15, 330, 95, 25);
 		btnSalvar.setToolTipText("Clique aqui para salvar");
 		getContentPane().add(btnSalvar);
 		btnSalvar.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				cadastrarEstante();
+				cadastrarLivro();
 			}
 		});
 		
 		btnLimpar = new JButton("Limpar");
-		btnLimpar.setBounds(120, 280, 95, 25);
+		btnLimpar.setBounds(120, 330, 95, 25);
 		btnLimpar.setToolTipText("Clique aqui para limpar o campo");
 		getContentPane().add(btnLimpar);
 		btnLimpar.addActionListener(new ActionListener() {
@@ -112,18 +131,33 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 
 	}
 	
-	private void cadastrarEstante() {
+	private void cadastrarLivro() {
 		if(validarCampos()) {
 			JOptionPane.showMessageDialog(rootPane, 
 					"Preencha todos os campos para cadastrar!", "Alerta",
 					JOptionPane.WARNING_MESSAGE);
 			return;
 		}
-		//TODO: Cadastrar estante
+		
+		try {
+			int idEstante = estanteDao.pegarIdEstante(cbxEstantes.getSelectedItem().toString());
+			
+			livroDao.cadastrarLivro(txfTitulo.getText(), txfAutor.getText(), txfGenero.getText(),
+					Integer.parseInt(txfAnoLancamento.getText().trim()), Integer.parseInt(txfNumeroPag.getText().trim()), idEstante);
+			
+			JOptionPane.showMessageDialog(null, "Livro salvo com sucesso!");
+			limparCampos();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(rootPane, "Houve um erro ao tentar salvar o livro",
+					"", JOptionPane.ERROR_MESSAGE, null);
+			e.printStackTrace();
+		}
 	}
 	
 	private boolean validarCampos() {
-		if(txfTitulo.getText().isEmpty() | txfAutor.getText().isEmpty()) {
+		if(txfTitulo.getText().isEmpty() || txfAutor.getText().isEmpty() || txfGenero.getText().isEmpty()
+				|| txfAnoLancamento.getText().trim().isEmpty() || txfNumeroPag.getText().trim().isEmpty() || 
+				cbxEstantes.getSelectedItem().toString().equals("-Selecione-")) {
 			return true;
 		}
 		
@@ -136,5 +170,6 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 		txfGenero.setText("");
 		txfAnoLancamento.setText("");
 		txfNumeroPag.setText("");
+		cbxEstantes.setSelectedItem("-Selecione-");
 	}
 }

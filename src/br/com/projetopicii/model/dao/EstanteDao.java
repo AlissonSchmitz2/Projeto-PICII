@@ -109,4 +109,39 @@ public class EstanteDao {
 			e.printStackTrace();
 		}
 	}
+
+	// Cadastra uma nova estante.
+	public void cadastrarEstante(String referencia) {
+
+		try {
+			stmt = con.prepareStatement("insert into estante (nome) values (?)");
+			stmt.setString(1, referencia);
+
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Retorna o id de uma estante de acordo com o nome.
+	public int pegarIdEstante(String nome) {
+
+		int idEstante = -1;
+
+		try {
+			stmt = con.prepareStatement("Select id from estante where nome = ?");
+			stmt.setString(1, nome);
+			rS = stmt.executeQuery();
+
+			while (rS.next()) {
+				idEstante = Integer.parseInt(rS.getString("id"));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return idEstante;
+	}
+
 }

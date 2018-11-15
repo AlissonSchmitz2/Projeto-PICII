@@ -83,7 +83,7 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 		super.setClosable(false);
 		setContentPane(new NewContentPane());
 		setLayout(null);
-
+		
 		arrayLivros = livroDao.pegarLivrosCadastrados();
 		((LivrosTableModel) livrosTableModel).addRow(arrayLivros);
 		
