@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 
 import br.com.projetopicii.pictures.ImageController;
 import br.com.projetopicii.view.CriarBibliotecaWindow;
+import br.com.projetopicii.view.ResultadoCaminhoWindow;
 
 public class TerminalPesquisa extends JLabel implements MouseListener, MouseMotionListener{
 	
@@ -20,6 +21,9 @@ public class TerminalPesquisa extends JLabel implements MouseListener, MouseMoti
 	private int startDragY;
 	private boolean inDrag = false;
 	
+	// Instância da criação da biblioteca.
+	CriarBibliotecaWindow criarBibliotecaWindow;
+	
 	//Tamanho da tela.
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
@@ -27,9 +31,10 @@ public class TerminalPesquisa extends JLabel implements MouseListener, MouseMoti
 	private PosicaoComponente posicaoTerminal = new PosicaoComponente();	
 
 	public void setarTerminal(CriarBibliotecaWindow criarBibliotecaWindow) {
+		this.criarBibliotecaWindow = criarBibliotecaWindow;
 		this.setIcon(ImageController.TerminalPesquisa);
 		setToolTipText("Terminal de Pesquisa");
-		setBounds(screenSize.width / 2, (screenSize.height / 2) + 230, 90, 90);
+		setBounds(screenSize.width / 2, (screenSize.height / 2) + 185, 90, 90);
 		criarBibliotecaWindow.getContentPane().add(this);
 		
 		posicaoTerminal.setX(screenSize.width / 2);
@@ -37,6 +42,13 @@ public class TerminalPesquisa extends JLabel implements MouseListener, MouseMoti
 		
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
+	}
+	
+	public void setarTerminal(ResultadoCaminhoWindow resultadoCaminhoWindow, int coordenadaX, int coordenadaY) {
+		this.setIcon(ImageController.TerminalPesquisa);
+		setToolTipText("Terminal de Pesquisa");
+		setBounds(coordenadaX, coordenadaY, 90, 90);
+		resultadoCaminhoWindow.getContentPane().add(this);
 	}
 	
 	public PosicaoComponente getPosicaoTerminal() {
@@ -70,22 +82,45 @@ public class TerminalPesquisa extends JLabel implements MouseListener, MouseMoti
             posicaoTerminal.setY(this.getY());
         }
                         
-        //Limite lado esquerdo.
-        this.setLocation ((int) ( (this.getX() < 162) ? 180 : this.getX()), this.getY());
-        this.getPosicaoTerminal().setX((this.getX() < 162) ? 180 : this.getX());
-        
-        //Limite lado direito.
-        this.setLocation((int) (this.getX() > screenSize.getWidth() - 80 ? screenSize.getWidth() - 110 : this.getX()), this.getY());
-        this.getPosicaoTerminal().setX( (int) ((this.getX() > screenSize.getWidth() - 80) ? screenSize.getWidth() - 110 : this.getX()));
-        
-        //Limite superior.        
-        this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());	
-        this.getPosicaoTerminal().setY( (this.getY() < 10) ? 10 : this.getY()); 
-        
-        //Limite inferior        
-        this.setLocation(this.getX(), (int) (this.getY() > screenSize.getHeight() - 143 ? screenSize.getHeight() - 160 : this.getY()));	
-        this.getPosicaoTerminal().setY( (int) ((this.getY() > screenSize.getHeight() - 143) ? screenSize.getHeight() - 160 : this.getY()));
+        verificarLimites();
      }
+    
+    private void verificarLimites() {
+    	
+    	if(criarBibliotecaWindow.getComponentCount_PainelEstantes() != 0) {
+	    	//Limite lado esquerdo.
+	        this.setLocation ((int) ( (this.getX() < 162) ? 180 : this.getX()), this.getY());
+	        this.getPosicaoTerminal().setX((this.getX() < 162) ? 180 : this.getX());
+	        
+	        //Limite lado direito.
+	        this.setLocation((int) (this.getX() > screenSize.getWidth() - 80 ? screenSize.getWidth() - 110 : this.getX()), this.getY());
+	        this.getPosicaoTerminal().setX( (int) ((this.getX() > screenSize.getWidth() - 80) ? screenSize.getWidth() - 110 : this.getX()));
+	        
+	        //Limite superior.        
+	        this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());	
+	        this.getPosicaoTerminal().setY( (this.getY() < 10) ? 10 : this.getY()); 
+	        
+	        //Limite inferior        
+	        this.setLocation(this.getX(), (int) (this.getY() > screenSize.getHeight() - 185 ? screenSize.getHeight() - 200 : this.getY()));	
+	        this.getPosicaoTerminal().setY( (int) ((this.getY() > screenSize.getHeight() - 185) ? screenSize.getHeight() - 200 : this.getY()));
+    	} else {
+    		//Limite lado esquerdo.
+            this.setLocation ((int) ( (this.getX() < 5) ? 15 : this.getX()), this.getY());
+            this.getPosicaoTerminal().setX((this.getX() < 5) ? 15 : this.getX());
+            
+            //Limite lado direito.
+            this.setLocation((int) (this.getX() > screenSize.getWidth() - 80 ? screenSize.getWidth() - 110 : this.getX()), this.getY());
+            this.getPosicaoTerminal().setX( (int) ((this.getX() > screenSize.getWidth() - 80) ? screenSize.getWidth() - 110 : this.getX()));
+            
+            //Limite superior.        
+            this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());	
+            this.getPosicaoTerminal().setY( (this.getY() < 10) ? 10 : this.getY()); 
+            
+            //Limite inferior        
+            this.setLocation(this.getX(), (int) (this.getY() > screenSize.getHeight() - 185 ? screenSize.getHeight() - 200 : this.getY()));	
+            this.getPosicaoTerminal().setY( (int) ((this.getY() > screenSize.getHeight() - 185) ? screenSize.getHeight() - 200 : this.getY()));
+    	}
+    }
     
     @Override
     public void mouseClicked(MouseEvent e) { 

@@ -16,6 +16,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
+import br.com.projetopicii.model.dao.EstanteDao;
+
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 2630247367422389726L;
 	
@@ -23,6 +25,7 @@ public class MainWindow extends JFrame {
 	private JMenu menuAdministrador;
 	private JMenu menuHome;
 	private JDesktopPane desktop;	
+	private EstanteDao estanteDao = new EstanteDao();
 	
 	//Frames
 	BuscarLivrosWindow frameBuscarLivrosWindow;
@@ -51,9 +54,13 @@ public class MainWindow extends JFrame {
 		this.setFocusableWindowState(true);	
 		
 		frameBuscarLivrosWindow = new BuscarLivrosWindow(desktop);
-		abrirFrame(frameBuscarLivrosWindow);		
-	}
-	
+		abrirFrame(frameBuscarLivrosWindow);	
+		
+		// TODO: Solução temporária para abrir a tela de criação da biblioteca.
+//		String[] referencias;
+//		referencias = estanteDao.pegarNomeEstantes();
+//		abrirFrame(new CriarBibliotecaWindow(referencias));
+	}	
 	
 	
 	/*

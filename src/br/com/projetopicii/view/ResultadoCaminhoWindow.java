@@ -13,9 +13,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import br.com.projetopicii.model.EstanteBiblioteca;
+import br.com.projetopicii.model.TerminalPesquisa;
 import br.com.projetopicii.model.bean.Estante;
+import br.com.projetopicii.model.bean.Terminal;
 import br.com.projetopicii.model.dao.EstanteDao;
 import br.com.projetopicii.model.dao.LivroDao;
+import br.com.projetopicii.model.dao.TerminalDao;
 import br.com.projetopicii.pictures.ImageController;
 
 public class ResultadoCaminhoWindow extends AbstractWindowFrame {
@@ -30,8 +33,12 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 	private LivroDao livroDao = new LivroDao();
 	private ArrayList<Estante> arrayEstantes = new ArrayList<>();
 	private int idEstanteAlvo = -1;
-	private String tituloSelecionado;
 
+	// Terminal de Pesquisa
+	private Terminal terminal = new Terminal();
+	private TerminalDao terminalDao = new TerminalDao();
+	private TerminalPesquisa terminalPesquisa;
+	
 	// HashMap: Key -> Id estante / Value -> Objeto estante.
 	private HashMap<Integer, EstanteBiblioteca> hashDeEstantes = new HashMap<>();
 
@@ -47,14 +54,13 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 		super("Menor e Melhor Caminho");
 		
 		arrayEstantes = estanteDao.pegarArrayEstantes();
-		this.tituloSelecionado = tituloSelecionado;
+		terminal = terminalDao.pegarTerminal();
 		
 		// Id da estante que contém o livro desejado.
 		idEstanteAlvo = livroDao.pegarIdEstante(tituloSelecionado);
 
 		// TODO: Utilizar o dijkstra para recuperar os ids das estantes que devem ser pintadas.
 		// Teste.
-		idsPintar.add(0);
 
 		this.fundoBiblioteca = ImageController.FundoBiblioteca.getImage();
 
@@ -81,8 +87,9 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 			getContentPane().add(estanteBiblioteca);
 			hashDeEstantes.put(arrayEstantes.get(i).getId(), estanteBiblioteca);
 		}
-
-		// TODO: Posicionar o terminal de pesquisa também.
+		
+		terminalPesquisa = new TerminalPesquisa();
+		terminalPesquisa.setarTerminal(this, terminal.getCoordenadaX(), terminal.getCoordenadaY());
 		
 		pintarEstantes();
 

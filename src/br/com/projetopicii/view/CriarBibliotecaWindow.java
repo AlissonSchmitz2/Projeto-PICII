@@ -16,7 +16,7 @@ import br.com.projetopicii.model.dao.TerminalDao;
 import br.com.projetopicii.pictures.ImageController;
 import br.com.projetopicii.threads.ThreadSubirListaEstante;
 
-public class CriarBibliotecaWindow extends JFrame {
+public class CriarBibliotecaWindow extends AbstractWindowFrame {
 	private static final long serialVersionUID = -6766594202823918036L;
 
 	// Balões do tutorial.
@@ -38,6 +38,7 @@ public class CriarBibliotecaWindow extends JFrame {
 
 	// Painel para as estantes.
 	private JPanel painelEstantes = new JPanel();
+	private JScrollPane scrollPane;
 
 	// HashMap: Key -> Referência da estante / Value -> Objeto estante.
 	private HashMap<String, EstanteBiblioteca> listaDeEstantes = new HashMap<>();
@@ -59,18 +60,13 @@ public class CriarBibliotecaWindow extends JFrame {
 
 	public CriarBibliotecaWindow(String[] referencias) {
 
+		super("Construção da Biblioteca");
+		super.setClosable(false);
 		this.referencias = referencias;
-		setTitle("Construção da Biblioteca");
-		super.setContentPane(new NewContentPane());
+		setContentPane(new NewContentPane());
 		setLayout(null);
-		setBounds(new Rectangle(0, 0, screenSize.width, screenSize.height));
-		setExtendedState(MAXIMIZED_BOTH);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		criarComponentes();
-
-		setVisible(true);
 	}
 
 	private void criarComponentes() {
@@ -112,10 +108,10 @@ public class CriarBibliotecaWindow extends JFrame {
 				(HashMap<String, EstanteBiblioteca>) listaDeEstantes.clone(), referencias);
 
 		// Scroll para o painel de estantes.
-		JScrollPane scrollPane = new JScrollPane(painelEstantes);
+		scrollPane = new JScrollPane(painelEstantes);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(0, 0, 160, screenSize.height - 60);
+		scrollPane.setBounds(0, 0, 160, screenSize.height - 105);
 		getContentPane().add(scrollPane);
 
 		btnSalvar = new JButton(new AbstractAction("Salvar Biblioteca") {
@@ -236,18 +232,27 @@ public class CriarBibliotecaWindow extends JFrame {
 	public void removerInformacao3() {
 		getContentPane().remove(labelBalao3);
 	}
+	
+	public int getComponentCount_PainelEstantes() {
+		return painelEstantes.getComponentCount();
+	}
+	
+	public void removerPainelEstantes() {
+		getContentPane().remove(scrollPane);
+		this.repaint();
+	}
 
 	// Main para teste.
-	public static void main(String[] args) {
-
-		String[] referencias;
-
-		referencias = estanteDao.pegarNomeEstantes();
-
-		for (String r : referencias) {
-			System.out.println(r);
-		}
-
-		new CriarBibliotecaWindow(referencias);
-	}
+//	public static void main(String[] args) {
+//
+//		String[] referencias;
+//
+//		referencias = estanteDao.pegarNomeEstantes();
+//
+//		for (String r : referencias) {
+//			System.out.println(r);
+//		}
+//
+//		new CriarBibliotecaWindow(referencias);
+//	}
 }

@@ -114,24 +114,117 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
             }
         }
         
-        if(!ativarMovimentoMouse) {
-        	//Limite lado esquerdo.
-            this.setLocation ((int) ( (this.getX() < 162) ? 180 : this.getX()), this.getY());
-            this.getPosicaoEstante().setX((this.getX() < 162) ? 180 : this.getX());
-            
-            //Limite lado direito.
-            this.setLocation((int) (this.getX() > screenSize.getWidth() - 110 ? screenSize.getWidth() - 130 : this.getX()), this.getY());
-            this.getPosicaoEstante().setX( (int) ((this.getX() > screenSize.getWidth() - 110) ? screenSize.getWidth() - 130 : this.getX()));
-            
-            //Limite superior.        
-            this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());	
-            this.getPosicaoEstante().setY( (this.getY() < 10) ? 10 : this.getY()); 
-            
-            //Limite inferior        
-            this.setLocation(this.getX(), (int) (this.getY() > screenSize.getHeight() - 110 ? screenSize.getHeight() - 120 : this.getY()));	
-            this.getPosicaoEstante().setY( (int) ((this.getY() > screenSize.getHeight() - 110) ? screenSize.getHeight() - 120 : this.getY()));	
-        }
-     }
+        verificarLimites();
+	}
+    
+    private void verificarLimites() {
+    	
+		if (criarBibliotecaWindow.getComponentCount_PainelEstantes() != 0) {
+
+			if (!ativarMovimentoMouse && !vertical) {
+
+				// Limite lado esquerdo.
+				this.setLocation((int) ((this.getX() < 162) ? 180 : this.getX()), this.getY());
+				this.getPosicaoEstante().setX((this.getX() < 162) ? 180 : this.getX());
+
+				// Limite lado direito.
+				this.setLocation(
+						(int) (this.getX() > screenSize.getWidth() - 110 ? screenSize.getWidth() - 130 : this.getX()),
+						this.getY());
+				this.getPosicaoEstante()
+						.setX((int) ((this.getX() > screenSize.getWidth() - 110) ? screenSize.getWidth() - 130
+								: this.getX()));
+
+				// Limite superior.
+				this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());
+				this.getPosicaoEstante().setY((this.getY() < 10) ? 10 : this.getY());
+
+				// Limite inferior
+				this.setLocation(this.getX(),
+						(int) (this.getY() > screenSize.getHeight() - 155 ? screenSize.getHeight() - 165
+								: this.getY()));
+				this.getPosicaoEstante()
+						.setY((int) ((this.getY() > screenSize.getHeight() - 155) ? screenSize.getHeight() - 165
+								: this.getY()));
+			} else if (!ativarMovimentoMouse && vertical) {
+
+				// Limite lado esquerdo.
+				this.setLocation((int) ((this.getX() < 162) ? 180 : this.getX()), this.getY());
+				this.getPosicaoEstante().setX((this.getX() < 162) ? 180 : this.getX());
+
+				// Limite lado direito.
+				this.setLocation(
+						(int) (this.getX() > screenSize.getWidth() - 50 ? screenSize.getWidth() - 60 : this.getX()),
+						this.getY());
+				this.getPosicaoEstante().setX(
+						(int) ((this.getX() > screenSize.getWidth() - 50) ? screenSize.getWidth() - 60 : this.getX()));
+
+				// Limite superior.
+				this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());
+				this.getPosicaoEstante().setY((this.getY() < 10) ? 10 : this.getY());
+
+				// Limite inferior
+				this.setLocation(this.getX(),
+						(int) (this.getY() > screenSize.getHeight() - 220 ? screenSize.getHeight() - 230
+								: this.getY()));
+				this.getPosicaoEstante()
+						.setY((int) ((this.getY() > screenSize.getHeight() - 220) ? screenSize.getHeight() - 230
+								: this.getY()));
+			}
+		} else {
+
+			if (!ativarMovimentoMouse && !vertical) {
+
+				// Limite lado esquerdo.
+				this.setLocation((int) ((this.getX() < 5) ? 15 : this.getX()), this.getY());
+				this.getPosicaoEstante().setX((this.getX() < 5) ? 15 : this.getX());
+
+				// Limite lado direito.
+				this.setLocation(
+						(int) (this.getX() > screenSize.getWidth() - 110 ? screenSize.getWidth() - 130 : this.getX()),
+						this.getY());
+				this.getPosicaoEstante()
+						.setX((int) ((this.getX() > screenSize.getWidth() - 110) ? screenSize.getWidth() - 130
+								: this.getX()));
+
+				// Limite superior.
+				this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());
+				this.getPosicaoEstante().setY((this.getY() < 10) ? 10 : this.getY());
+
+				// Limite inferior
+				this.setLocation(this.getX(),
+						(int) (this.getY() > screenSize.getHeight() - 155 ? screenSize.getHeight() - 165
+								: this.getY()));
+				this.getPosicaoEstante()
+						.setY((int) ((this.getY() > screenSize.getHeight() - 155) ? screenSize.getHeight() - 165
+								: this.getY()));
+			} else if (!ativarMovimentoMouse && vertical) {
+
+				// Limite lado esquerdo.
+				this.setLocation((int) ((this.getX() < 5) ? 15 : this.getX()), this.getY());
+				this.getPosicaoEstante().setX((this.getX() < 5) ? 15 : this.getX());
+
+				// Limite lado direito.
+				this.setLocation(
+						(int) (this.getX() > screenSize.getWidth() - 50 ? screenSize.getWidth() - 60 : this.getX()),
+						this.getY());
+				this.getPosicaoEstante().setX(
+						(int) ((this.getX() > screenSize.getWidth() - 50) ? screenSize.getWidth() - 60 : this.getX()));
+
+				// Limite superior.
+				this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());
+				this.getPosicaoEstante().setY((this.getY() < 10) ? 10 : this.getY());
+
+				// Limite inferior
+				this.setLocation(this.getX(),
+						(int) (this.getY() > screenSize.getHeight() - 220 ? screenSize.getHeight() - 230
+								: this.getY()));
+				this.getPosicaoEstante()
+						.setY((int) ((this.getY() > screenSize.getHeight() - 220) ? screenSize.getHeight() - 230
+								: this.getY()));
+			}
+		}
+    }
     
     @Override
     public void mouseClicked(MouseEvent e) {    	
@@ -162,6 +255,10 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
                 	
                 	criarBibliotecaWindow.getContentPane().add(thisPanel);
                 	
+                	if(criarBibliotecaWindow.getComponentCount_PainelEstantes() == 0) {
+                		criarBibliotecaWindow.removerPainelEstantes();
+                	}
+                	
                 	posicaoEstante.setX(200);
                 	posicaoEstante.setY(70);
                 	
@@ -184,6 +281,7 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
                 		labelReferencia.setUI(new VerticalLabelUI(true));
                 		setBounds(posicaoEstante.getX(), posicaoEstante.getY(), thisPanel.getHeight(),thisPanel.getWidth());
                 		vertical = true;
+                		mouseReleased(null);
                 	}
                 }
             });
@@ -200,6 +298,7 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
                     	labelReferencia.setUI(defaultUI);
                 		setBounds(posicaoEstante.getX(), posicaoEstante.getY(), thisPanel.getHeight(),thisPanel.getWidth());
                 		vertical = false;
+                		mouseReleased(null);
                 	}
                 }
             });
