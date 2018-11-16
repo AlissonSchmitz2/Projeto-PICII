@@ -26,7 +26,9 @@ public class MainWindow extends JFrame {
 	private JMenu menuHome;
 	private JDesktopPane desktop;	
 	private EstanteDao estanteDao = new EstanteDao();
-	LoginWindow lW = null;
+	private LoginWindow lW = null;
+	
+	private boolean primeiraExecucao;
 	
 	//Frames
 	BuscarLivrosWindow frameBuscarLivrosWindow;
@@ -49,20 +51,14 @@ public class MainWindow extends JFrame {
 	
 	private void inicializar() {
 		
-		this.setVisible(true);
+		verificarPrimeiraExecucao();		
 		this.setTitle("Find My Book");
 		this.setJMenuBar(getWindowMenuBar());
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		this.setBounds(new Rectangle(0, 0, 1200, 700));		
+		this.setBounds(new Rectangle(0, 0, 1200, 700));	
+		this.setVisible(true);
 		this.setFocusableWindowState(true);	
 		
-		frameBuscarLivrosWindow = new BuscarLivrosWindow(desktop);
-		abrirFrame(frameBuscarLivrosWindow);	
-		
-		// TODO: Solução temporária para abrir a tela de criação da biblioteca.
-//		String[] referencias;
-//		referencias = estanteDao.pegarNomeEstantes();
-//		abrirFrame(new CriarBibliotecaWindow(referencias));
 	}	
 	
 	
@@ -108,6 +104,10 @@ public class MainWindow extends JFrame {
 				abrirFrame(frameBuscarLivrosWindow);
 			}
 		});
+		
+		if(primeiraExecucao) {
+			menuItem.setEnabled(false);
+		}
 
 		return menuItem;
 	}
@@ -123,6 +123,10 @@ public class MainWindow extends JFrame {
 			}
 		});
 
+		if(primeiraExecucao) {
+			menuItem.setEnabled(false);
+		}
+		
 		return menuItem;
 	}
 	
@@ -155,6 +159,26 @@ public class MainWindow extends JFrame {
 	
 	private Font getDefaultFont() {
 		return new java.awt.Font("Dialog", java.awt.Font.PLAIN, 12);
+	}
+	
+	private void verificarPrimeiraExecucao() {
+
+		if (estanteDao.verificarPrimeiraExecucao()) {
+			
+			primeiraExecucao = true;
+			JOptionPane.showMessageDialog(null,
+					"Bem-vindo ao software Find My Book."
+							+ "\nDetectamos que você ainda não possui um mapa para a sua biblioteca. "
+							+ "\nPor favor, construa-o na tela a seguir.");
+
+			String[] referencias;
+			referencias = estanteDao.pegarNomeEstantes();
+			abrirFrame(new CriarBibliotecaWindow(referencias, this));
+		} else {
+			frameBuscarLivrosWindow = new BuscarLivrosWindow(desktop);
+			abrirFrame(frameBuscarLivrosWindow);
+		}
+		
 	}
 		
 	public static void main(final String[] args) {

@@ -57,18 +57,23 @@ public class CriarBibliotecaWindow extends AbstractWindowFrame {
 
 	// Tamanho da tela.
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-	public CriarBibliotecaWindow(String[] referencias) {
+	
+	// Instância MainWindow.
+	private MainWindow mainWindow;
+	
+	public CriarBibliotecaWindow(String[] referencias, MainWindow mainWindow) {
 
 		super("Construção da Biblioteca");
 		super.setClosable(false);
 		this.referencias = referencias;
+		this.mainWindow = mainWindow;
 		setContentPane(new NewContentPane());
 		setLayout(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		criarComponentes();
 	}
-
+	
 	private void criarComponentes() {
 
 		// Painel para as estantes.
@@ -136,17 +141,24 @@ public class CriarBibliotecaWindow extends AbstractWindowFrame {
 						} catch(Exception e1) {
 							JOptionPane.showMessageDialog(rootPane, "Ocorreu um erro ao tentar salvar as estantes",
 									"", JOptionPane.ERROR_MESSAGE, null);
+							e1.printStackTrace();
 						}
 					}
 
 					try {
-						terminalDao.atualizarCoordenadas(terminalPesquisa.getPosicaoTerminal().getX(),
+						terminalDao.criarTerminal(terminalPesquisa.getPosicaoTerminal().getX(),
 								terminalPesquisa.getPosicaoTerminal().getY());
 	
 						JOptionPane.showMessageDialog(null, "Biblioteca salva com sucesso!");
+						
+						// Cadastrar primeiro administrador.
+						JOptionPane.showMessageDialog(null, "Muito bem, agora realize o cadastro do primeiro administrador.");
+						new CadastrarPrimeiroUser(mainWindow).setVisible(true);
+						
 					} catch(Exception e1) {
 						JOptionPane.showMessageDialog(rootPane, "Ocorreu um erro ao tentar salvar o terminal de pesquisa",
 								"", JOptionPane.ERROR_MESSAGE, null);
+						e1.printStackTrace();
 					}
 				}
 			}
@@ -241,18 +253,5 @@ public class CriarBibliotecaWindow extends AbstractWindowFrame {
 		getContentPane().remove(scrollPane);
 		this.repaint();
 	}
-
-	// Main para teste.
-//	public static void main(String[] args) {
-//
-//		String[] referencias;
-//
-//		referencias = estanteDao.pegarNomeEstantes();
-//
-//		for (String r : referencias) {
-//			System.out.println(r);
-//		}
-//
-//		new CriarBibliotecaWindow(referencias);
-//	}
+	
 }

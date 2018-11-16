@@ -3,7 +3,6 @@ package br.com.projetopicii.model.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -26,8 +25,8 @@ public class EstanteDao {
 			stmt = con.prepareStatement("Select nome from estante");
 			rS = stmt.executeQuery();
 
-			final ResultSetMetaData metaRS = rS.getMetaData();
-			final int columnCount = metaRS.getColumnCount();
+//			final ResultSetMetaData metaRS = rS.getMetaData();
+//			final int columnCount = metaRS.getColumnCount();
 
 			listaEstante = new String[pegarQuantidadeEstante()];
 
@@ -142,6 +141,40 @@ public class EstanteDao {
 		}
 
 		return idEstante;
+	}
+	
+	// Se alguma estante já foi posicionada retorna false, caso contrário retorna true.
+	public boolean verificarPrimeiraExecucao() {
+		
+		try {
+			stmt = con.prepareStatement("Select coordenadax, coordenaday from estante");
+			rS = stmt.executeQuery();
+
+			while (rS.next()) {
+				
+				if(rS.getInt("coordenadax") != 0 || rS.getInt("coordenaday") != 0) {
+					return false;					
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return true;
+	}
+	
+	// Remove todas as coordenadas x e y salvas nas estantes.
+	public void removerCoordenadasEstantes() {
+		
+		try {
+			stmt = con.prepareStatement("update estante set coordenadax = ?, coordenaday = ?");
+			stmt.setNull(1, java.sql.Types.INTEGER);
+			stmt.setNull(2, java.sql.Types.INTEGER);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

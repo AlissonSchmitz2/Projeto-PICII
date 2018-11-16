@@ -3,6 +3,8 @@ package br.com.projetopicii.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -13,6 +15,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import br.com.projetopicii.model.bean.Usuario;
+import br.com.projetopicii.model.dao.EstanteDao;
+import br.com.projetopicii.model.dao.TerminalDao;
 import br.com.projetopicii.model.dao.UsuarioDao;
 
 public class CadastrarPrimeiroUser extends JDialog {
@@ -33,8 +37,15 @@ public class CadastrarPrimeiroUser extends JDialog {
 	private JButton btnAcessar;
 	private JLabel Descricao;
 	private String login, senha;
+	
+	// Instância MainWindow
+	private MainWindow mainWindow;
+	
+	private EstanteDao estanteDao = new EstanteDao();
+	private TerminalDao terminalDao = new TerminalDao();
 
-	public CadastrarPrimeiroUser() {
+	public CadastrarPrimeiroUser(MainWindow mainWindow) {
+		this.mainWindow = mainWindow;
 		setSize(250, 200);
 		setTitle("Cadastro Administrador");
 		setLayout(null);
@@ -42,6 +53,28 @@ public class CadastrarPrimeiroUser extends JDialog {
 		setLocationRelativeTo(null);
 		criarComponentes();
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		// Caso a janela de cadastro seja fechada antes da realização do cadastro, o banco de dados
+		// é resetado para a próxima execução.
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosed(WindowEvent evt) {
+
+				estanteDao.removerCoordenadasEstantes();
+				terminalDao.deletarTerminal();
+				System.exit(0);
+			}
+		});
+		
+		// Caso a janela principal seja fechada antes da realização do cadastro, o banco de dados
+		// é resetado para a próxima execução.
+		mainWindow.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+
+				estanteDao.removerCoordenadasEstantes();
+				terminalDao.deletarTerminal();
+				System.exit(0);
+			}
+		});
 	}
 
 	public void criarComponentes() {
@@ -99,7 +132,16 @@ public class CadastrarPrimeiroUser extends JDialog {
 			UsuarioDao uS = new UsuarioDao();
 			uS.registerFirstLogin(user);
 			
+			JOptionPane.showMessageDialog(null, "Administrador cadastrado com sucesso!");
+			JOptionPane.showMessageDialog(null, "Todas as configurações iniciais foram realizadas.\nO programa será reiniciado agora.");
+
+			mainWindow.dispose();
+			
 			this.setVisible(false);
+			
+			new MainWindow();
 		}
-	}
+		
+	}	
+	
 }

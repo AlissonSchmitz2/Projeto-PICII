@@ -7,10 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.projetopicii.connection.ConnectionFactory;
-import br.com.projetopicii.model.bean.Estante;
 import br.com.projetopicii.model.bean.Usuario;
 import br.com.projetopicii.view.AdministradorMainWindow;
-import br.com.projetopicii.view.CadastrarPrimeiroUser;
 import br.com.projetopicii.view.LoginWindow;
 import br.com.projetopicii.view.MainWindow;
 
@@ -30,30 +28,19 @@ public class UsuarioDao {
 		this.lW = lW;
 	}
 
-	public void checkLogin(Usuario usuario,MainWindow mW) {
+	public void checkLogin(Usuario usuario, MainWindow mW) {
 
 		try {
-			if (usuario.getLogin().equals("admin") && usuario.getSenha().equals("admin")) {
-				stmt = con.prepareStatement("Select * from usuario where nome = ? and senha = ? and id = 1");
-				stmt.setString(1, usuario.getLogin());
-				stmt.setString(2, usuario.getSenha());
 
-				rS = stmt.executeQuery();
-				if (rS.next()) {
-					new CadastrarPrimeiroUser().setVisible(true);
-				}
-			} else {
+			stmt = con.prepareStatement("Select * from usuario where nome = ? and senha = ?");
+			stmt.setString(1, usuario.getLogin());
+			stmt.setString(2, usuario.getSenha());
 
-				stmt = con.prepareStatement("Select * from usuario where nome = ? and senha = ?");
-				stmt.setString(1, usuario.getLogin());
-				stmt.setString(2, usuario.getSenha());
+			rS = stmt.executeQuery();
 
-				rS = stmt.executeQuery();
-
-				if (rS.next()) {
-					login();
-					mW.setVisible(false);
-				}
+			if (rS.next()) {
+				login();
+				mW.setVisible(false);
 			}
 		} catch (SQLException e) {
 			// TODO: Lançar exception correta
@@ -65,7 +52,7 @@ public class UsuarioDao {
 
 	public void registerFirstLogin(Usuario usuario) {
 		try {
-			stmt = con.prepareStatement("update usuario set usuario = ?,senha = ? where id = 1");
+			stmt = con.prepareStatement("insert into usuario (nome, senha) values (?, ?)");
 			stmt.setString(1, usuario.getLogin());
 			stmt.setString(2, usuario.getSenha());
 

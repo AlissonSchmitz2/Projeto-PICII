@@ -45,4 +45,28 @@ public class TerminalDao {
 			e.printStackTrace();
 		}
 	}
+	
+	public void criarTerminal(int coordenadaX, int coordenadaY) {
+		try {
+			stmt = con.prepareStatement("insert into terminalpesquisa (coordenadax, coordenaday) values (?, ?)");
+			stmt.setInt(1, coordenadaX);
+			stmt.setInt(2, coordenadaY);
+
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// Remove o terminal cadastrado no banco.
+	public void deletarTerminal() {
+
+		try {
+			stmt = con.prepareStatement("delete from terminalpesquisa");
+
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }
