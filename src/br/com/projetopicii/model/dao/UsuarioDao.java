@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import br.com.projetopicii.connection.ConnectionFactory;
+import br.com.projetopicii.model.bean.Estante;
 import br.com.projetopicii.model.bean.Usuario;
 import br.com.projetopicii.view.AdministradorMainWindow;
 import br.com.projetopicii.view.CadastrarPrimeiroUser;
@@ -18,7 +20,8 @@ public class UsuarioDao {
 	PreparedStatement stmt = null;
 	ResultSet rS = null;
 	LoginWindow lW = null;
-
+	ArrayList<Usuario> arrayUsuario = new ArrayList<Usuario>();
+	
 	public UsuarioDao() {
 
 	}
@@ -93,6 +96,34 @@ public class UsuarioDao {
 			ConnectionFactory.closeConnection(con, stmt);
 		}
 
+	}
+	
+	public ArrayList<Usuario> pegarUsuarios() {
+		try {
+			stmt = con.prepareStatement("Select * from usuario");
+			rS = stmt.executeQuery();
+
+			String itemUsuario = "";
+			while (rS.next()) {
+				for (int i = 1; i < 3; i++) {
+					itemUsuario += rS.getString(i) + ";";
+				}
+				String[] auxEstantes = itemUsuario.split(";");
+
+				Usuario usuario = new Usuario();
+				usuario.setId(Integer.parseInt(auxEstantes[0]));
+				usuario.setLogin(auxEstantes[1]);
+
+				arrayUsuario.add(usuario);
+				itemUsuario = "";
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return arrayUsuario;
 	}
 
 }

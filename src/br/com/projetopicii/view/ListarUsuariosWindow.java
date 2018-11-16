@@ -23,6 +23,7 @@ import javax.swing.event.ListSelectionListener;
 
 import br.com.projetopicii.model.bean.Estante;
 import br.com.projetopicii.model.bean.Usuario;
+import br.com.projetopicii.model.dao.UsuarioDao;
 import br.com.projetopicii.table.model.EstanteTableModel;
 import br.com.projetopicii.table.model.UsuarioTableModel;
 
@@ -179,6 +180,8 @@ public class ListarUsuariosWindow extends AbstractGridWindow {
 		});
 
 		try {
+			UsuarioDao uD = new UsuarioDao();
+			listaUsuarios = uD.pegarUsuarios();
 			model.addListaDeUsuarios(listaUsuarios);
 		} catch (Exception e) {
 			System.err.printf("Erro ao iniciar lista de alunos: %s.\n", e.getMessage());

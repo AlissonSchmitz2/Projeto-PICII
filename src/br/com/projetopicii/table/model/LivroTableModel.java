@@ -12,7 +12,7 @@ public class LivroTableModel extends AbstractTableModel{
 	private static final long serialVersionUID = -3586211638575736174L;
 
 	private List<Livro> livros;
-	private String[] colunas = new String[] { "ID", "Titulo","Autor","Genero","Ano de lançamento","Nº Paginas"};
+	private String[] colunas = new String[] { "ID", "Titulo","Autor","Genero","Ano de lançamento","Idioma","Nº Paginas"};
 
 	public LivroTableModel(List<Livro> livros) {
 		this.livros = livros;
@@ -89,7 +89,7 @@ public class LivroTableModel extends AbstractTableModel{
 		String valueObject = null;
 		switch (columnIndex) {
 		case 0:
-			valueObject = livroSelecionado.getId().toString();
+			valueObject = String.valueOf(livroSelecionado.getId());
 			break;
 		case 1:
 			valueObject = livroSelecionado.getTitulo();

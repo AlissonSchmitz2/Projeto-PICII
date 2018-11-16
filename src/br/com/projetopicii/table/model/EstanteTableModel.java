@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import br.com.projetopicii.model.bean.Estante;
+import br.com.projetopicii.model.bean.Livro;
 
 public class EstanteTableModel extends AbstractTableModel{
 	
@@ -39,12 +40,12 @@ public class EstanteTableModel extends AbstractTableModel{
 	}
 
 	public void setValueAt(Estante aValue, int rowIndex) {
-		Estante aluno = estantes.get(rowIndex);
+		Estante estante = estantes.get(rowIndex);
 
-		aluno.setId(aValue.getId());
-		aluno.setNome(aValue.getNome());
-		aluno.setCoordenadaX(aValue.getCoordenadaX());
-		aluno.setCoordenadaY(aValue.getCoordenadaY());
+		estante.setId(aValue.getId());
+		estante.setNome(aValue.getNome());
+		estante.setCoordenadaX(aValue.getCoordenadaX());
+		estante.setCoordenadaY(aValue.getCoordenadaY());
 
 		fireTableCellUpdated(rowIndex, 0);
 		fireTableCellUpdated(rowIndex, 1);
@@ -110,9 +111,26 @@ public class EstanteTableModel extends AbstractTableModel{
 		return estantes.isEmpty();
 	}
 
-	@Override
-	public Object getValueAt(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object getValueAt(int rowIndex, int columnIndex) {
+		Estante estanteSelecionada = estantes.get(rowIndex);
+		String valueObject = null;
+		switch (columnIndex) {
+		case 0:
+			valueObject = String.valueOf(estanteSelecionada.getId());
+			break;
+		case 1:
+			valueObject = estanteSelecionada.getNome();
+			break;
+		case 2:
+			valueObject = String.valueOf(estanteSelecionada.getCoordenadaX());
+			break;
+		case 3:
+			valueObject = String.valueOf(estanteSelecionada.getCoordenadaY());
+			break;
+		default:
+			System.err.println("Índice inválido para propriedade do bean Usuario.class");
+		}
+
+		return valueObject;
 	}
 }

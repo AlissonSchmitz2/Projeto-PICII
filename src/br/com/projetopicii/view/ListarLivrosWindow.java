@@ -21,6 +21,7 @@ import javax.swing.event.ListSelectionListener;
 
 import br.com.projetopicii.model.bean.Livro;
 import br.com.projetopicii.model.bean.Usuario;
+import br.com.projetopicii.model.dao.LivroDao;
 import br.com.projetopicii.table.model.LivroTableModel;
 import br.com.projetopicii.table.model.UsuarioTableModel;
 
@@ -115,7 +116,6 @@ public class ListarLivrosWindow extends AbstractGridWindow{
 				txfBuscar.setText("");
 				model.limpar();
 				try {
-
 					model.addListaDeLivros(listaLivros);
 				} catch (Exception e2) {
 					System.err.printf("Erro ao iniciar lista de alunos: %s.\n", e2.getMessage());
@@ -177,6 +177,8 @@ public class ListarLivrosWindow extends AbstractGridWindow{
 		});
 
 		try {
+			LivroDao lD = new LivroDao();
+			listaLivros = lD.pegarLivrosCadastrados();
 			model.addListaDeLivros(listaLivros);
 		} catch (Exception e) {
 			System.err.printf("Erro ao iniciar lista de alunos: %s.\n", e.getMessage());

@@ -20,6 +20,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import br.com.projetopicii.model.bean.Estante;
+import br.com.projetopicii.model.dao.EstanteDao;
 import br.com.projetopicii.table.model.EstanteTableModel;
 
 public class ListarEstantesWindow extends AbstractGridWindow {
@@ -139,7 +140,7 @@ public class ListarEstantesWindow extends AbstractGridWindow {
 	}
 
 	public void buscarEstantes() {
-		//Limpa a lista.
+
 		model.limpar();				
 	}
 	
@@ -175,6 +176,8 @@ public class ListarEstantesWindow extends AbstractGridWindow {
 		});
 
 		try {
+			EstanteDao eD = new EstanteDao();
+			listaEstantes = eD.pegarArrayEstantes();
 			model.addListaDeEstantes(listaEstantes);
 		} catch (Exception e) {
 			System.err.printf("Erro ao iniciar lista de alunos: %s.\n", e.getMessage());
