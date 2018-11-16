@@ -16,6 +16,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
+
 public class AdministradorMainWindow extends JFrame {
 	private static final long serialVersionUID = 4203314756947777665L;
 
@@ -28,9 +29,10 @@ public class AdministradorMainWindow extends JFrame {
 	private JDesktopPane desktop;
 
 	// Frames
-	BuscarLivrosWindow frameBuscarLivrosWindow;
-	CadastrarEstanteWindow frameCadastrarEstanteWindow;
-	CadastrarLivrosWindow frameCadastrarLivrosWindow;
+	private BuscarLivrosWindow frameBuscarLivrosWindow;
+	private CadastrarEstanteWindow frameCadastrarEstanteWindow;
+	private CadastrarLivrosWindow frameCadastrarLivrosWindow;
+	private ListarEstantesWindow frameListarEstantes;
 	
 	public AdministradorMainWindow() {
 		super();
@@ -213,8 +215,10 @@ public class AdministradorMainWindow extends JFrame {
 
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO: Abrir janela para listagem de estantes.
-
+				frameListarEstantes = new ListarEstantesWindow(desktop);
+				abrirFrame(frameListarEstantes);
+				
+				frameListarEstantes.redimensionarGrid(frameListarEstantes.getGridContent());
 			}
 		});
 
