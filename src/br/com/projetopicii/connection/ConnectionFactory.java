@@ -10,10 +10,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Giovane Santiago Leacina
- */
+
 
 public class ConnectionFactory {
 
