@@ -33,6 +33,7 @@ public class AdministradorMainWindow extends JFrame {
 	private CadastrarEstanteWindow frameCadastrarEstanteWindow;
 	private CadastrarLivrosWindow frameCadastrarLivrosWindow;
 	private ListarEstantesWindow frameListarEstantes;
+	private ListarUsuariosWindow frameListarUsuarios;
 	
 	public AdministradorMainWindow() {
 		super();
@@ -167,8 +168,10 @@ public class AdministradorMainWindow extends JFrame {
 
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				frameListarUsuarios = new ListarUsuariosWindow(desktop);
+				abrirFrame(frameListarUsuarios);
 				
-				//TODO: Abrir frame para listagem de administradores.
+				frameListarUsuarios.redimensionarGrid(frameListarUsuarios.getGridContent());
 			}
 		});
 
