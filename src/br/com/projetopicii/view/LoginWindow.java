@@ -19,8 +19,10 @@ public class LoginWindow extends JFrame {
 	private JButton btnAcessar;
 	private JLabel Descricao;
 	private String login, senha;
+	MainWindow mW = null;
 	
-	LoginWindow() {
+	LoginWindow(MainWindow mW) {
+		this.mW = mW;
 		setSize(300, 200);
 		setTitle("Find my book");
 		setLayout(null);
@@ -109,19 +111,10 @@ public class LoginWindow extends JFrame {
 			u.setSenha(senha);
 			
 			UsuarioDao uD = new UsuarioDao(this);
-			uD.checkLogin(u);
+			uD.checkLogin(u,mW);
 		} catch (Exception message) {
 			JOptionPane.showMessageDialog(null, "Erro: " + message);
 		}
 	}
 
-	public static void main(final String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				//No momento para utilizar precisa instalar o postgreSql na maquina com a seguinte tabela;
-				//id/nome/senha/perfil
-				new LoginWindow().setVisible(true);
-			}
-		});
-	}
 }

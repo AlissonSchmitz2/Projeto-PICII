@@ -26,13 +26,16 @@ public class MainWindow extends JFrame {
 	private JMenu menuHome;
 	private JDesktopPane desktop;	
 	private EstanteDao estanteDao = new EstanteDao();
+	LoginWindow lW = null;
 	
 	//Frames
 	BuscarLivrosWindow frameBuscarLivrosWindow;
 		
 	public MainWindow() {
 		super();
-			
+		
+		lW = new LoginWindow(this);
+		
 		desktop = new JDesktopPane();
 		desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
 		desktop.setVisible(true);
@@ -116,11 +119,7 @@ public class MainWindow extends JFrame {
 
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO: Abrir janela para login do usuário administrador.
-				
-				//Abrir janela do administrador caso o login esteja correto.
-				new AdministradorMainWindow();
-				dispose();
+				lW.setVisible(true);
 			}
 		});
 

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import br.com.projetopicii.connection.ConnectionFactory;
 import br.com.projetopicii.model.bean.Usuario;
+import br.com.projetopicii.view.AdministradorMainWindow;
 import br.com.projetopicii.view.CadastrarPrimeiroUser;
 import br.com.projetopicii.view.LoginWindow;
 import br.com.projetopicii.view.MainWindow;
@@ -26,7 +27,7 @@ public class UsuarioDao {
 		this.lW = lW;
 	}
 
-	public void checkLogin(Usuario usuario) {
+	public void checkLogin(Usuario usuario,MainWindow mW) {
 
 		try {
 			if (usuario.getLogin().equals("admin") && usuario.getSenha().equals("admin")) {
@@ -37,7 +38,6 @@ public class UsuarioDao {
 				rS = stmt.executeQuery();
 				if (rS.next()) {
 					new CadastrarPrimeiroUser().setVisible(true);
-
 				}
 			} else {
 
@@ -49,6 +49,7 @@ public class UsuarioDao {
 
 				if (rS.next()) {
 					login();
+					mW.setVisible(false);
 				}
 			}
 		} catch (SQLException e) {
@@ -75,7 +76,7 @@ public class UsuarioDao {
 	}
 
 	public void login() {
-		new MainWindow().setVisible(true);
+		new AdministradorMainWindow().setVisible(true);
 		lW.setVisible(false);
 	}
 
