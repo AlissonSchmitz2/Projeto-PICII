@@ -36,6 +36,7 @@ public class MainWindow extends JFrame {
 	public MainWindow() {
 		super();
 		
+		new Splash();
 		lW = new LoginWindow(this);
 		
 		desktop = new JDesktopPane();
@@ -132,7 +133,7 @@ public class MainWindow extends JFrame {
 	
 	private void abrirFrame(AbstractWindowFrame frame) {		
 		boolean frameJaExiste = false;
-
+		
 		// Percorre todos os frames adicionados
 		for (JInternalFrame addedFrame : desktop.getAllFrames()) {
 			// Se o frame a ser adicionado já estiver aberto
