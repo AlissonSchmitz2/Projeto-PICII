@@ -21,6 +21,7 @@ import javax.swing.event.ListSelectionListener;
 
 import br.com.projetopicii.model.bean.Estante;
 import br.com.projetopicii.model.dao.EstanteDao;
+import br.com.projetopicii.model.dao.LivroDao;
 import br.com.projetopicii.table.model.EstanteTableModel;
 
 public class ListarEstantesWindow extends AbstractGridWindow {
@@ -80,7 +81,21 @@ public class ListarEstantesWindow extends AbstractGridWindow {
 		add(botaoExcluir);
 		botaoExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO:Implementar exclusão de estantes
+				EstanteDao eD = new EstanteDao();
+				
+				eD.excluirEstanteELivros(Integer.parseInt(idSelecionado));
+			
+				// Reseta a lista e atualiza JTable novamente
+				listaEstantes = eD.pegarArrayEstantes();
+				model.limpar();
+				model.addListaDeEstantes(listaEstantes);
+
+				// Limpa seleção
+				jTableEstantes.getSelectionModel().clearSelection();
+
+				// Desabilita botão de ações (uma vez que a linha selecionada anteriormente não
+				// existe, desabilita botões de ação
+				desabilitarBotoesDeAcoes();
 			}
 		});
 		
@@ -160,6 +175,8 @@ public class ListarEstantesWindow extends AbstractGridWindow {
 		// Ação Seleção de uma linha
 		jTableEstantes.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {
+				habilitarBotoesDeAcoes();
+				
 				if (jTableEstantes.getSelectedRow() != -1) {
 					idSelecionado = jTableEstantes.getValueAt(jTableEstantes.getSelectedRow(), 0).toString();
 				}
@@ -196,5 +213,15 @@ public class ListarEstantesWindow extends AbstractGridWindow {
 			redimensionarGrid(grid);
 		}
 	}
-
+	
+	private void desabilitarBotoesDeAcoes() {
+		botaoEditar.setEnabled(false);
+		botaoExcluir.setEnabled(false);
+	}
+	
+	private void habilitarBotoesDeAcoes() {
+			botaoEditar.setEnabled(true);
+			botaoExcluir.setEnabled(true);
+	}
+	
 }

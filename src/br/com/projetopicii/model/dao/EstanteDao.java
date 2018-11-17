@@ -176,5 +176,21 @@ public class EstanteDao {
 			e.printStackTrace();
 		}
 	}
+	
+	public void excluirEstanteELivros(Integer id) {
+		try {
+			stmt = con.prepareStatement("delete from estante where id = ?");
+			stmt.setInt(1, id);
+	
+			stmt.executeUpdate();
+			
+			stmt = con.prepareStatement("delete from livro where id_estante = ?");
+			stmt.setInt(1, id);
+	
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
