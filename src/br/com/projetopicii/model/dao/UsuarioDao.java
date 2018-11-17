@@ -116,5 +116,17 @@ public class UsuarioDao {
 
 		return arrayUsuario;
 	}
+	
+	public void excluirUsuario(Integer id) {
+		try {
+			stmt = con.prepareStatement("delete from usuario where id = ?");
+			stmt.setInt(1, id);
+			
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 }

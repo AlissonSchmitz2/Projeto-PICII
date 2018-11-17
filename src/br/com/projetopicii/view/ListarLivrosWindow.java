@@ -22,6 +22,7 @@ import javax.swing.event.ListSelectionListener;
 import br.com.projetopicii.model.bean.Livro;
 import br.com.projetopicii.model.bean.Usuario;
 import br.com.projetopicii.model.dao.LivroDao;
+import br.com.projetopicii.model.dao.UsuarioDao;
 import br.com.projetopicii.table.model.LivroTableModel;
 import br.com.projetopicii.table.model.UsuarioTableModel;
 
@@ -82,7 +83,21 @@ public class ListarLivrosWindow extends AbstractGridWindow{
 		add(botaoExcluir);
 		botaoExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO:Implementar exclusão de estantes
+				LivroDao lD = new LivroDao();
+				
+				lD.excluirLivro(Integer.parseInt(idSelecionado));
+			
+				// Reseta a lista e atualiza JTable novamente
+				listaLivros = lD.pegarLivrosCadastrados();
+				model.limpar();
+				model.addListaDeLivros(listaLivros);
+
+				// Limpa seleção
+				jTableLivros.getSelectionModel().clearSelection();
+
+				// Desabilita botão de ações (uma vez que a linha selecionada anteriormente não
+				// existe, desabilita botões de ação
+				desabilitarBotoesDeAcoes();
 			}
 		});
 		
@@ -159,8 +174,10 @@ public class ListarLivrosWindow extends AbstractGridWindow{
 		jTableLivros.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		// Ação Seleção de uma linha
-		jTableLivros.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+		jTableLivros.getSelectionModel().addListSelectionListener(new ListSelectionListener() {		
 			public void valueChanged(ListSelectionEvent event) {
+				habilitarBotoesDeAcoes();
+				
 				if (jTableLivros.getSelectedRow() != -1) {
 					idSelecionado = jTableLivros.getValueAt(jTableLivros.getSelectedRow(), 0).toString();
 				}
@@ -197,5 +214,14 @@ public class ListarLivrosWindow extends AbstractGridWindow{
 			redimensionarGrid(grid);
 		}
 	}
-
+	
+	private void desabilitarBotoesDeAcoes() {
+		botaoEditar.setEnabled(false);
+		botaoExcluir.setEnabled(false);
+	}
+	
+	private void habilitarBotoesDeAcoes() {
+			botaoEditar.setEnabled(true);
+			botaoExcluir.setEnabled(true);
+	}
 }

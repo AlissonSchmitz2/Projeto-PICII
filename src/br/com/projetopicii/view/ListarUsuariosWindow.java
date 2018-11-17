@@ -84,8 +84,22 @@ public class ListarUsuariosWindow extends AbstractGridWindow {
 		add(botaoExcluir);
 		botaoExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO:Implementar exclusão de estantes
-			}
+					UsuarioDao uD = new UsuarioDao();
+					
+					uD.excluirUsuario(Integer.parseInt(idSelecionado));
+				
+					// Reseta a lista e atualiza JTable novamente
+					listaUsuarios = uD.pegarUsuarios();
+					model.limpar();
+					model.addListaDeUsuarios(listaUsuarios);
+
+					// Limpa seleção
+					jTableUsuarios.getSelectionModel().clearSelection();
+
+					// Desabilita botão de ações (uma vez que a linha selecionada anteriormente não
+					// existe, desabilita botões de ação
+					desabilitarBotoesDeAcoes();
+				}
 		});
 		
 		//Componentes Para Busca
@@ -164,6 +178,8 @@ public class ListarUsuariosWindow extends AbstractGridWindow {
 		// Ação Seleção de uma linha
 		jTableUsuarios.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {
+				habilitarBotoesDeAcoes();
+				
 				if (jTableUsuarios.getSelectedRow() != -1) {
 					idSelecionado = jTableUsuarios.getValueAt(jTableUsuarios.getSelectedRow(), 0).toString();
 				}
@@ -199,6 +215,16 @@ public class ListarUsuariosWindow extends AbstractGridWindow {
 		if (grid != null) {
 			redimensionarGrid(grid);
 		}
+	}
+	
+	private void desabilitarBotoesDeAcoes() {
+		botaoEditar.setEnabled(false);
+		botaoExcluir.setEnabled(false);
+	}
+	
+	private void habilitarBotoesDeAcoes() {
+			botaoEditar.setEnabled(true);
+			botaoExcluir.setEnabled(true);
 	}
 
 }

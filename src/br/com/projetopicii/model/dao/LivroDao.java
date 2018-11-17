@@ -152,5 +152,16 @@ public class LivroDao {
 			e.printStackTrace();
 		}
 	}
+	
+	public void excluirLivro(Integer id) {
+		try {
+			stmt = con.prepareStatement("delete from livro where id = ?");
+			stmt.setInt(1, id);
+			
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
