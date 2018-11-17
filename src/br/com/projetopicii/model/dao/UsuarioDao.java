@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import br.com.projetopicii.connection.ConnectionFactory;
 import br.com.projetopicii.model.bean.Usuario;
 import br.com.projetopicii.view.AdministradorMainWindow;
@@ -41,6 +43,8 @@ public class UsuarioDao {
 			if (rS.next()) {
 				login();
 				mW.setVisible(false);
+			}else {
+				JOptionPane.showMessageDialog(null, "Usuario ou senha incorreta!");
 			}
 		} catch (SQLException e) {
 			// TODO: Lançar exception correta

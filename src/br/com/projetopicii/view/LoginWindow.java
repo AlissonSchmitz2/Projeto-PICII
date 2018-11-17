@@ -20,7 +20,7 @@ public class LoginWindow extends JFrame {
 	private JLabel Descricao;
 	private String login, senha;
 	MainWindow mW = null;
-	
+
 	LoginWindow(MainWindow mW) {
 		this.mW = mW;
 		setSize(300, 200);
@@ -30,7 +30,7 @@ public class LoginWindow extends JFrame {
 		criarComponentes();
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		this.getContentPane().setBackground(new Color(230,230,250));
+		this.getContentPane().setBackground(new Color(230, 230, 250));
 	}
 
 	public void criarComponentes() {
@@ -51,7 +51,7 @@ public class LoginWindow extends JFrame {
 		txfSenha.setBounds(45, 85, 200, 30);
 		txfSenha.setToolTipText("Informe sua senha");
 		getContentPane().add(txfSenha);
-		
+
 		txfNome.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(java.awt.event.KeyEvent e) {
@@ -100,21 +100,36 @@ public class LoginWindow extends JFrame {
 				}
 			}
 		});
-		
+
 	}
 
 	public void autenticaUsuario(String login, String senha) {
 		try {
+			if(verificaCamposObrigatorios()) {
+				JOptionPane.showMessageDialog(rootPane, 
+						"Preencha todos os campos para cadastrar!", "Alerta",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			}
 			Usuario u = new Usuario();
-			
+
 			u.setLogin(login);
 			u.setSenha(senha);
-			
+
 			UsuarioDao uD = new UsuarioDao(this);
-			uD.checkLogin(u,mW);
+			uD.checkLogin(u, mW);
 		} catch (Exception message) {
 			JOptionPane.showMessageDialog(null, "Erro: " + message);
 		}
+	}
+
+	public boolean verificaCamposObrigatorios() {
+		
+		if (login.isEmpty() || senha.isEmpty()) {
+			return true;
+		}
+
+		return false;
 	}
 
 }
