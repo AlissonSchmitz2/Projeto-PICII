@@ -53,14 +53,13 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 		// TODO: Pensar em um nome melhor para a tela.	
 		super("Menor e Melhor Caminho");
 		
-		arrayEstantes = estanteDao.pegarArrayEstantes();
+		arrayEstantes = estanteDao.pegarArrayEstantes(false);
 		terminal = terminalDao.pegarTerminal();
 		
 		// Id da estante que contém o livro desejado.
 		idEstanteAlvo = livroDao.pegarIdEstante(tituloSelecionado);
 
 		// TODO: Utilizar o dijkstra para recuperar os ids das estantes que devem ser pintadas.
-		// Teste.
 
 		this.fundoBiblioteca = ImageController.FundoBiblioteca.getImage();
 

@@ -96,7 +96,7 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 		cbxEstantes = new JComboBox<>();
 		cbxEstantes.setToolTipText("Selecione uma estante para o livro");
 		cbxEstantes.addItem("-Selecione-");
-		nomeEstantes = estanteDao.pegarNomeEstantes();
+		nomeEstantes = estanteDao.pegarNomeEstantes(false);
 		
 		for(int i = 0; i < nomeEstantes.length; i++) {
 			

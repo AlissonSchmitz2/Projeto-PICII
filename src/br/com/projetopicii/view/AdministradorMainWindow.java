@@ -35,6 +35,7 @@ public class AdministradorMainWindow extends JFrame {
 	private ListarEstantesWindow frameListarEstantes;
 	private ListarUsuariosWindow frameListarUsuarios;
 	private ListarLivrosWindow frameListarLivros;
+	private EditarBibliotecaWindow frameEditarBiblioteca;
 	
 	public AdministradorMainWindow() {
 		super();
@@ -270,6 +271,8 @@ public class AdministradorMainWindow extends JFrame {
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO: Abrir janela para edição da biblioteca.
+				frameEditarBiblioteca = new EditarBibliotecaWindow();
+				abrirFrame(frameEditarBiblioteca);
 
 			}
 		});

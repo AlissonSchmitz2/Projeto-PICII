@@ -18,15 +18,19 @@ public class EstanteDao {
 	ArrayList<Estante> arrayEstantes = new ArrayList<>();
 	LivroDao livroDao = new LivroDao();
 
-	public String[] pegarNomeEstantes() {
+	public String[] pegarNomeEstantes(boolean pegarSomenteNull) {
 
 		try {
 
-			stmt = con.prepareStatement("Select nome from estante");
+			if(pegarSomenteNull) {
+				stmt = con.prepareStatement("Select nome from estante where coordenadax = ?");
+				stmt.setInt(1, 0);
+			} else {
+				stmt = con.prepareStatement("Select nome from estante where coordenadax > ?");
+				stmt.setInt(1, 0);
+			}
+			
 			rS = stmt.executeQuery();
-
-//			final ResultSetMetaData metaRS = rS.getMetaData();
-//			final int columnCount = metaRS.getColumnCount();
 
 			listaEstante = new String[pegarQuantidadeEstante()];
 
@@ -41,17 +45,24 @@ public class EstanteDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} // finally {
-//			ConnectionFactory.closeConnection(con, stmt, rS);
-//		}
+		}
 
 		return listaEstante;
 	}
 
-	public ArrayList<Estante> pegarArrayEstantes() {
+	public ArrayList<Estante> pegarArrayEstantes(boolean pegarSomenteNull) {
 
-		try {
-			stmt = con.prepareStatement("Select * from estante");
+		try {	
+			
+			if(pegarSomenteNull) {
+				stmt = con.prepareStatement("Select * from estante where coordenadax = ?");
+				stmt.setInt(1, 0);
+			} else {				
+				stmt = con.prepareStatement("Select * from estante where coordenadax > ?");
+				stmt.setInt(1, 0);
+			}
+			
+			
 			rS = stmt.executeQuery();
 
 			String itensEstante = "";

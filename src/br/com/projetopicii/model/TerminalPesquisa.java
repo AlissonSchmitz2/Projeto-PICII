@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 
 import br.com.projetopicii.pictures.ImageController;
 import br.com.projetopicii.view.CriarBibliotecaWindow;
+import br.com.projetopicii.view.EditarBibliotecaWindow;
 import br.com.projetopicii.view.ResultadoCaminhoWindow;
 
 public class TerminalPesquisa extends JLabel implements MouseListener, MouseMotionListener{
@@ -22,7 +23,8 @@ public class TerminalPesquisa extends JLabel implements MouseListener, MouseMoti
 	private boolean inDrag = false;
 	
 	// Instância da criação da biblioteca.
-	CriarBibliotecaWindow criarBibliotecaWindow;
+	private CriarBibliotecaWindow criarBibliotecaWindow;
+	private EditarBibliotecaWindow editarBibliotecaWindow;
 	
 	//Tamanho da tela.
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -49,6 +51,20 @@ public class TerminalPesquisa extends JLabel implements MouseListener, MouseMoti
 		setToolTipText("Terminal de Pesquisa");
 		setBounds(coordenadaX, coordenadaY, 90, 90);
 		resultadoCaminhoWindow.getContentPane().add(this);
+	}
+	
+	public void setarTerminal(EditarBibliotecaWindow editarBibliotecaWindow, int coordenadaX, int coordenadaY) {
+		this.setIcon(ImageController.TerminalPesquisa);
+		this.editarBibliotecaWindow = editarBibliotecaWindow;
+		setToolTipText("Terminal de Pesquisa");
+		setBounds(coordenadaX, coordenadaY, 90, 90);
+		editarBibliotecaWindow.getContentPane().add(this);		
+		
+		posicaoTerminal.setX(screenSize.width / 2);
+		posicaoTerminal.setY((screenSize.height / 2) + 250);
+		
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
 	}
 	
 	public PosicaoComponente getPosicaoTerminal() {
@@ -87,7 +103,8 @@ public class TerminalPesquisa extends JLabel implements MouseListener, MouseMoti
     
     private void verificarLimites() {
     	
-    	if(criarBibliotecaWindow.getComponentCount_PainelEstantes() != 0) {
+    	if(criarBibliotecaWindow != null ? criarBibliotecaWindow.getComponentCount_PainelEstantes() != 0 
+    			: editarBibliotecaWindow.getComponentCount_PainelEstantes() != 0) {
 	    	//Limite lado esquerdo.
 	        this.setLocation ((int) ( (this.getX() < 162) ? 180 : this.getX()), this.getY());
 	        this.getPosicaoTerminal().setX((this.getX() < 162) ? 180 : this.getX());

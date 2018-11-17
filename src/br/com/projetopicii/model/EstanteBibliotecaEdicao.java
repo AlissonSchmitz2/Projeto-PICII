@@ -15,11 +15,11 @@ import javax.swing.JPopupMenu;
 import javax.swing.plaf.LabelUI;
 
 import br.com.projetopicii.auxiliaries.VerticalLabelUI;
-import br.com.projetopicii.view.CriarBibliotecaWindow;
+import br.com.projetopicii.view.EditarBibliotecaWindow;
 
-public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMotionListener {
-	private static final long serialVersionUID = -936720566669213646L;
-
+public class EstanteBibliotecaEdicao extends JPanel implements MouseListener, MouseMotionListener {
+	private static final long serialVersionUID = 2740840505521321802L;
+	
 	// Auxiliares para movimentar as estantes.
 	private int startDragX;
 	private int startDragY;
@@ -39,7 +39,7 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
 
 	// Objetos necessários.
 	private JPanel thisPanel;
-	private CriarBibliotecaWindow criarBibliotecaWindow;
+	private EditarBibliotecaWindow editarBibliotecaWindow;
 
 	// Tamanho da tela.
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -73,6 +73,7 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
 
 	public void ativarMovimentoMouse() {
 		this.addMouseMotionListener(this);
+		ativarMovimentoMouse = false;
 	}
 
 	public void ativarCliqueMouse() {
@@ -105,15 +106,6 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
 			inDrag = false;
 			posicaoEstante.setX(this.getX());
 			posicaoEstante.setY(this.getY());
-
-			if (criarBibliotecaWindow != null) {
-				if (criarBibliotecaWindow.isInformacao2()) {
-					criarBibliotecaWindow.removerInformacao2();
-					criarBibliotecaWindow.setInformacao2(false);
-					criarBibliotecaWindow.repaint();
-					criarBibliotecaWindow.inserirInformacao3();
-				}
-			}
 		}
 
 		verificarLimites();
@@ -121,7 +113,7 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
 
 	private void verificarLimites() {
 
-		if (criarBibliotecaWindow.getComponentCount_PainelEstantes() != 0) {
+		if (editarBibliotecaWindow.getComponentCount_PainelEstantes() != 0) {
 
 			if (!ativarMovimentoMouse && !vertical) {
 
@@ -241,13 +233,6 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
 
 				public void actionPerformed(ActionEvent e) {
 
-					if (criarBibliotecaWindow.isInformacao1()) {
-						criarBibliotecaWindow.removerInformacao1();
-						criarBibliotecaWindow.setInformacao1(false);
-						criarBibliotecaWindow.repaint();
-						criarBibliotecaWindow.inserirInformacao2();
-					}
-
 					// Mantém a estante vertical caso ela seja posicionada assim.
 					if (vertical) {
 						setBounds(200, 70, thisPanel.getWidth(), thisPanel.getHeight());
@@ -255,10 +240,10 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
 						setBounds(200, 70, 110, 45);
 					}
 
-					criarBibliotecaWindow.getContentPane().add(thisPanel);
+					editarBibliotecaWindow.getContentPane().add(thisPanel);
 
-					if (criarBibliotecaWindow.getComponentCount_PainelEstantes() == 0) {
-						criarBibliotecaWindow.removerPainelEstantes();
+					if (editarBibliotecaWindow.getComponentCount_PainelEstantes() == 0) {
+						editarBibliotecaWindow.removerPainelEstantes();
 					}
 
 					posicaoEstante.setX(200);
@@ -332,8 +317,8 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
 		// not interested
 	}
 
-	public void setCriarBibliotecaWindow(CriarBibliotecaWindow criarBibliotecaWindow) {
-		this.criarBibliotecaWindow = criarBibliotecaWindow;
+	public void setEditarBibliotecaWindow(EditarBibliotecaWindow editarBibliotecaWindow) {
+		this.editarBibliotecaWindow = editarBibliotecaWindow;
 	}
 
 	public int getCoordenadaY() {
@@ -343,5 +328,4 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
 	public void setCoordenadaY(int coordenadaY) {
 		this.coordenadaY = coordenadaY;
 	}
-
 }

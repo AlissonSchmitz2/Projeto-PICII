@@ -173,7 +173,7 @@ public class MainWindow extends JFrame {
 							+ "\nPor favor, construa-o na tela a seguir.");
 
 			String[] referencias;
-			referencias = estanteDao.pegarNomeEstantes();
+			referencias = estanteDao.pegarNomeEstantes(true);
 			abrirFrame(new CriarBibliotecaWindow(referencias, this));
 		} else {
 			frameBuscarLivrosWindow = new BuscarLivrosWindow(desktop);

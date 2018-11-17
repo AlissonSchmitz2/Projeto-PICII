@@ -49,11 +49,11 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 	private JRadioButton r_genero;
 
 	// Banco de dados (Livros)
-	LivroDao livroDao = new LivroDao();
+	LivroDao livroDao;
 
 	// JTable.
 	private JTable tableLivros;
-	private TableModel livrosTableModel = new LivrosTableModel();
+	private TableModel livrosTableModel;
 	private JScrollPane scrollpaneTable;
 	private ArrayList<Livro> arrayLivros = new ArrayList<>();
 	private String tituloSelecionado;
@@ -84,7 +84,11 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 		setContentPane(new NewContentPane());
 		setLayout(null);
 		
+		livrosTableModel = new LivrosTableModel();
+		livroDao = new LivroDao();
+				
 		arrayLivros = livroDao.pegarLivrosCadastrados();
+		((LivrosTableModel) livrosTableModel).limpar();
 		((LivrosTableModel) livrosTableModel).addRow(arrayLivros);
 		
 		this.desktop = desktop;

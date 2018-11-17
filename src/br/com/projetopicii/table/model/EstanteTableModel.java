@@ -6,7 +6,6 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import br.com.projetopicii.model.bean.Estante;
-import br.com.projetopicii.model.bean.Livro;
 
 public class EstanteTableModel extends AbstractTableModel{
 	

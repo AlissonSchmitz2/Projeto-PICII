@@ -6,7 +6,6 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import br.com.projetopicii.model.bean.Livro;
-import br.com.projetopicii.model.bean.Usuario;
 
 public class LivroTableModel extends AbstractTableModel{
 	private static final long serialVersionUID = -3586211638575736174L;

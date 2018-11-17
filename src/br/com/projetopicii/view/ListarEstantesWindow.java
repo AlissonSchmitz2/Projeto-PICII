@@ -21,7 +21,6 @@ import javax.swing.event.ListSelectionListener;
 
 import br.com.projetopicii.model.bean.Estante;
 import br.com.projetopicii.model.dao.EstanteDao;
-import br.com.projetopicii.model.dao.LivroDao;
 import br.com.projetopicii.table.model.EstanteTableModel;
 
 public class ListarEstantesWindow extends AbstractGridWindow {
@@ -86,7 +85,8 @@ public class ListarEstantesWindow extends AbstractGridWindow {
 				eD.excluirEstanteELivros(Integer.parseInt(idSelecionado));
 			
 				// Reseta a lista e atualiza JTable novamente
-				listaEstantes = eD.pegarArrayEstantes();
+				listaEstantes = eD.pegarArrayEstantes(false);
+				listaEstantes = eD.pegarArrayEstantes(true);
 				model.limpar();
 				model.addListaDeEstantes(listaEstantes);
 
@@ -194,7 +194,8 @@ public class ListarEstantesWindow extends AbstractGridWindow {
 
 		try {
 			EstanteDao eD = new EstanteDao();
-			listaEstantes = eD.pegarArrayEstantes();
+			listaEstantes = eD.pegarArrayEstantes(false);
+			listaEstantes = eD.pegarArrayEstantes(true);
 			model.addListaDeEstantes(listaEstantes);
 		} catch (Exception e) {
 			System.err.printf("Erro ao iniciar lista de alunos: %s.\n", e.getMessage());
