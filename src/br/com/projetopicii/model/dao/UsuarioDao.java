@@ -94,19 +94,13 @@ public class UsuarioDao {
 			stmt = con.prepareStatement("Select * from usuario");
 			rS = stmt.executeQuery();
 
-			String itemUsuario = "";
 			while (rS.next()) {
-				for (int i = 1; i < 3; i++) {
-					itemUsuario += rS.getString(i) + ";";
-				}
-				String[] auxEstantes = itemUsuario.split(";");
 
 				Usuario usuario = new Usuario();
-				usuario.setId(Integer.parseInt(auxEstantes[0]));
-				usuario.setLogin(auxEstantes[1]);
+				usuario.setId(rS.getInt("id"));
+				usuario.setLogin(rS.getString("nome"));
 
 				arrayUsuario.add(usuario);
-				itemUsuario = "";
 
 			}
 

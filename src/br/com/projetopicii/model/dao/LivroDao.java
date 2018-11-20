@@ -20,25 +20,19 @@ public class LivroDao {
 		try {
 			stmt = con.prepareStatement("Select * from livro");
 			rS = stmt.executeQuery();
-
-			String itensLivro = "";
+			
 			while (rS.next()) {
-				for (int i = 1; i < 9; i++) {
-					itensLivro += rS.getString(i) + ";";
-				}
-				String[] auxLivros = itensLivro.split(";");
 
 				Livro livro = new Livro();
-				livro.setId(Integer.parseInt(auxLivros[0]));
-				livro.setTitulo(auxLivros[1]);
-				livro.setAutor(auxLivros[2]);
-				livro.setGenero(auxLivros[3]);
-				livro.setAnoLancamento(auxLivros[4]);
-				livro.setNumPaginas(Integer.parseInt(auxLivros[5]));
-				livro.setId_Estante(Integer.parseInt(auxLivros[6]));
-				livro.setIdioma(auxLivros[7]);
+				livro.setId(rS.getInt("id"));
+				livro.setTitulo(rS.getString("titulo"));
+				livro.setAutor(rS.getString("autor"));
+				livro.setGenero(rS.getString("genero"));
+				livro.setAnoLancamento(rS.getInt("ano_lancamento"));
+				livro.setNumPaginas(rS.getInt("numero_paginas"));
+				livro.setId_Estante(rS.getInt("id_estante"));
+				livro.setIdioma(rS.getString("idioma"));
 				listaLivro.add(livro);
-				itensLivro = "";
 			}
 
 		} catch (SQLException e) {
@@ -56,23 +50,19 @@ public class LivroDao {
 			stmt = con.prepareStatement("SELECT * FROM livro WHERE UPPER(" + coluna + ") LIKE ?");
 			stmt.setString(1, "%" + valorBusca + "%");
 			rS = stmt.executeQuery();
-
-			String itensLivro = "";
+			
 			while (rS.next()) {
-				for (int i = 2; i < 7; i++) {
-					itensLivro += rS.getString(i) + ";";
-				}
-				String[] auxLivros = itensLivro.split(";");
 
-				Livro livro = new Livro();
-				livro.setTitulo(auxLivros[0]);
-				livro.setAutor(auxLivros[1]);
-				livro.setGenero(auxLivros[2]);
-				livro.setAnoLancamento(auxLivros[3]);
-				livro.setNumPaginas(Integer.parseInt(auxLivros[4]));
-				livro.setIdioma("Português");
+				Livro livro = new Livro();				
+				livro.setId(rS.getInt("id"));
+				livro.setTitulo(rS.getString("titulo"));
+				livro.setAutor(rS.getString("autor"));
+				livro.setGenero(rS.getString("genero"));
+				livro.setAnoLancamento(rS.getInt("ano_lancamento"));
+				livro.setNumPaginas(rS.getInt("numero_paginas"));
+				livro.setId_Estante(rS.getInt("id_estante"));
+				livro.setIdioma(rS.getString("idioma"));
 				listaLivro.add(livro);
-				itensLivro = "";
 			}
 
 		} catch (SQLException e) {
@@ -90,23 +80,18 @@ public class LivroDao {
 			stmt = con.prepareStatement("SELECT * FROM livro WHERE id_estante = ?");
 			stmt.setInt(1, idEstante);
 			rS = stmt.executeQuery();
-
-			String itensLivro = "";
 			while (rS.next()) {
-				for (int i = 2; i < 7; i++) {
-					itensLivro += rS.getString(i) + ";";
-				}
-				String[] auxLivros = itensLivro.split(";");
 
-				Livro livro = new Livro();
-				livro.setTitulo(auxLivros[0]);
-				livro.setAutor(auxLivros[1]);
-				livro.setGenero(auxLivros[2]);
-				livro.setAnoLancamento(auxLivros[3]);
-				livro.setNumPaginas(Integer.parseInt(auxLivros[4]));
-				livro.setIdioma("Português");
+				Livro livro = new Livro();				
+				livro.setId(rS.getInt("id"));
+				livro.setTitulo(rS.getString("titulo"));
+				livro.setAutor(rS.getString("autor"));
+				livro.setGenero(rS.getString("genero"));
+				livro.setAnoLancamento(rS.getInt("ano_lancamento"));
+				livro.setNumPaginas(rS.getInt("numero_paginas"));
+				livro.setId_Estante(rS.getInt("id_estante"));
+				livro.setIdioma(rS.getString("idioma"));
 				listaLivro.add(livro);
-				itensLivro = "";
 			}
 
 		} catch (SQLException e) {
@@ -126,7 +111,7 @@ public class LivroDao {
 			rS = stmt.executeQuery();
 
 			while (rS.next()) {
-				idEstante = Integer.parseInt(rS.getString("id_estante"));
+				idEstante = rS.getInt("id_estante");
 			}
 
 		} catch (SQLException e) {

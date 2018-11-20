@@ -71,7 +71,7 @@ public class LivroTableModel extends AbstractTableModel{
 		case 3:
 			livro.setGenero(aValue.toString());
 		case 4:
-			livro.setAnoLancamento(aValue.toString());
+			livro.setAnoLancamento(Integer.parseInt(aValue.toString()));
 		case 5:
 			livro.setIdioma(aValue.toString());
 		case 6:
@@ -100,7 +100,7 @@ public class LivroTableModel extends AbstractTableModel{
 			valueObject = livroSelecionado.getGenero();
 			break;
 		case 4:
-			valueObject = livroSelecionado.getAnoLancamento();
+			valueObject = String.valueOf(livroSelecionado.getAnoLancamento());
 			break;
 		case 5:
 			valueObject = livroSelecionado.getIdioma();

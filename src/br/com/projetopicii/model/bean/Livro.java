@@ -6,7 +6,7 @@ public class Livro {
 	private String titulo;
 	private String autor;
 	private String genero;
-	private String anoLancamento;
+	private int anoLancamento;
 	private String idioma;
 	private int numPaginas;
 	
@@ -38,10 +38,10 @@ public class Livro {
 		this.genero = genero;
 	}
 	
-	public String getAnoLancamento() {
+	public int getAnoLancamento() {
 		return anoLancamento;
 	}
-	public void setAnoLancamento(String anoLancamento) {
+	public void setAnoLancamento(int anoLancamento) {
 		this.anoLancamento = anoLancamento;
 	}
 	

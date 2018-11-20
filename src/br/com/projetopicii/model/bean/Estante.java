@@ -9,6 +9,7 @@ public class Estante {
 	private String nome;
 	private int coordenadaX;
 	private int coordenadaY;
+	private boolean vertical;
 	
 	public ArrayList<Livro> getLivros() {
 		return livros;
@@ -48,6 +49,14 @@ public class Estante {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public boolean isVertical() {
+		return vertical;
+	}
+
+	public void setVertical(boolean vertical) {
+		this.vertical = vertical;
 	}	
-		
+			
 }

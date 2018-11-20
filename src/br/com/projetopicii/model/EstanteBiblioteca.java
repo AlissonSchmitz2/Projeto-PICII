@@ -345,4 +345,15 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
 		this.coordenadaY = coordenadaY;
 	}
 
+	public boolean isVertical() {
+		return vertical;
+	}
+
+	public void setVertical(boolean vertical) {
+		this.vertical = vertical;
+		if(isVertical()) {
+			labelReferencia.setUI(new VerticalLabelUI(true));
+		}
+	}
+
 }

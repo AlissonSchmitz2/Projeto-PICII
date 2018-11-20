@@ -60,27 +60,20 @@ public class EstanteDao {
 			} else {				
 				stmt = con.prepareStatement("Select * from estante where coordenadax > ?");
 				stmt.setInt(1, 0);
-			}
+			}			
 			
-			
-			rS = stmt.executeQuery();
-
-			String itensEstante = "";
+			rS = stmt.executeQuery();			
 			while (rS.next()) {
-				for (int i = 1; i < 5; i++) {
-					itensEstante += rS.getString(i) + ";";
-				}
-				String[] auxEstantes = itensEstante.split(";");
 
-				Estante estante = new Estante();
-				estante.setId(Integer.parseInt(auxEstantes[0]));
-				estante.setLivros(livroDao.pegarLivrosCadastrados(Integer.parseInt(auxEstantes[0])));
-				estante.setNome(auxEstantes[1]);
-				estante.setCoordenadaX(Integer.parseInt(auxEstantes[2]));
-				estante.setCoordenadaY(Integer.parseInt(auxEstantes[3]));
+				Estante estante = new Estante();				
+				estante.setId(rS.getInt("id"));
+				estante.setLivros(livroDao.pegarLivrosCadastrados(rS.getInt("id")));
+				estante.setNome(rS.getString("nome"));
+				estante.setCoordenadaX(rS.getInt("coordenadax"));
+				estante.setCoordenadaY(rS.getInt("coordenaday"));
+				estante.setVertical(rS.getBoolean("vertical"));
 
 				arrayEstantes.add(estante);
-				itensEstante = "";
 
 			}
 
@@ -107,12 +100,13 @@ public class EstanteDao {
 		return numRow;
 	}
 
-	public void atualizarCoordenadas(String referencia, int coordenadaX, int coordenadaY) {
+	public void atualizarCoordenadas(String referencia, int coordenadaX, int coordenadaY, boolean vertical) {
 		try {
-			stmt = con.prepareStatement("update estante set coordenadax = ?, coordenaday = ? where nome = ?");
+			stmt = con.prepareStatement("update estante set coordenadax = ?, coordenaday = ?, vertical = ? where nome = ?");
 			stmt.setInt(1, coordenadaX);
 			stmt.setInt(2, coordenadaY);
-			stmt.setString(3, referencia);
+			stmt.setBoolean(3, vertical);
+			stmt.setString(4, referencia);
 
 			stmt.executeUpdate();
 		} catch (SQLException e) {
@@ -180,8 +174,8 @@ public class EstanteDao {
 		
 		try {
 			stmt = con.prepareStatement("update estante set coordenadax = ?, coordenaday = ?");
-			stmt.setNull(1, java.sql.Types.INTEGER);
-			stmt.setNull(2, java.sql.Types.INTEGER);
+			stmt.setInt(1, 0);
+			stmt.setInt(2, 0);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

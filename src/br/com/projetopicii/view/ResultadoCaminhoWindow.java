@@ -83,11 +83,18 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 
 			estanteBiblioteca = new EstanteBiblioteca();
 			estanteBiblioteca.setBackground(Color.WHITE);
-			estanteBiblioteca.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, false));
-			estanteBiblioteca.setBounds(arrayEstantes.get(i).getCoordenadaX(), arrayEstantes.get(i).getCoordenadaY(),
-					110, 40);
+			estanteBiblioteca.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, false));			
 			estanteBiblioteca.setThisPanel(estanteBiblioteca);
 			estanteBiblioteca.setReferencia(arrayEstantes.get(i).getNome());
+			
+			if(arrayEstantes.get(i).isVertical()) {
+				estanteBiblioteca.setBounds(arrayEstantes.get(i).getCoordenadaX(), arrayEstantes.get(i).getCoordenadaY(),
+						40, 110);
+				estanteBiblioteca.setVertical(true);
+			} else {
+				estanteBiblioteca.setBounds(arrayEstantes.get(i).getCoordenadaX(), arrayEstantes.get(i).getCoordenadaY(),
+						110, 40);				
+			}
 
 			getContentPane().add(estanteBiblioteca);
 			hashDeEstantes.put(arrayEstantes.get(i).getId(), estanteBiblioteca);
@@ -134,11 +141,11 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 	// Vermelho = estantes a serem seguidas até a estante azul.
 	private void pintarEstantes() {		
 		
-		hashDeEstantes.get(idEstanteAlvo).setBackground(Color.BLUE);
+		hashDeEstantes.get(idEstanteAlvo).setBackground(Color.blue);
 
 		for (int i = 0; i < idsPintar.size(); i++) {
 
-			hashDeEstantes.get(idsPintar.get(i)).setBackground(Color.RED);
+			hashDeEstantes.get(idsPintar.get(i)).setBackground(Color.red);
 		}
 	}
 

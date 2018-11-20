@@ -137,9 +137,10 @@ public class CriarBibliotecaWindow extends AbstractWindowFrame {
 					for (int i = 0; i < listaDeEstantes.size(); i++) {
 						int coordenadaX = listaDeEstantes.get(referencias[i]).getPosicaoEstante().getX();
 						int coordenadaY = listaDeEstantes.get(referencias[i]).getPosicaoEstante().getY();
+						boolean vertical = listaDeEstantes.get(referencias[i]).isVertical();
 
 						try {
-							estanteDao.atualizarCoordenadas(referencias[i], coordenadaX, coordenadaY);
+							estanteDao.atualizarCoordenadas(referencias[i], coordenadaX, coordenadaY, vertical);
 						} catch(Exception e1) {
 							JOptionPane.showMessageDialog(rootPane, "Ocorreu um erro ao tentar salvar as estantes",
 									"", JOptionPane.ERROR_MESSAGE, null);

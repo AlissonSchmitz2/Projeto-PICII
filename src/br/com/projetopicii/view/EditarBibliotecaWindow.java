@@ -141,15 +141,23 @@ public class EditarBibliotecaWindow extends AbstractWindowFrame {
 			estanteBiblioteca = new EstanteBibliotecaEdicao();
 			estanteBiblioteca.setBackground(Color.WHITE);
 			estanteBiblioteca.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, false));
-			estanteBiblioteca.setBounds(arrayEstantesAntigas.get(i).getCoordenadaX(),
-					arrayEstantesAntigas.get(i).getCoordenadaY(), 110, 40);
-			estanteBiblioteca.getPosicaoEstante().setX(arrayEstantesAntigas.get(i).getCoordenadaX());
-			estanteBiblioteca.getPosicaoEstante().setY(arrayEstantesAntigas.get(i).getCoordenadaY());
 			estanteBiblioteca.setThisPanel(estanteBiblioteca);
 			estanteBiblioteca.setReferencia(arrayEstantesAntigas.get(i).getNome());
 			estanteBiblioteca.ativarCliqueMouse();
 			estanteBiblioteca.ativarMovimentoMouse();
 			estanteBiblioteca.setEditarBibliotecaWindow(this);
+			
+			if(arrayEstantesAntigas.get(i).isVertical()) {
+				estanteBiblioteca.setBounds(arrayEstantesAntigas.get(i).getCoordenadaX(),
+						arrayEstantesAntigas.get(i).getCoordenadaY(), 40, 110);
+			} else {
+				estanteBiblioteca.setBounds(arrayEstantesAntigas.get(i).getCoordenadaX(),
+						arrayEstantesAntigas.get(i).getCoordenadaY(), 110, 40);
+			}
+			
+			estanteBiblioteca.getPosicaoEstante().setX(arrayEstantesAntigas.get(i).getCoordenadaX());
+			estanteBiblioteca.getPosicaoEstante().setY(arrayEstantesAntigas.get(i).getCoordenadaY());
+			estanteBiblioteca.setVertical(arrayEstantesAntigas.get(i).isVertical());
 
 			getContentPane().add(estanteBiblioteca);
 
@@ -171,9 +179,10 @@ public class EditarBibliotecaWindow extends AbstractWindowFrame {
 				for (int i = 0; i < listaDeEstantes.size(); i++) {
 					int coordenadaX = listaDeEstantes.get(arrayAuxReferencias.get(i)).getPosicaoEstante().getX();
 					int coordenadaY = listaDeEstantes.get(arrayAuxReferencias.get(i)).getPosicaoEstante().getY();
+					boolean vertical = listaDeEstantes.get(arrayAuxReferencias.get(i)).isVertical();
 
 					try {
-						estanteDao.atualizarCoordenadas(arrayAuxReferencias.get(i), coordenadaX, coordenadaY);
+						estanteDao.atualizarCoordenadas(arrayAuxReferencias.get(i), coordenadaX, coordenadaY, vertical);
 					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(rootPane, "Ocorreu um erro ao tentar salvar as estantes", "",
 								JOptionPane.ERROR_MESSAGE, null);
