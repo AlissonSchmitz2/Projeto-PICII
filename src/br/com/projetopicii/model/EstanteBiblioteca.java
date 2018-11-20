@@ -138,8 +138,8 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
 								: this.getX()));
 
 				// Limite superior.
-				this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());
-				this.getPosicaoEstante().setY((this.getY() < 10) ? 10 : this.getY());
+				this.setLocation(this.getX(), this.getY() < 212 ? 212 : this.getY());
+				this.getPosicaoEstante().setY((this.getY() < 212) ? 212 : this.getY());
 
 				// Limite inferior
 				this.setLocation(this.getX(),
@@ -162,8 +162,8 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
 						(int) ((this.getX() > screenSize.getWidth() - 50) ? screenSize.getWidth() - 60 : this.getX()));
 
 				// Limite superior.
-				this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());
-				this.getPosicaoEstante().setY((this.getY() < 10) ? 10 : this.getY());
+				this.setLocation(this.getX(), this.getY() < 212 ? 212 : this.getY());
+				this.getPosicaoEstante().setY((this.getY() < 212) ? 212 : this.getY());
 
 				// Limite inferior
 				this.setLocation(this.getX(),
@@ -190,8 +190,8 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
 								: this.getX()));
 
 				// Limite superior.
-				this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());
-				this.getPosicaoEstante().setY((this.getY() < 10) ? 10 : this.getY());
+				this.setLocation(this.getX(), this.getY() < 212 ? 212 : this.getY());
+				this.getPosicaoEstante().setY((this.getY() < 212) ? 212 : this.getY());
 
 				// Limite inferior
 				this.setLocation(this.getX(),
@@ -214,8 +214,8 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
 						(int) ((this.getX() > screenSize.getWidth() - 50) ? screenSize.getWidth() - 60 : this.getX()));
 
 				// Limite superior.
-				this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());
-				this.getPosicaoEstante().setY((this.getY() < 10) ? 10 : this.getY());
+				this.setLocation(this.getX(), this.getY() < 212 ? 212 : this.getY());
+				this.getPosicaoEstante().setY((this.getY() < 212) ? 212 : this.getY());
 
 				// Limite inferior
 				this.setLocation(this.getX(),
@@ -250,9 +250,9 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
 
 					// Mantém a estante vertical caso ela seja posicionada assim.
 					if (vertical) {
-						setBounds(200, 70, thisPanel.getWidth(), thisPanel.getHeight());
+						setBounds(200, 220, thisPanel.getWidth(), thisPanel.getHeight());
 					} else {
-						setBounds(200, 70, 110, 45);
+						setBounds(200, 220, 110, 45);
 					}
 
 					criarBibliotecaWindow.getContentPane().add(thisPanel);

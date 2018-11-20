@@ -54,7 +54,7 @@ public class ListarEstantesWindow extends AbstractGridWindow {
 	private List<Estante> listaEstantes = new ArrayList<Estante>();
 	
 	public ListarEstantesWindow(JDesktopPane desktop) {
-		super("Lista de estantes");
+		super("Lista de Estantes");
 
 		this.desktop = desktop;
 		criarComponentes();

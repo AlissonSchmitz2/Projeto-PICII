@@ -3,7 +3,6 @@ package br.com.projetopicii.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -47,16 +46,15 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	// Auxiliar
-	private JPanel jPanelAux;
+	private JPanel jPanelDesejada;
+	private JPanel jPanelSugeridas;
+	private JPanel jPanelBalao;
 	private JLabel jLabelAux;
-
-	// Fundo Biblioteca.
-	private Image fundoBiblioteca;
 
 	public ResultadoCaminhoWindow(String tituloSelecionado) {
 
 		// TODO: Pensar em um nome melhor para a tela.	
-		super("Menor e Melhor Caminho");
+		super("Resultado da Pesquisa");
 		
 		arrayEstantes = estanteDao.pegarArrayEstantes(false);
 		terminal = terminalDao.pegarTerminal();
@@ -66,8 +64,6 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 
 		// TODO: Utilizar o dijkstra para recuperar os ids das estantes que devem ser pintadas.
 		// idsPintar = Dijkstra;
-
-		this.fundoBiblioteca = ImageController.FundoBiblioteca.getImage();
 
 		super.setContentPane(new NewContentPane());
 		setLayout(null);
@@ -103,23 +99,33 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 		terminalPesquisa = new TerminalPesquisa();
 		terminalPesquisa.setarTerminal(this, terminal.getCoordenadaX(), terminal.getCoordenadaY());
 		
-		jLabelAux = new JLabel("Estantes Sugeridas");
-		jLabelAux.setBounds(120, 62, 125, 25);
-		getContentPane().add(jLabelAux);
+		jPanelBalao = new NewContentPane2();
+		jPanelBalao.setBounds(120, 10, 330, 215);
+		jPanelBalao.setOpaque(false);
+		jPanelBalao.setLayout(null);
+		getContentPane().add(jPanelBalao);
 		
-		jPanelAux = new JPanel();
-		jPanelAux.setBounds(80, 65, 30, 20);
-		jPanelAux.setBackground(Color.RED);
-		getContentPane().add(jPanelAux);
+		jLabelAux = new JLabel("Estantes Sugeridas");
+		jLabelAux.setBounds(115, 42, 125, 35);
+		
+		jPanelSugeridas = new JPanel();
+		jPanelSugeridas.setLayout(null);
+		jPanelSugeridas.setBounds(65, 50, 40, 20);
+		jPanelSugeridas.setBackground(new Color(255, 85, 85));
+		
+		jPanelBalao.add(jPanelSugeridas);
+		jPanelBalao.add(jLabelAux);
 		
 		jLabelAux = new JLabel("Estante Desejada");
-		jLabelAux.setBounds(120, 102, 125, 25);
-		getContentPane().add(jLabelAux);
+		jLabelAux.setBounds(115, 82, 125, 35);
 		
-		jPanelAux = new JPanel();
-		jPanelAux.setBounds(80, 105, 30, 20);
-		jPanelAux.setBackground(Color.BLUE);
-		getContentPane().add(jPanelAux);
+		jPanelDesejada = new JPanel();
+		jPanelDesejada.setLayout(null);
+		jPanelDesejada.setBounds(65, 90, 40, 20);
+		jPanelDesejada.setBackground(new Color(39, 248, 75));
+		
+		jPanelBalao.add(jPanelDesejada);
+		jPanelBalao.add(jLabelAux);
 		
 		pintarEstantes();
 
@@ -131,7 +137,17 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 		protected void paintComponent(final Graphics g) {
 
 			super.paintComponent(g);
-			g.drawImage(fundoBiblioteca, 0, 0, this);
+			g.drawImage(ImageController.FundoBiblioteca.getImage(), 0, 0, this);
+		}
+	}
+	
+	@SuppressWarnings("serial")
+	private class NewContentPane2 extends JPanel {
+
+		protected void paintComponent(final Graphics g) {
+
+			super.paintComponent(g);
+			g.drawImage(ImageController.balaoResultado.getImage(), 0, 0, this);
 		}
 	}
 
@@ -141,11 +157,11 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 	// Vermelho = estantes a serem seguidas até a estante azul.
 	private void pintarEstantes() {		
 		
-		hashDeEstantes.get(idEstanteAlvo).setBackground(Color.blue);
+		hashDeEstantes.get(idEstanteAlvo).setBackground(new Color(39, 248, 75));
 
 		for (int i = 0; i < idsPintar.size(); i++) {
 
-			hashDeEstantes.get(idsPintar.get(i)).setBackground(Color.red);
+			hashDeEstantes.get(idsPintar.get(i)).setBackground(new Color(255, 85, 85));
 		}
 	}
 

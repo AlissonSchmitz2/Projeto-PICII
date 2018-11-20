@@ -117,8 +117,8 @@ public class TerminalPesquisa extends JLabel implements MouseListener, MouseMoti
 	        this.getPosicaoTerminal().setX( (int) ((this.getX() > screenSize.getWidth() - 80) ? screenSize.getWidth() - 110 : this.getX()));
 	        
 	        //Limite superior.        
-	        this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());	
-	        this.getPosicaoTerminal().setY( (this.getY() < 10) ? 10 : this.getY()); 
+	        this.setLocation(this.getX(), this.getY() < 198 ? 198 : this.getY());	
+	        this.getPosicaoTerminal().setY( (this.getY() < 198) ? 198 : this.getY()); 
 	        
 	        //Limite inferior        
 	        this.setLocation(this.getX(), (int) (this.getY() > screenSize.getHeight() - 185 ? screenSize.getHeight() - 200 : this.getY()));	
@@ -133,8 +133,8 @@ public class TerminalPesquisa extends JLabel implements MouseListener, MouseMoti
             this.getPosicaoTerminal().setX( (int) ((this.getX() > screenSize.getWidth() - 80) ? screenSize.getWidth() - 110 : this.getX()));
             
             //Limite superior.        
-            this.setLocation(this.getX(), this.getY() < 10 ? 10 : this.getY());	
-            this.getPosicaoTerminal().setY( (this.getY() < 10) ? 10 : this.getY()); 
+            this.setLocation(this.getX(), this.getY() < 198 ? 198 : this.getY());	
+            this.getPosicaoTerminal().setY( (this.getY() < 198) ? 198 : this.getY()); 
             
             //Limite inferior        
             this.setLocation(this.getX(), (int) (this.getY() > screenSize.getHeight() - 185 ? screenSize.getHeight() - 200 : this.getY()));	

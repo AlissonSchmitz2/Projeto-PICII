@@ -58,7 +58,7 @@ public class ListarUsuariosWindow extends AbstractGridWindow {
 	private List<Usuario> listaUsuarios = new ArrayList<Usuario>();
 	
 	public ListarUsuariosWindow(JDesktopPane desktop) {
-		super("Lista de usuarios");
+		super("Lista de Usuários");
 
 		this.desktop = desktop;
 		criarComponentes();

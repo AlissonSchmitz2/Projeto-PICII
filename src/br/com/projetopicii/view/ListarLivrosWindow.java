@@ -54,7 +54,7 @@ public class ListarLivrosWindow extends AbstractGridWindow{
 	private List<Livro> listaLivros = new ArrayList<Livro>();
 	
 	public ListarLivrosWindow(JDesktopPane desktop) {
-		super("Lista de livros");
+		super("Lista de Livros");
 
 		this.desktop = desktop;
 		criarComponentes();
