@@ -24,13 +24,15 @@ public class CriarBibliotecaWindow extends AbstractWindowFrame {
 	private JLabel labelBalao2;
 	private JLabel labelBalao3;
 
-	// Auxiliares do tutorial.
+	// Auxiliares
 	private boolean informacao1 = true;
 	private boolean informacao2 = true;
+	private boolean painelVisivel = true;
 
 	// Botões.
 	private JButton btnFimTutorial;
 	private JButton btnSalvar;
+	private JButton btnOcultarPainel;
 
 	// Classe que faz conexão com banco.
 	private static EstanteDao estanteDao = new EstanteDao();
@@ -165,6 +167,55 @@ public class CriarBibliotecaWindow extends AbstractWindowFrame {
 		});
 		btnSalvar.setBounds((int) screenSize.getWidth() - 150, 160, 130, 25);
 		getContentPane().add(btnSalvar);
+		
+		btnOcultarPainel = new JButton(new AbstractAction("Ocultar Painel") {
+			private static final long serialVersionUID = 6168373527954185392L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if(painelVisivel) {
+					
+					for(int i = 0; i < listaDeEstantes.size(); i++) {
+						
+						if(listaDeEstantes.get(referencias[i]).getPosicaoEstante().getX() < 162 
+								&& listaDeEstantes.get(referencias[i]).getPosicaoEstante().getX() != 0) {
+							listaDeEstantes.get(referencias[i]).setVisible(true);
+						}
+					}
+					
+					if(terminalPesquisa.getPosicaoTerminal().getX() < 162) {
+						terminalPesquisa.setVisible(true);
+					}
+					
+					getContentPane().remove(scrollPane);	
+					repaint();
+					painelVisivel = false;
+					btnOcultarPainel.setText("Mostrar Painel");
+					btnOcultarPainel.setToolTipText("Abrir painel de estantes");
+				} else {
+					
+					for(int i = 0; i < listaDeEstantes.size(); i++) {
+						
+						if(listaDeEstantes.get(referencias[i]).getPosicaoEstante().getX() < 162
+								&& listaDeEstantes.get(referencias[i]).getPosicaoEstante().getX() != 0) {
+							listaDeEstantes.get(referencias[i]).setVisible(false);
+						}
+					}
+					
+					if(terminalPesquisa.getPosicaoTerminal().getX() < 162) {
+						terminalPesquisa.setVisible(false);
+					}
+					
+					getContentPane().add(scrollPane);
+					repaint();
+					btnOcultarPainel.setText("Ocultar Painel");
+					btnOcultarPainel.setToolTipText("Esconder painel de estantes");						
+					painelVisivel = true;
+				}				
+			}
+		});
+		btnOcultarPainel.setBounds(180, 160, 120, 25);
 
 		// COMPONENTES DO TUTORIAL.
 
@@ -216,7 +267,7 @@ public class CriarBibliotecaWindow extends AbstractWindowFrame {
 	}
 
 	public void removerInformacao1() {
-		getContentPane().remove(labelBalao1);
+		getContentPane().remove(labelBalao1);		
 	}
 
 	public boolean isInformacao2() {
@@ -225,6 +276,7 @@ public class CriarBibliotecaWindow extends AbstractWindowFrame {
 
 	public void setInformacao2(boolean informacao2) {
 		this.informacao2 = informacao2;
+		getContentPane().add(btnOcultarPainel);
 	}
 
 	public void inserirInformacao2() {
@@ -252,6 +304,27 @@ public class CriarBibliotecaWindow extends AbstractWindowFrame {
 	public void removerPainelEstantes() {
 		getContentPane().remove(scrollPane);
 		this.repaint();
+	}
+	
+	public void removerBotaoPainel() {
+		
+		for(int i = 0; i < listaDeEstantes.size(); i++) {
+			
+			if(!listaDeEstantes.get(referencias[i]).isVisible()) {
+				listaDeEstantes.get(referencias[i]).setVisible(true);
+			}
+		}
+		
+		if(!terminalPesquisa.isVisible()) {
+			terminalPesquisa.setVisible(true);
+		}
+		
+		getContentPane().remove(btnOcultarPainel);
+		repaint();
+	}
+	
+	public boolean getPainelVisivel() {
+		return painelVisivel;
 	}
 	
 }

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import br.com.projetopicii.model.EstanteBiblioteca;
@@ -44,6 +45,10 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 
 	// Tamanho da tela.
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	
+	// Auxiliar
+	private JPanel jPanelAux;
+	private JLabel jLabelAux;
 
 	// Fundo Biblioteca.
 	private Image fundoBiblioteca;
@@ -60,6 +65,7 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 		idEstanteAlvo = livroDao.pegarIdEstante(tituloSelecionado);
 
 		// TODO: Utilizar o dijkstra para recuperar os ids das estantes que devem ser pintadas.
+		// idsPintar = Dijkstra;
 
 		this.fundoBiblioteca = ImageController.FundoBiblioteca.getImage();
 
@@ -89,6 +95,24 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 		
 		terminalPesquisa = new TerminalPesquisa();
 		terminalPesquisa.setarTerminal(this, terminal.getCoordenadaX(), terminal.getCoordenadaY());
+		
+		jLabelAux = new JLabel("Estantes Sugeridas");
+		jLabelAux.setBounds(120, 62, 125, 25);
+		getContentPane().add(jLabelAux);
+		
+		jPanelAux = new JPanel();
+		jPanelAux.setBounds(80, 65, 30, 20);
+		jPanelAux.setBackground(Color.RED);
+		getContentPane().add(jPanelAux);
+		
+		jLabelAux = new JLabel("Estante Desejada");
+		jLabelAux.setBounds(120, 102, 125, 25);
+		getContentPane().add(jLabelAux);
+		
+		jPanelAux = new JPanel();
+		jPanelAux.setBounds(80, 105, 30, 20);
+		jPanelAux.setBackground(Color.BLUE);
+		getContentPane().add(jPanelAux);
 		
 		pintarEstantes();
 

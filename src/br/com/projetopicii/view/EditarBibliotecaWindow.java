@@ -29,6 +29,10 @@ public class EditarBibliotecaWindow extends AbstractWindowFrame {
 
 	// Botões.
 	private JButton btnSalvar;
+	private JButton btnOcultarPainel;
+	
+	// Auxilar
+	private boolean painelVisivel;
 
 	// Classe que faz conexão com banco.
 	private static EstanteDao estanteDao;
@@ -40,7 +44,7 @@ public class EditarBibliotecaWindow extends AbstractWindowFrame {
 
 	// HashMap: Key -> Referência da estante / Value -> Objeto estante.
 	private HashMap<String, EstanteBibliotecaEdicao> listaDeEstantes;
-
+	
 	// Estantes.
 	private EstanteBibliotecaEdicao estanteBiblioteca;
 	private ArrayList<Estante> arrayEstantesAntigas;
@@ -127,6 +131,8 @@ public class EditarBibliotecaWindow extends AbstractWindowFrame {
 			scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 			scrollPane.setBounds(0, 0, 160, screenSize.height - 105);
 			getContentPane().add(scrollPane);
+			
+			painelVisivel = true;
 		}
 
 		// Posiciona as estantes antigas na tela.
@@ -190,16 +196,94 @@ public class EditarBibliotecaWindow extends AbstractWindowFrame {
 			}
 		});
 		btnSalvar.setBounds((int) screenSize.getWidth() - 150, 160, 130, 25);
+		btnSalvar.setToolTipText("Salvar alterações");
 		getContentPane().add(btnSalvar);
+		
+		if(painelVisivel) {			
+			btnOcultarPainel = new JButton(new AbstractAction("Ocultar Painel") {
+				private static final long serialVersionUID = -8738313098464987940L;
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					if(painelVisivel) {
+						
+						for(int i = 0; i < listaDeEstantes.size(); i++) {
+							
+							if(listaDeEstantes.get(arrayAuxReferencias.get(i)).getPosicaoEstante().getX() < 162 
+									&& listaDeEstantes.get(arrayAuxReferencias.get(i)).getPosicaoEstante().getX() != 0) {
+								listaDeEstantes.get(arrayAuxReferencias.get(i)).setVisible(true);
+							}
+						}
+						
+						if(terminalPesquisa.getPosicaoTerminal().getX() < 162) {
+							terminalPesquisa.setVisible(true);
+						}
+						
+						getContentPane().remove(scrollPane);	
+						repaint();
+						painelVisivel = false;
+						btnOcultarPainel.setText("Mostrar Painel");
+						btnOcultarPainel.setToolTipText("Abrir painel de estantes");
+					} else {
+						
+						for(int i = 0; i < listaDeEstantes.size(); i++) {
+							
+							if(listaDeEstantes.get(arrayAuxReferencias.get(i)).getPosicaoEstante().getX() < 162
+									&& listaDeEstantes.get(arrayAuxReferencias.get(i)).getPosicaoEstante().getX() != 0) {
+								listaDeEstantes.get(arrayAuxReferencias.get(i)).setVisible(false);
+							}
+						}
+						
+						if(terminalPesquisa.getPosicaoTerminal().getX() < 162) {
+							terminalPesquisa.setVisible(false);
+						}
+						
+						getContentPane().add(scrollPane);
+						repaint();
+						btnOcultarPainel.setText("Ocultar Painel");
+						btnOcultarPainel.setToolTipText("Esconder painel de estantes");						
+						painelVisivel = true;
+					}
+				}
+			});
+			btnOcultarPainel.setBounds(180, 160, 120, 25);
+			getContentPane().add(btnOcultarPainel);
+		}
+		
 	}
 
+	public boolean getPainelVisivel() {
+		return painelVisivel;
+	}
+	
 	public int getComponentCount_PainelEstantes() {
 		return painelEstantes.getComponentCount();
 	}
 
 	public void removerPainelEstantes() {
-		getContentPane().remove(scrollPane);
-		this.repaint();
+		if(scrollPane != null) {
+			getContentPane().remove(scrollPane);
+			this.repaint();
+		}
+	}
+	
+	public void removerBotaoPainel() {
+		if(btnOcultarPainel != null) {
+			for(int i = 0; i < listaDeEstantes.size(); i++) {
+				
+				if(!listaDeEstantes.get(arrayAuxReferencias.get(i)).isVisible()) {
+					listaDeEstantes.get(arrayAuxReferencias.get(i)).setVisible(true);
+				}
+			}
+			
+			if(!terminalPesquisa.isVisible()) {
+				terminalPesquisa.setVisible(true);
+			}
+			
+			getContentPane().remove(btnOcultarPainel);
+			repaint();
+		}
 	}
 
 	@SuppressWarnings("serial")

@@ -144,6 +144,7 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 		});
 		btnBuscar.setBounds((int) (screenSize.getWidth() / 2) + 230, (int) (screenSize.getHeight() / 2) - 270, 90, 25);
 		btnBuscar.addKeyListener(acao);
+		btnBuscar.setToolTipText("Buscar a informação digitada");
 		getContentPane().add(btnBuscar);
 
 		btnLimpar = new JButton(new AbstractAction("Limpar") {
@@ -154,9 +155,14 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 
 				txfBusca.setText("");
 				txfBusca.requestFocus();
+				arrayLivros.clear();
+				arrayLivros = livroDao.pegarLivrosCadastrados();
+				((LivrosTableModel) livrosTableModel).limpar();
+				((LivrosTableModel) livrosTableModel).addRow(arrayLivros);
 			}
 		});
 		btnLimpar.setBounds((int) (screenSize.getWidth() / 2) + 330, (int) (screenSize.getHeight() / 2) - 270, 90, 25);
+		btnLimpar.setToolTipText("Limpar a busca e recuperar todo o acervo");
 		getContentPane().add(btnLimpar);
 
 		btnGerarLocalizacao = new JButton(new AbstractAction("Gerar Localização") {
@@ -164,7 +170,6 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO: Abrir a tela do caminho a ser seguido com as estantes pintadas.
 				frameResultadoCaminhoWindow = new ResultadoCaminhoWindow(tituloSelecionado);
 				abrirFrame(frameResultadoCaminhoWindow);
 			}
@@ -172,6 +177,7 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 		btnGerarLocalizacao.setBounds((int) (screenSize.getWidth() / 2) + 255, (int) (screenSize.getHeight() / 2) - 235,
 				150, 25);
 		btnGerarLocalizacao.setEnabled(false);
+		btnGerarLocalizacao.setToolTipText("Encontrar a estante do livro selecionado");
 		getContentPane().add(btnGerarLocalizacao);
 
 		labelDescricao = new JLabel("Título");
@@ -240,8 +246,6 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-
-					// TODO: Abrir a tela do caminho a ser seguido com as estantes pintadas.
 					frameResultadoCaminhoWindow = new ResultadoCaminhoWindow(tituloSelecionado);
 					abrirFrame(frameResultadoCaminhoWindow);
 				}

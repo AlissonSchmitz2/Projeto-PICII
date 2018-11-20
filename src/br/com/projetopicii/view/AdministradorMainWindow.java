@@ -188,6 +188,7 @@ public class AdministradorMainWindow extends JFrame {
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
+				desktop.removeAll();
 				frameBuscarLivrosWindow = new BuscarLivrosWindow(desktop);
 				abrirFrame(frameBuscarLivrosWindow);
 			}
@@ -270,7 +271,9 @@ public class AdministradorMainWindow extends JFrame {
 
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO: Abrir janela para edição da biblioteca.
+				if(frameEditarBiblioteca != null) {
+					desktop.remove(frameEditarBiblioteca);
+				}
 				frameEditarBiblioteca = new EditarBibliotecaWindow();
 				abrirFrame(frameEditarBiblioteca);
 

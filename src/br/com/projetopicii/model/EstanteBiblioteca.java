@@ -121,7 +121,7 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
 
 	private void verificarLimites() {
 
-		if (criarBibliotecaWindow.getComponentCount_PainelEstantes() != 0) {
+		if (criarBibliotecaWindow.getComponentCount_PainelEstantes() != 0 && criarBibliotecaWindow.getPainelVisivel()) {
 
 			if (!ativarMovimentoMouse && !vertical) {
 
@@ -259,6 +259,7 @@ public class EstanteBiblioteca extends JPanel implements MouseListener, MouseMot
 
 					if (criarBibliotecaWindow.getComponentCount_PainelEstantes() == 0) {
 						criarBibliotecaWindow.removerPainelEstantes();
+						criarBibliotecaWindow.removerBotaoPainel();
 					}
 
 					posicaoEstante.setX(200);

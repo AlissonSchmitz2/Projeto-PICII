@@ -10,7 +10,7 @@ public class ImageController extends ImageIcon {
 	public static final ImageController informacao2 = ImageLoad("tutorial/Informação2.png");
 
 	public static final ImageController informacao3 = ImageLoad("tutorial/Informação3.png");
-
+	
 	public static final ImageController FundoBiblioteca = ImageLoad("biblioteca/FundoBiblioteca.png");
 
 	public static final ImageController TerminalPesquisa = ImageLoad("biblioteca/TerminalPesquisa.png");

@@ -103,8 +103,11 @@ public class TerminalPesquisa extends JLabel implements MouseListener, MouseMoti
     
     private void verificarLimites() {
     	
-    	if(criarBibliotecaWindow != null ? criarBibliotecaWindow.getComponentCount_PainelEstantes() != 0 
-    			: editarBibliotecaWindow.getComponentCount_PainelEstantes() != 0) {
+		if (criarBibliotecaWindow != null
+				? criarBibliotecaWindow.getComponentCount_PainelEstantes() != 0
+						&& criarBibliotecaWindow.getPainelVisivel()
+				: editarBibliotecaWindow.getComponentCount_PainelEstantes() != 0
+						&& editarBibliotecaWindow.getPainelVisivel()) {
 	    	//Limite lado esquerdo.
 	        this.setLocation ((int) ( (this.getX() < 162) ? 180 : this.getX()), this.getY());
 	        this.getPosicaoTerminal().setX((this.getX() < 162) ? 180 : this.getX());

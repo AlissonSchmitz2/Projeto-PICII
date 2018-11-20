@@ -101,7 +101,8 @@ public class MainWindow extends JFrame {
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				frameBuscarLivrosWindow = new BuscarLivrosWindow(desktop);
+				desktop.removeAll();
+				frameBuscarLivrosWindow = new BuscarLivrosWindow(desktop);				
 				abrirFrame(frameBuscarLivrosWindow);
 			}
 		});

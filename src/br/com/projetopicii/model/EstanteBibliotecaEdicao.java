@@ -113,7 +113,7 @@ public class EstanteBibliotecaEdicao extends JPanel implements MouseListener, Mo
 
 	private void verificarLimites() {
 
-		if (editarBibliotecaWindow.getComponentCount_PainelEstantes() != 0) {
+		if (editarBibliotecaWindow.getComponentCount_PainelEstantes() != 0 && editarBibliotecaWindow.getPainelVisivel()) {
 
 			if (!ativarMovimentoMouse && !vertical) {
 
@@ -244,6 +244,7 @@ public class EstanteBibliotecaEdicao extends JPanel implements MouseListener, Mo
 
 					if (editarBibliotecaWindow.getComponentCount_PainelEstantes() == 0) {
 						editarBibliotecaWindow.removerPainelEstantes();
+						editarBibliotecaWindow.removerBotaoPainel();
 					}
 
 					posicaoEstante.setX(200);
