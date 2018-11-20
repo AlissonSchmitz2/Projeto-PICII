@@ -20,11 +20,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import br.com.projetopicii.model.bean.Livro;
-import br.com.projetopicii.model.bean.Usuario;
 import br.com.projetopicii.model.dao.LivroDao;
-import br.com.projetopicii.model.dao.UsuarioDao;
 import br.com.projetopicii.table.model.LivroTableModel;
-import br.com.projetopicii.table.model.UsuarioTableModel;
 
 public class ListarLivrosWindow extends AbstractGridWindow{
 	/**

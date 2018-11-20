@@ -170,6 +170,9 @@ public class AdministradorMainWindow extends JFrame {
 
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(frameListarUsuarios != null) {
+					desktop.remove(frameListarUsuarios);
+				}
 				frameListarUsuarios = new ListarUsuariosWindow(desktop);
 				abrirFrame(frameListarUsuarios);
 				
@@ -221,6 +224,9 @@ public class AdministradorMainWindow extends JFrame {
 
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(frameListarEstantes != null) {
+					desktop.remove(frameListarEstantes);
+				}
 				frameListarEstantes = new ListarEstantesWindow(desktop);
 				abrirFrame(frameListarEstantes);
 				
@@ -253,6 +259,9 @@ public class AdministradorMainWindow extends JFrame {
 
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(frameListarLivros != null) {
+					desktop.remove(frameListarLivros);
+				}
 				frameListarLivros = new ListarLivrosWindow(desktop);
 				abrirFrame(frameListarLivros);
 				

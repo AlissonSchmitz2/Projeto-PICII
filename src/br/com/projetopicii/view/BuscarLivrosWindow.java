@@ -90,7 +90,6 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 		arrayLivros = livroDao.pegarLivrosCadastrados();
 		((LivrosTableModel) livrosTableModel).limpar();
 		((LivrosTableModel) livrosTableModel).addRow(arrayLivros);
-		
 		this.desktop = desktop;
 
 		criarComponentes();

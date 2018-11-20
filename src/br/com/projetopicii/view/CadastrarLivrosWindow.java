@@ -21,7 +21,7 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 	private static final long serialVersionUID = -8924865338524496408L;
 
 	private JLabel labes;
-	private JTextField txfTitulo, txfAutor, txfGenero;
+	private JTextField txfTitulo, txfAutor, txfGenero, txfIdioma;
 	private JFormattedTextField txfAnoLancamento, txfNumeroPag;
 	private JComboBox<String> cbxEstantes;
 	private JButton btnLimpar, btnSalvar;
@@ -89,8 +89,17 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 			e1.printStackTrace();
 			}
 		
-		labes = new JLabel("Estante");
+		labes = new JLabel("Idioma");
 		labes.setBounds(15, 260, 250, 25);
+		getContentPane().add(labes);
+		
+		txfIdioma = new JTextField();
+		txfIdioma.setBounds(15, 280, 200, 25);
+		txfIdioma.setToolTipText("Informe o idioma");
+		getContentPane().add(txfIdioma);
+		
+		labes = new JLabel("Estante");
+		labes.setBounds(15, 310, 250, 25);
 		getContentPane().add(labes);
 		
 		cbxEstantes = new JComboBox<>();
@@ -102,11 +111,11 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 			
 			cbxEstantes.addItem(nomeEstantes[i]);
 		}
-		cbxEstantes.setBounds(15, 280, 200, 25);
+		cbxEstantes.setBounds(15, 330, 200, 25);
 		getContentPane().add(cbxEstantes);
 		
 		btnSalvar = new JButton("Salvar");
-		btnSalvar.setBounds(15, 330, 95, 25);
+		btnSalvar.setBounds(15, 380, 95, 25);
 		btnSalvar.setToolTipText("Clique aqui para salvar");
 		getContentPane().add(btnSalvar);
 		btnSalvar.addActionListener(new ActionListener() {
@@ -118,7 +127,7 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 		});
 		
 		btnLimpar = new JButton("Limpar");
-		btnLimpar.setBounds(120, 330, 95, 25);
+		btnLimpar.setBounds(120, 380, 95, 25);
 		btnLimpar.setToolTipText("Clique aqui para limpar o campo");
 		getContentPane().add(btnLimpar);
 		btnLimpar.addActionListener(new ActionListener() {
@@ -143,7 +152,7 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 			int idEstante = estanteDao.pegarIdEstante(cbxEstantes.getSelectedItem().toString());
 			
 			livroDao.cadastrarLivro(txfTitulo.getText(), txfAutor.getText(), txfGenero.getText(),
-					Integer.parseInt(txfAnoLancamento.getText().trim()), Integer.parseInt(txfNumeroPag.getText().trim()), idEstante);
+					Integer.parseInt(txfAnoLancamento.getText().trim()), Integer.parseInt(txfNumeroPag.getText().trim()), idEstante, txfIdioma.getText());
 			
 			JOptionPane.showMessageDialog(null, "Livro salvo com sucesso!");
 			limparCampos();
@@ -157,7 +166,7 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 	private boolean validarCampos() {
 		if(txfTitulo.getText().isEmpty() || txfAutor.getText().isEmpty() || txfGenero.getText().isEmpty()
 				|| txfAnoLancamento.getText().trim().isEmpty() || txfNumeroPag.getText().trim().isEmpty() || 
-				cbxEstantes.getSelectedItem().toString().equals("-Selecione-")) {
+				cbxEstantes.getSelectedItem().toString().equals("-Selecione-") || txfIdioma.getText().isEmpty()) {
 			return true;
 		}
 		
@@ -171,5 +180,6 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 		txfAnoLancamento.setText("");
 		txfNumeroPag.setText("");
 		cbxEstantes.setSelectedItem("-Selecione-");
+		txfIdioma.setText("");
 	}
 }

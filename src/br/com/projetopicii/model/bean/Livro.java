@@ -2,6 +2,7 @@ package br.com.projetopicii.model.bean;
 
 public class Livro {
 	private Integer id;
+	private Integer id_Estante;
 	private String titulo;
 	private String autor;
 	private String genero;
@@ -56,6 +57,12 @@ public class Livro {
 	}
 	public void setNumPaginas(int numPaginas) {
 		this.numPaginas = numPaginas;
+	}
+	public Integer getId_Estante() {
+		return id_Estante;
+	}
+	public void setId_Estante(Integer id_Estante) {
+		this.id_Estante = id_Estante;
 	}
 	
 }

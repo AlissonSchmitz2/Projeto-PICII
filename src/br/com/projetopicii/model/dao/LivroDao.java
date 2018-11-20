@@ -23,18 +23,20 @@ public class LivroDao {
 
 			String itensLivro = "";
 			while (rS.next()) {
-				for (int i = 2; i < 7; i++) {
+				for (int i = 1; i < 9; i++) {
 					itensLivro += rS.getString(i) + ";";
 				}
 				String[] auxLivros = itensLivro.split(";");
 
 				Livro livro = new Livro();
-				livro.setTitulo(auxLivros[0]);
-				livro.setAutor(auxLivros[1]);
-				livro.setGenero(auxLivros[2]);
-				livro.setAnoLancamento(auxLivros[3]);
-				livro.setNumPaginas(Integer.parseInt(auxLivros[4]));
-				livro.setIdioma("Português");
+				livro.setId(Integer.parseInt(auxLivros[0]));
+				livro.setTitulo(auxLivros[1]);
+				livro.setAutor(auxLivros[2]);
+				livro.setGenero(auxLivros[3]);
+				livro.setAnoLancamento(auxLivros[4]);
+				livro.setNumPaginas(Integer.parseInt(auxLivros[5]));
+				livro.setId_Estante(Integer.parseInt(auxLivros[6]));
+				livro.setIdioma(auxLivros[7]);
 				listaLivro.add(livro);
 				itensLivro = "";
 			}
@@ -136,16 +138,17 @@ public class LivroDao {
 	}
 
 	// Cadastra um novo livro.
-	public void cadastrarLivro(String titulo, String autor, String genero, int ano_lancamento, int num_pag, int id_estante) {
+	public void cadastrarLivro(String titulo, String autor, String genero, int ano_lancamento, int num_pag, int id_estante, String idioma) {
 
 		try {
-			stmt = con.prepareStatement("insert into livro (titulo, autor, genero, ano_lancamento, numero_paginas, id_estante) values (?, ?, ?, ?, ?, ?)");
+			stmt = con.prepareStatement("insert into livro (titulo, autor, genero, ano_lancamento, numero_paginas, id_estante, idioma) values (?, ?, ?, ?, ?, ?, ?)");
 			stmt.setString(1, titulo);
 			stmt.setString(2, autor);
 			stmt.setString(3, genero);
 			stmt.setInt(4, ano_lancamento);
 			stmt.setInt(5, num_pag);
 			stmt.setInt(6, id_estante);
+			stmt.setString(7, idioma);
 
 			stmt.executeUpdate();
 		} catch (SQLException e) {
