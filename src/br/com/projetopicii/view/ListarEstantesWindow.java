@@ -37,7 +37,7 @@ public class ListarEstantesWindow extends AbstractGridWindow {
 				buscarEstantes();
 			}
 		}
-		};
+	};
 
 	private JButton botaoExcluir;
 	private JButton botaoEditar;

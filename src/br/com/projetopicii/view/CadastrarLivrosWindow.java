@@ -3,6 +3,8 @@ package br.com.projetopicii.view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.text.ParseException;
 
 import javax.swing.JButton;
@@ -30,6 +32,16 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 	private LivroDao livroDao = new LivroDao();
 	private String nomeEstantes[];
 	
+	// Tecla ENTER.
+	KeyAdapter acao = new KeyAdapter() {
+		@Override
+		public void keyPressed(java.awt.event.KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				cadastrarLivro();
+			}
+		}
+	};
+	
 	public CadastrarLivrosWindow() {		
 		super("Cadastrar Livros");
 		setBackground(new Color(250, 250, 250));
@@ -44,6 +56,7 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 		txfTitulo = new JTextField();
 		txfTitulo.setBounds(15, 30, 200, 25);
 		txfTitulo.setToolTipText("Informe o título do livro");
+		txfTitulo.addKeyListener(acao);
 		getContentPane().add(txfTitulo);
 		
 		labes = new JLabel("Autor:");
@@ -53,6 +66,7 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 		txfAutor = new JTextField();
 		txfAutor.setBounds(15, 80, 200, 25);
 		txfAutor.setToolTipText("Informe o autor");
+		txfAutor.addKeyListener(acao);
 		getContentPane().add(txfAutor);
 		
 		labes = new JLabel("Gênero:");
@@ -62,6 +76,7 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 		txfGenero = new JTextField();
 		txfGenero.setBounds(15, 130, 200, 25);
 		txfGenero.setToolTipText("Informe o Gênero");
+		txfGenero.addKeyListener(acao);
 		getContentPane().add(txfGenero);
 		
 		labes = new JLabel("Ano de lançamento:");
@@ -73,6 +88,7 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 		txfAnoLancamento.setFocusLostBehavior(JFormattedTextField.COMMIT);
 		txfAnoLancamento.setBounds(15, 180, 200, 25);
 		txfAnoLancamento.setToolTipText("Informe o ano de lançamento");
+		txfAnoLancamento.addKeyListener(acao);
 		getContentPane().add(txfAnoLancamento);
 		
 		labes = new JLabel("Números de páginas:");
@@ -83,6 +99,7 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 		txfNumeroPag.setFocusLostBehavior(JFormattedTextField.COMMIT);
 		txfNumeroPag.setBounds(15, 230, 200, 25);
 		txfNumeroPag.setToolTipText("Informe o número de páginas");
+		txfNumeroPag.addKeyListener(acao);
 		getContentPane().add(txfNumeroPag);
 		
 		} catch (ParseException e1) {
@@ -96,6 +113,7 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame{
 		txfIdioma = new JTextField();
 		txfIdioma.setBounds(15, 280, 200, 25);
 		txfIdioma.setToolTipText("Informe o idioma");
+		txfIdioma.addKeyListener(acao);
 		getContentPane().add(txfIdioma);
 		
 		labes = new JLabel("Estante");

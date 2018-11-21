@@ -3,6 +3,8 @@ package br.com.projetopicii.view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -21,6 +23,16 @@ public class CadastrarEstanteWindow extends AbstractWindowFrame{
 		
 		private EstanteDao estanteDao = new EstanteDao();
 		
+		// Tecla ENTER.
+		KeyAdapter acao = new KeyAdapter() {
+			@Override
+			public void keyPressed(java.awt.event.KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					cadastrarEstante();
+				}
+			}
+		};
+		
 		public CadastrarEstanteWindow() {		
 			super("Cadastrar Estante");
 			setBackground(new Color(250, 250, 250));
@@ -36,6 +48,7 @@ public class CadastrarEstanteWindow extends AbstractWindowFrame{
 			txfEstante = new JTextField();
 			txfEstante.setBounds(15, 30, 200, 25);
 			txfEstante.setToolTipText("Informe a referência da estante");
+			txfEstante.addKeyListener(acao);
 			getContentPane().add(txfEstante);
 		
 			btnSalvar = new JButton("Salvar");
