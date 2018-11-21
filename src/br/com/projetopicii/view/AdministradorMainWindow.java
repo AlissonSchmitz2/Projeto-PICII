@@ -16,8 +16,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
-import org.postgresql.shaded.com.ongres.scram.common.util.UsAsciiUtils;
-
 import br.com.projetopicii.model.bean.Usuario;
 
 

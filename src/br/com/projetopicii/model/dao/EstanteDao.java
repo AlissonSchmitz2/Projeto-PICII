@@ -17,6 +17,7 @@ public class EstanteDao {
 	String[] listaEstante;
 	ArrayList<Estante> arrayEstantes = new ArrayList<>();
 	LivroDao livroDao = new LivroDao();
+	private Estante estante;
 
 	public String[] pegarNomeEstantes(boolean pegarSomenteNull) {
 
@@ -83,7 +84,90 @@ public class EstanteDao {
 
 		return arrayEstantes;
 	}
+	
+	// Método para a busca da listagem.
+	// TODO: Encontrar uma forma de pesquisar em todas as colunas ao mesmo tempo.
+	public ArrayList<Estante> pegarArrayEstantes(String valorBusca) {
 
+		try {
+
+			
+			stmt = con.prepareStatement("Select * from estante where id = ? or nome like ?");
+			stmt.setInt(1, Integer.parseInt(valorBusca));
+			stmt.setString(2, "%" + valorBusca + "%");
+
+			rS = stmt.executeQuery();
+			while (rS.next()) {
+
+				Estante estante = new Estante();
+				estante.setId(rS.getInt("id"));
+				estante.setLivros(livroDao.pegarLivrosCadastrados(rS.getInt("id")));
+				estante.setNome(rS.getString("nome"));
+				estante.setCoordenadaX(rS.getInt("coordenadax"));
+				estante.setCoordenadaY(rS.getInt("coordenaday"));
+				estante.setVertical(rS.getBoolean("vertical"));
+
+				arrayEstantes.add(estante);
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return arrayEstantes;
+	}
+
+	// Retorna a estante de acordo com o id.
+	public Estante pegarEstantePorId(int idEstante) {
+		
+		try {
+			stmt = con.prepareStatement("select * from estante where id = ?");
+			stmt.setInt(1, idEstante);
+
+			rS = stmt.executeQuery();
+			
+			while(rS.next()) {
+				estante = new Estante();
+				estante.setId(rS.getInt("id"));
+				estante.setNome(rS.getString("nome"));
+				estante.setCoordenadaX(rS.getInt("coordenadax"));
+				estante.setCoordenadaY(rS.getInt("coordenaday"));
+				estante.setVertical(rS.getBoolean("vertical"));
+				estante.setLivros(livroDao.pegarLivrosCadastrados(rS.getInt("id")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return estante;
+	}
+	
+	// Retorna a estante de acordo com o nome.
+	public Estante pegarEstantePorNome(String referencia) {
+
+		try {
+			stmt = con.prepareStatement("select * from estante where upper (nome) = ?");
+			stmt.setString(1, referencia);
+
+			rS = stmt.executeQuery();
+
+			while (rS.next()) {
+				estante = new Estante();
+				estante.setId(rS.getInt("id"));
+				estante.setNome(rS.getString("nome"));
+				estante.setCoordenadaX(rS.getInt("coordenadax"));
+				estante.setCoordenadaY(rS.getInt("coordenaday"));
+				estante.setVertical(rS.getBoolean("vertical"));
+				estante.setLivros(livroDao.pegarLivrosCadastrados(rS.getInt("id")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return estante;
+	}
+	
 	public int pegarQuantidadeEstante() {
 		int numRow = 0;
 
@@ -115,12 +199,18 @@ public class EstanteDao {
 	}
 
 	// Cadastra uma nova estante.
-	public void cadastrarEstante(String referencia) {
+	public void cadastrarEstante(String referenciaNova, String referenciaAntiga, boolean estanteNova) {
 
 		try {
-			stmt = con.prepareStatement("insert into estante (nome) values (?)");
-			stmt.setString(1, referencia);
-
+			if(estanteNova) {
+				stmt = con.prepareStatement("insert into estante (nome) values (?)");
+				stmt.setString(1, referenciaNova);
+			} else {
+				stmt = con.prepareStatement("update estante set nome = ? where nome = ?");
+				stmt.setString(1, referenciaNova);
+				stmt.setString(2, referenciaAntiga);
+			}
+			
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

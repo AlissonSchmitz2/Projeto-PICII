@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -29,8 +28,6 @@ public class CadastrarAdministradorWindow extends AbstractWindowFrame {
 	// Acesso ao Banco de Dados.
 	private UsuarioDao usuarioDao;
 	
-	// Lista de Usuários.
-	private ArrayList<Usuario> arrayUsuarios = new ArrayList<>();
 	private Usuario usuario;
 	
 	// Tecla ENTER.
@@ -127,7 +124,6 @@ public class CadastrarAdministradorWindow extends AbstractWindowFrame {
 				
 		usuarioDao = new UsuarioDao();
 		usuario = usuarioDao.pegarUsuarioPorLogin(txfUsuario.getText());
-		arrayUsuarios = usuarioDao.pegarUsuarios();
 		
 		if(usuario != null) {
 			JOptionPane.showMessageDialog(rootPane, 

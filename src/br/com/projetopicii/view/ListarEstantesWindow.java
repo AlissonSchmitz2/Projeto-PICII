@@ -22,12 +22,10 @@ import javax.swing.event.ListSelectionListener;
 
 import br.com.projetopicii.model.bean.Estante;
 import br.com.projetopicii.model.dao.EstanteDao;
+import br.com.projetopicii.observer.ObserverEstante;
 import br.com.projetopicii.table.model.EstanteTableModel;
 
-public class ListarEstantesWindow extends AbstractGridWindow {
-	/**
-	 * 
-	 */
+public class ListarEstantesWindow extends AbstractGridWindow implements ObserverEstante {
 	private static final long serialVersionUID = 1L;
 
 	KeyAdapter acao = new KeyAdapter() {
@@ -53,6 +51,8 @@ public class ListarEstantesWindow extends AbstractGridWindow {
 	private EstanteTableModel model;
 	private JDesktopPane desktop;
 	private List<Estante> listaEstantes = new ArrayList<Estante>();
+	private EstanteDao eD;
+	private Estante estante;
 	
 	public ListarEstantesWindow(JDesktopPane desktop) {
 		super("Lista de Estantes");
@@ -70,7 +70,13 @@ public class ListarEstantesWindow extends AbstractGridWindow {
 		add(botaoEditar);
 		botaoEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO:Implementar método para editar estante com Observer
+				estante = new Estante();
+				eD = new EstanteDao();
+				estante = eD.pegarEstantePorId(Integer.parseInt(idSelecionado));
+				
+				if (estante instanceof Estante) {
+					abrirEdicaoEstante(estante);
+				}
 			}
 		});
 
@@ -88,7 +94,7 @@ public class ListarEstantesWindow extends AbstractGridWindow {
 				
 				if(opcao == 0) {
 					
-					EstanteDao eD = new EstanteDao();
+					eD = new EstanteDao();
 					
 					eD.excluirEstanteELivros(Integer.parseInt(idSelecionado));
 				
@@ -165,7 +171,10 @@ public class ListarEstantesWindow extends AbstractGridWindow {
 
 	public void buscarEstantes() {
 
+		eD = new EstanteDao();
+		listaEstantes = eD.pegarArrayEstantes(txfBuscar.getText());		
 		model.limpar();				
+		model.addListaDeEstantes(listaEstantes);
 	}
 	
 	private void abrirFrame(AbstractWindowFrame frame) {
@@ -196,7 +205,13 @@ public class ListarEstantesWindow extends AbstractGridWindow {
 		jTableEstantes.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
+					estante = new Estante();
+					eD = new EstanteDao();
+					estante = eD.pegarEstantePorId(Integer.parseInt(idSelecionado));
 					
+					if (estante instanceof Estante) {
+						abrirEdicaoEstante(estante);
+					}
 				}
 			}
 		});
@@ -232,6 +247,22 @@ public class ListarEstantesWindow extends AbstractGridWindow {
 	private void habilitarBotoesDeAcoes() {
 			botaoEditar.setEnabled(true);
 			botaoExcluir.setEnabled(true);
+	}
+	
+	private void abrirEdicaoEstante(Estante estante) {
+		
+		CadastrarEstanteWindow frame = new CadastrarEstanteWindow(estante);
+		frame.addObserver(this);
+		abrirFrame(frame);
+	}
+	
+	@Override
+	public void update(Estante estante) {
+		model.limpar();
+		listaEstantes.clear();
+		listaEstantes = eD.pegarArrayEstantes(true);
+		listaEstantes = eD.pegarArrayEstantes(false);
+		model.addListaDeEstantes(listaEstantes);
 	}
 	
 }
