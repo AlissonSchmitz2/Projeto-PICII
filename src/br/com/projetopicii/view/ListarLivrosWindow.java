@@ -21,12 +21,10 @@ import javax.swing.event.ListSelectionListener;
 
 import br.com.projetopicii.model.bean.Livro;
 import br.com.projetopicii.model.dao.LivroDao;
+import br.com.projetopicii.observer.ObserverLivro;
 import br.com.projetopicii.table.model.LivroTableModel;
 
-public class ListarLivrosWindow extends AbstractGridWindow{
-	/**
-	 * 
-	 */
+public class ListarLivrosWindow extends AbstractGridWindow implements ObserverLivro {
 	private static final long serialVersionUID = 1L;
 
 	KeyAdapter acao = new KeyAdapter() {
@@ -52,6 +50,8 @@ public class ListarLivrosWindow extends AbstractGridWindow{
 	private LivroTableModel model;
 	private JDesktopPane desktop;
 	private List<Livro> listaLivros = new ArrayList<Livro>();
+	private LivroDao lD;
+	private Livro livro;
 	
 	public ListarLivrosWindow(JDesktopPane desktop) {
 		super("Lista de Livros");
@@ -69,7 +69,13 @@ public class ListarLivrosWindow extends AbstractGridWindow{
 		add(botaoEditar);
 		botaoEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO:Implementar método para editar estante com Observer
+				livro = new Livro();
+				lD = new LivroDao();
+				livro = lD.pegarLivroPorId(Integer.parseInt(idSelecionado));
+				
+				if (livro instanceof Livro) {
+					abrirEdicaoLivro(livro);
+				}
 			}
 		});
 
@@ -80,7 +86,7 @@ public class ListarLivrosWindow extends AbstractGridWindow{
 		add(botaoExcluir);
 		botaoExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				LivroDao lD = new LivroDao();
+				lD = new LivroDao();
 				
 				lD.excluirLivro(Integer.parseInt(idSelecionado));
 			
@@ -185,7 +191,13 @@ public class ListarLivrosWindow extends AbstractGridWindow{
 		jTableLivros.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
+					livro = new Livro();
+					lD = new LivroDao();
+					livro = lD.pegarLivroPorId(Integer.parseInt(idSelecionado));
 					
+					if (livro instanceof Livro) {
+						abrirEdicaoLivro(livro);
+					}
 				}
 			}
 		});
@@ -220,5 +232,20 @@ public class ListarLivrosWindow extends AbstractGridWindow{
 	private void habilitarBotoesDeAcoes() {
 			botaoEditar.setEnabled(true);
 			botaoExcluir.setEnabled(true);
+	}
+	
+private void abrirEdicaoLivro(Livro livro) {
+		
+		CadastrarLivrosWindow frame = new CadastrarLivrosWindow(livro);
+		frame.addObserver(this);
+		abrirFrame(frame);
+	}
+	
+	@Override
+	public void update(Livro livro) {
+		model.limpar();
+		listaLivros.clear();
+		listaLivros = lD.pegarLivrosCadastrados();
+		model.addListaDeLivros(listaLivros);
 	}
 }

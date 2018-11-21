@@ -14,6 +14,7 @@ public class LivroDao {
 	PreparedStatement stmt = null;
 	ResultSet rS = null;
 	ArrayList<Livro> listaLivro = new ArrayList<Livro>();
+	private Livro livro;
 
 	// Recupera todos os livros cadastrados.
 	public ArrayList<Livro> pegarLivrosCadastrados() {
@@ -71,6 +72,34 @@ public class LivroDao {
 		}
 		return listaLivro;
 	}
+	
+	// Recupera o livro de acordo com o Id.
+	public Livro pegarLivroPorId(int idLivro) {
+		
+		try {
+			stmt = con.prepareStatement("Select * from livro where id = ?");
+			stmt.setInt(1, idLivro);
+			rS = stmt.executeQuery();
+			
+			while (rS.next()) {
+
+				livro = new Livro();
+				livro.setId(rS.getInt("id"));
+				livro.setTitulo(rS.getString("titulo"));
+				livro.setAutor(rS.getString("autor"));
+				livro.setGenero(rS.getString("genero"));
+				livro.setAnoLancamento(rS.getInt("ano_lancamento"));
+				livro.setNumPaginas(rS.getInt("numero_paginas"));
+				livro.setId_Estante(rS.getInt("id_estante"));
+				livro.setIdioma(rS.getString("idioma"));
+			}
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return livro;
+	}
 
 	// Recupera os livros localizados em determinada estante.
 	public ArrayList<Livro> pegarLivrosCadastrados(int idEstante) {
@@ -123,17 +152,31 @@ public class LivroDao {
 	}
 
 	// Cadastra um novo livro.
-	public void cadastrarLivro(String titulo, String autor, String genero, int ano_lancamento, int num_pag, int id_estante, String idioma) {
+	public void cadastrarLivro(String titulo, String autor, String genero, int ano_lancamento, int num_pag, int id_estante, String idioma, boolean livroNovo, int id_livro) {
 
 		try {
-			stmt = con.prepareStatement("insert into livro (titulo, autor, genero, ano_lancamento, numero_paginas, id_estante, idioma) values (?, ?, ?, ?, ?, ?, ?)");
-			stmt.setString(1, titulo);
-			stmt.setString(2, autor);
-			stmt.setString(3, genero);
-			stmt.setInt(4, ano_lancamento);
-			stmt.setInt(5, num_pag);
-			stmt.setInt(6, id_estante);
-			stmt.setString(7, idioma);
+			if(livroNovo) {
+				stmt = con.prepareStatement("insert into livro (titulo, autor, genero, ano_lancamento, numero_paginas,"
+						+ " id_estante, idioma) values (?, ?, ?, ?, ?, ?, ?)");
+				stmt.setString(1, titulo);
+				stmt.setString(2, autor);
+				stmt.setString(3, genero);
+				stmt.setInt(4, ano_lancamento);
+				stmt.setInt(5, num_pag);
+				stmt.setInt(6, id_estante);
+				stmt.setString(7, idioma);
+			} else {
+				stmt = con.prepareStatement("update livro set titulo = ?, autor = ?, genero = ?, ano_lancamento = ?"
+						+ ", numero_paginas = ?, id_estante = ?, idioma = ? where id = ?");
+				stmt.setString(1, titulo);
+				stmt.setString(2, autor);
+				stmt.setString(3, genero);
+				stmt.setInt(4, ano_lancamento);
+				stmt.setInt(5, num_pag);
+				stmt.setInt(6, id_estante);
+				stmt.setString(7, idioma);
+				stmt.setInt(8, id_livro);
+			}
 
 			stmt.executeUpdate();
 		} catch (SQLException e) {
