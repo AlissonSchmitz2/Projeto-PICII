@@ -8,7 +8,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -21,16 +20,11 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import br.com.projetopicii.model.bean.Estante;
 import br.com.projetopicii.model.bean.Usuario;
 import br.com.projetopicii.model.dao.UsuarioDao;
-import br.com.projetopicii.table.model.EstanteTableModel;
 import br.com.projetopicii.table.model.UsuarioTableModel;
 
 public class ListarUsuariosWindow extends AbstractGridWindow {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	KeyAdapter acao = new KeyAdapter() {
@@ -57,10 +51,14 @@ public class ListarUsuariosWindow extends AbstractGridWindow {
 	private JDesktopPane desktop;
 	private List<Usuario> listaUsuarios = new ArrayList<Usuario>();
 	
-	public ListarUsuariosWindow(JDesktopPane desktop) {
+	// Usuário Logado.
+	private Usuario usuarioLogado;
+	
+	public ListarUsuariosWindow(JDesktopPane desktop, Usuario usuarioLogado) {
 		super("Lista de Usuários");
 
 		this.desktop = desktop;
+		this.usuarioLogado = usuarioLogado;
 		criarComponentes();
 		carregarGrid();
 	}
@@ -85,9 +83,15 @@ public class ListarUsuariosWindow extends AbstractGridWindow {
 		botaoExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					UsuarioDao uD = new UsuarioDao();
-					
-					uD.excluirUsuario(Integer.parseInt(idSelecionado));
 				
+				// Não permite que o usuário logado exclua o seu próprio perfil.	
+				if (idSelecionado.equals(usuarioLogado.getId().toString())) {
+
+					JOptionPane.showMessageDialog(rootPane, "O usuário logado não pode ser excluído!", "Alerta",
+							JOptionPane.WARNING_MESSAGE);
+				} else {
+					uD.excluirUsuario(Integer.parseInt(idSelecionado));
+
 					// Reseta a lista e atualiza JTable novamente
 					listaUsuarios = uD.pegarUsuarios();
 					model.limpar();
@@ -100,6 +104,7 @@ public class ListarUsuariosWindow extends AbstractGridWindow {
 					// existe, desabilita botões de ação
 					desabilitarBotoesDeAcoes();
 				}
+			}
 		});
 		
 		//Componentes Para Busca

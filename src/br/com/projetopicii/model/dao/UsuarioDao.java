@@ -41,7 +41,7 @@ public class UsuarioDao {
 			rS = stmt.executeQuery();
 
 			if (rS.next()) {
-				login();
+				login(usuario);
 				mW.setVisible(false);
 			}else {
 				JOptionPane.showMessageDialog(null, "Usuario ou senha incorreta!");
@@ -69,14 +69,14 @@ public class UsuarioDao {
 		}
 	}
 
-	public void login() {
-		new AdministradorMainWindow().setVisible(true);
+	public void login(Usuario usuarioLogado) {
+		new AdministradorMainWindow(usuarioLogado).setVisible(true);
 		lW.setVisible(false);
 	}
 
 	public void registerUser(Usuario usuario) {
 		try {
-			stmt = con.prepareStatement("insert into usuario (usuario,senha) values(?,?)");
+			stmt = con.prepareStatement("insert into usuario (nome,senha) values(?,?)");
 			stmt.setString(1, usuario.getLogin());
 			stmt.setString(2, usuario.getSenha());
 
@@ -99,9 +99,9 @@ public class UsuarioDao {
 				Usuario usuario = new Usuario();
 				usuario.setId(rS.getInt("id"));
 				usuario.setLogin(rS.getString("nome"));
+				usuario.setSenha(rS.getString("senha"));
 
 				arrayUsuario.add(usuario);
-
 			}
 
 		} catch (SQLException e) {
@@ -109,6 +109,29 @@ public class UsuarioDao {
 		}
 
 		return arrayUsuario;
+	}
+	
+	public Usuario pegarUsuarioPorLogin(String login) {
+				
+		Usuario usuario = null;
+		
+		try {
+			stmt = con.prepareStatement("select * from usuario where nome = ?");
+			stmt.setString(1, login);			
+			rS = stmt.executeQuery();
+			
+			while(rS.next()) {
+				
+				usuario = new Usuario();
+				usuario.setId(rS.getInt("id"));
+				usuario.setLogin(rS.getString("nome"));
+				usuario.setSenha(rS.getString("senha"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return usuario;
 	}
 	
 	public void excluirUsuario(Integer id) {

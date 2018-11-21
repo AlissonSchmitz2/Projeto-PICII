@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -80,22 +81,30 @@ public class ListarEstantesWindow extends AbstractGridWindow {
 		add(botaoExcluir);
 		botaoExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				EstanteDao eD = new EstanteDao();
 				
-				eD.excluirEstanteELivros(Integer.parseInt(idSelecionado));
-			
-				// Reseta a lista e atualiza JTable novamente
-				listaEstantes = eD.pegarArrayEstantes(false);
-				listaEstantes = eD.pegarArrayEstantes(true);
-				model.limpar();
-				model.addListaDeEstantes(listaEstantes);
+				int opcao;				
+				opcao = JOptionPane.showConfirmDialog(null, "Todos os livros associados a essa estante também serão excluídos."
+						+ "\nDeseja continuar?");
+				
+				if(opcao == 0) {
+					
+					EstanteDao eD = new EstanteDao();
+					
+					eD.excluirEstanteELivros(Integer.parseInt(idSelecionado));
+				
+					// Reseta a lista e atualiza JTable novamente
+					listaEstantes = eD.pegarArrayEstantes(false);
+					listaEstantes = eD.pegarArrayEstantes(true);
+					model.limpar();
+					model.addListaDeEstantes(listaEstantes);
 
-				// Limpa seleção
-				jTableEstantes.getSelectionModel().clearSelection();
+					// Limpa seleção
+					jTableEstantes.getSelectionModel().clearSelection();
 
-				// Desabilita botão de ações (uma vez que a linha selecionada anteriormente não
-				// existe, desabilita botões de ação
-				desabilitarBotoesDeAcoes();
+					// Desabilita botão de ações (uma vez que a linha selecionada anteriormente não
+					// existe, desabilita botões de ação
+					desabilitarBotoesDeAcoes();
+				}				
 			}
 		});
 		

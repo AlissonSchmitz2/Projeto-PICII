@@ -7,7 +7,6 @@ public class Usuario {
 	private Integer id;
 	private String senha;
 	private String login;
-	private String perfil;
 	private boolean ultimoAdm = false;
 	
 	public Usuario() {
@@ -17,7 +16,6 @@ public class Usuario {
 		this.id = id;
 		this.senha = senha;
 		this.login = login;
-		this.perfil = perfil;
 	}
 	
 	public Integer getId() {
@@ -42,22 +40,6 @@ public class Usuario {
 	
 	public void setLogin(String login) {
 		this.login = login;
-	}
-	
-	public String getPerfil() {
-		return perfil;
-	}
-	
-	public void setPerfil(String perfil) {
-		this.perfil = perfil;
-	}
-	
-	public Boolean possuiPerfilConvidado() {
-		return CONVIDADO.equals(getPerfil());
-	}
-	
-	public Boolean possuiPerfilAdministrador() {
-		return ADMINISTRADOR.equals(getPerfil());
 	}
 
 	public boolean getUltimoAdm() {

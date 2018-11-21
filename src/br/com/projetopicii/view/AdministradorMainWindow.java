@@ -16,6 +16,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
+import org.postgresql.shaded.com.ongres.scram.common.util.UsAsciiUtils;
+
+import br.com.projetopicii.model.bean.Usuario;
+
 
 public class AdministradorMainWindow extends JFrame {
 	private static final long serialVersionUID = 4203314756947777665L;
@@ -27,18 +31,23 @@ public class AdministradorMainWindow extends JFrame {
 	private JMenu menuBiblioteca;
 	private JMenu menuAdministrador;
 	private JDesktopPane desktop;
+	
+	// Usuário Logado.
+	private Usuario usuarioLogado;
 
 	// Frames
 	private BuscarLivrosWindow frameBuscarLivrosWindow;
 	private CadastrarEstanteWindow frameCadastrarEstanteWindow;
 	private CadastrarLivrosWindow frameCadastrarLivrosWindow;
+	private CadastrarAdministradorWindow frameCadastrarAdministrador;
 	private ListarEstantesWindow frameListarEstantes;
 	private ListarUsuariosWindow frameListarUsuarios;
 	private ListarLivrosWindow frameListarLivros;
 	private EditarBibliotecaWindow frameEditarBiblioteca;
 	
-	public AdministradorMainWindow() {
+	public AdministradorMainWindow(Usuario usuarioLogado) {
 		super();
+		this.usuarioLogado = usuarioLogado;
 
 		desktop = new JDesktopPane();
 		desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
@@ -156,7 +165,8 @@ public class AdministradorMainWindow extends JFrame {
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				//TODO: Abrir frame para cadastro de administradores.
+				frameCadastrarAdministrador = new CadastrarAdministradorWindow();
+				abrirFrame(frameCadastrarAdministrador);
 			}
 		});
 
@@ -173,7 +183,7 @@ public class AdministradorMainWindow extends JFrame {
 				if(frameListarUsuarios != null) {
 					desktop.remove(frameListarUsuarios);
 				}
-				frameListarUsuarios = new ListarUsuariosWindow(desktop);
+				frameListarUsuarios = new ListarUsuariosWindow(desktop, usuarioLogado);
 				abrirFrame(frameListarUsuarios);
 				
 				frameListarUsuarios.redimensionarGrid(frameListarUsuarios.getGridContent());
