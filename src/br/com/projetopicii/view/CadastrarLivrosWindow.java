@@ -233,6 +233,7 @@ public class CadastrarLivrosWindow extends AbstractWindowFrame implements Subjec
 		txfNumeroPag.setText("");
 		cbxEstantes.setSelectedItem("-Selecione-");
 		txfIdioma.setText("");
+		txfTitulo.requestFocus();
 	}
 
 	private void setarValores(Livro livro) {

@@ -21,6 +21,7 @@ public class UsuarioDao {
 	ResultSet rS = null;
 	LoginWindow lW = null;
 	ArrayList<Usuario> arrayUsuario = new ArrayList<Usuario>();
+	private Usuario usuario;
 	
 	public UsuarioDao() {
 
@@ -47,7 +48,7 @@ public class UsuarioDao {
 				JOptionPane.showMessageDialog(null, "Usuario ou senha incorreta!");
 			}
 		} catch (SQLException e) {
-			// TODO: Lançar exception correta
+			e.printStackTrace();
 		} finally {
 			ConnectionFactory.closeConnection(con, stmt, rS);
 		}
@@ -62,7 +63,6 @@ public class UsuarioDao {
 
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			ConnectionFactory.closeConnection(con, stmt);
@@ -74,11 +74,18 @@ public class UsuarioDao {
 		lW.setVisible(false);
 	}
 
-	public void registerUser(Usuario usuario) {
+	public void registerUser(Usuario usuario, boolean usuarioNovo, int idUsuario) {
 		try {
-			stmt = con.prepareStatement("insert into usuario (nome,senha) values(?,?)");
-			stmt.setString(1, usuario.getLogin());
-			stmt.setString(2, usuario.getSenha());
+			if(usuarioNovo) {
+				stmt = con.prepareStatement("insert into usuario (nome,senha) values(?,?)");
+				stmt.setString(1, usuario.getLogin());
+				stmt.setString(2, usuario.getSenha());
+			} else {
+				stmt = con.prepareStatement("update usuario set nome = ?, senha = ? where id = ?");
+				stmt.setString(1, usuario.getLogin());
+				stmt.setString(2, usuario.getSenha());
+				stmt.setInt(3, idUsuario);
+			}
 
 			stmt.executeUpdate();
 		} catch (SQLException e) {
@@ -144,6 +151,29 @@ public class UsuarioDao {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	// Retorna o usuário de acordo com o ID.
+	public Usuario pegarUsuarioPorId(int idUsuario) {
+		
+		try {
+			stmt = con.prepareStatement("select * from usuario where id = ?");
+		    stmt.setInt(1, idUsuario);
+		    
+		    rS = stmt.executeQuery();
+		    
+		    while(rS.next()) {
+		    	usuario = new Usuario();
+		    	usuario.setId(rS.getInt("id"));
+		    	usuario.setLogin(rS.getString("nome"));
+		    	usuario.setSenha(rS.getString("senha"));
+		    }			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return usuario;
 	}
 
 }

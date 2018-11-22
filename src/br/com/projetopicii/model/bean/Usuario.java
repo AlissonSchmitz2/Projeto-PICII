@@ -7,7 +7,6 @@ public class Usuario {
 	private Integer id;
 	private String senha;
 	private String login;
-	private boolean ultimoAdm = false;
 	
 	public Usuario() {
 	}
@@ -40,15 +39,6 @@ public class Usuario {
 	
 	public void setLogin(String login) {
 		this.login = login;
-	}
-
-	public boolean getUltimoAdm() {
-		return ultimoAdm;
-	}
-
-	public void setUltimoAdm(boolean ultimoAdm) {
-		this.ultimoAdm = ultimoAdm;
-	}
-	
+	}	
 	
 }

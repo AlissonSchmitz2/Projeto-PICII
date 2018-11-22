@@ -147,6 +147,7 @@ public class CadastrarEstanteWindow extends AbstractWindowFrame implements Subje
 
 	private void limparCampos() {
 		txfEstante.setText("");
+		txfEstante.requestFocus();
 	}
 
 	private void setarValores(Estante estante) {

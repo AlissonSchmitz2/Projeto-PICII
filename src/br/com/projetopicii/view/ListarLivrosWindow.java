@@ -234,7 +234,7 @@ public class ListarLivrosWindow extends AbstractGridWindow implements ObserverLi
 			botaoExcluir.setEnabled(true);
 	}
 	
-private void abrirEdicaoLivro(Livro livro) {
+	private void abrirEdicaoLivro(Livro livro) {
 		
 		CadastrarLivrosWindow frame = new CadastrarLivrosWindow(livro);
 		frame.addObserver(this);

@@ -22,9 +22,10 @@ import javax.swing.event.ListSelectionListener;
 
 import br.com.projetopicii.model.bean.Usuario;
 import br.com.projetopicii.model.dao.UsuarioDao;
+import br.com.projetopicii.observer.ObserverUsuario;
 import br.com.projetopicii.table.model.UsuarioTableModel;
 
-public class ListarUsuariosWindow extends AbstractGridWindow {
+public class ListarUsuariosWindow extends AbstractGridWindow implements ObserverUsuario {
 	private static final long serialVersionUID = 1L;
 
 	KeyAdapter acao = new KeyAdapter() {
@@ -34,7 +35,7 @@ public class ListarUsuariosWindow extends AbstractGridWindow {
 				buscarUsuarios();
 			}
 		}
-		};
+	};
 
 	private JButton botaoExcluir;
 	private JButton botaoEditar;
@@ -50,6 +51,8 @@ public class ListarUsuariosWindow extends AbstractGridWindow {
 	private UsuarioTableModel model;
 	private JDesktopPane desktop;
 	private List<Usuario> listaUsuarios = new ArrayList<Usuario>();
+	private Usuario usuario;
+	private UsuarioDao uD;
 	
 	// Usuário Logado.
 	private Usuario usuarioLogado;
@@ -71,7 +74,13 @@ public class ListarUsuariosWindow extends AbstractGridWindow {
 		add(botaoEditar);
 		botaoEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO:Implementar método para editar estante com Observer
+				usuario = new Usuario();
+				uD = new UsuarioDao();
+				usuario = uD.pegarUsuarioPorId(Integer.parseInt(idSelecionado));
+				
+				if (usuario instanceof Usuario) {
+					abrirEdicaoUsuario(usuario);
+				}
 			}
 		});
 
@@ -82,7 +91,7 @@ public class ListarUsuariosWindow extends AbstractGridWindow {
 		add(botaoExcluir);
 		botaoExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					UsuarioDao uD = new UsuarioDao();
+					uD = new UsuarioDao();
 				
 				// Não permite que o usuário logado exclua o seu próprio perfil.	
 				if (idSelecionado.equals(usuarioLogado.getId().toString())) {
@@ -195,7 +204,13 @@ public class ListarUsuariosWindow extends AbstractGridWindow {
 		jTableUsuarios.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
+					usuario = new Usuario();
+					uD = new UsuarioDao();
+					usuario = uD.pegarUsuarioPorId(Integer.parseInt(idSelecionado));
 					
+					if (usuario instanceof Usuario) {
+						abrirEdicaoUsuario(usuario);
+					}
 				}
 			}
 		});
@@ -230,6 +245,21 @@ public class ListarUsuariosWindow extends AbstractGridWindow {
 	private void habilitarBotoesDeAcoes() {
 			botaoEditar.setEnabled(true);
 			botaoExcluir.setEnabled(true);
+	}
+	
+	private void abrirEdicaoUsuario(Usuario usuario) {
+		
+		CadastrarAdministradorWindow frame = new CadastrarAdministradorWindow(usuario);
+		frame.addObserver(this);
+		abrirFrame(frame);
+	}
+	
+	@Override
+	public void update(Usuario usuario) {
+		model.limpar();
+		listaUsuarios.clear();
+		listaUsuarios = uD.pegarUsuarios();
+		model.addListaDeUsuarios(listaUsuarios);
 	}
 
 }

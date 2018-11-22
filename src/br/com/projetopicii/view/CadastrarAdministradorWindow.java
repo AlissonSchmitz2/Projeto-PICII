@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -11,11 +13,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
 import br.com.projetopicii.model.bean.Usuario;
 import br.com.projetopicii.model.dao.UsuarioDao;
+import br.com.projetopicii.observer.ObserverUsuario;
+import br.com.projetopicii.observer.SubjectUsuario;
 
-public class CadastrarAdministradorWindow extends AbstractWindowFrame {
+public class CadastrarAdministradorWindow extends AbstractWindowFrame implements SubjectUsuario {
 	private static final long serialVersionUID = -3504919349682454017L;
 	
 	// Componentes da Tela.
@@ -23,12 +26,17 @@ public class CadastrarAdministradorWindow extends AbstractWindowFrame {
 	private JPasswordField txfSenha;
 	private JButton btnSalvar;
 	private JButton btnLimpar;
-	private JLabel labelAux;
+	private JLabel labelAux;	
 	
 	// Acesso ao Banco de Dados.
 	private UsuarioDao usuarioDao;
 	
+	// Usuário auxiliar.
 	private Usuario usuario;
+	private Usuario usuarioAux;
+	
+	// Observer.
+	private ArrayList<ObserverUsuario> observers = new ArrayList<ObserverUsuario>();
 	
 	// Tecla ENTER.
 	KeyAdapter acao = new KeyAdapter() {
@@ -45,6 +53,15 @@ public class CadastrarAdministradorWindow extends AbstractWindowFrame {
 		super("Cadastrar Administrador");
 		setBackground(new Color(250, 250, 250));
 		criarComponentes();
+	}
+	
+	public CadastrarAdministradorWindow(Usuario usuario) {
+		
+		super("Cadastrar Administrador");
+		this.usuario = usuario;
+		setBackground(new Color(250, 250, 250));
+		criarComponentes();
+		setarValores(usuario);
 	}
 	
 	private void criarComponentes() {
@@ -85,7 +102,11 @@ public class CadastrarAdministradorWindow extends AbstractWindowFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				limparCampos();								
+				if(usuario != null) {
+					setarValores(usuario);
+				} else {
+					limparCampos();	
+				}
 			}
 		});
 		btnLimpar.setBounds(120, 130, 95, 25);
@@ -97,13 +118,24 @@ public class CadastrarAdministradorWindow extends AbstractWindowFrame {
 		if(validarCampos()) {
 			
 			try {			
-				usuario = new Usuario();
-				usuario.setLogin(txfUsuario.getText());
-				usuario.setSenha(new String(txfSenha.getPassword()));
-				usuarioDao.registerUser(usuario);
 				
-				JOptionPane.showMessageDialog(null, "Usuário salvo com sucesso!");
-				limparCampos();
+				if(usuario != null) {
+					usuario.setLogin(txfUsuario.getText());
+					usuario.setSenha(new String(txfSenha.getPassword()));
+					usuarioDao.registerUser(usuario, false, usuario.getId());
+					notifyObservers(usuario);
+					usuario = null;
+					JOptionPane.showMessageDialog(null, "Usuário salvo com sucesso!");
+					dispose();					
+				} else {
+					usuario = new Usuario();
+					usuario.setLogin(txfUsuario.getText());
+					usuario.setSenha(new String(txfSenha.getPassword()));
+					usuarioDao.registerUser(usuario, true, -1);
+					
+					JOptionPane.showMessageDialog(null, "Usuário salvo com sucesso!");
+					limparCampos();
+				}
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(rootPane, 
 						"Ocorreu um erro no cadastro!", "Alerta",
@@ -121,16 +153,17 @@ public class CadastrarAdministradorWindow extends AbstractWindowFrame {
 					JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
-				
-		usuarioDao = new UsuarioDao();
-		usuario = usuarioDao.pegarUsuarioPorLogin(txfUsuario.getText());
 		
-		if(usuario != null) {
-			JOptionPane.showMessageDialog(rootPane, 
-					"O Login digitado já existe!", "Alerta",
-					JOptionPane.WARNING_MESSAGE);
-			return false;
-		}		
+		usuarioDao = new UsuarioDao();
+		if(usuario != null ? !txfUsuario.getText().equals(usuario.getLogin()) : true) {
+			usuarioAux = usuarioDao.pegarUsuarioPorLogin(txfUsuario.getText());		
+			if(usuarioAux != null) {
+				JOptionPane.showMessageDialog(rootPane, 
+						"O Login digitado já existe!", "Alerta",
+						JOptionPane.WARNING_MESSAGE);
+				return false;
+			}
+		}
 		
 		return true;		
 	}
@@ -138,5 +171,33 @@ public class CadastrarAdministradorWindow extends AbstractWindowFrame {
 	private void limparCampos() {
 		txfSenha.setText("");
 		txfUsuario.setText("");
+		txfUsuario.requestFocus();
+	}
+	
+	private void setarValores(Usuario usuario) {
+
+		 txfUsuario.setText(usuario.getLogin());
+		 txfSenha.setText(usuario.getSenha());
+	}
+
+	@Override
+	public void addObserver(ObserverUsuario o) {
+		observers.add(o);
+
+	}
+
+	@Override
+	public void removeObserver(ObserverUsuario o) {
+		observers.remove(o);
+	}
+
+	@Override
+	public void notifyObservers(Usuario usuario) {
+		Iterator<ObserverUsuario> it = observers.iterator();
+		while (it.hasNext()) {
+			ObserverUsuario observer = (ObserverUsuario) it.next();
+			observer.update(usuario);
+		}
+
 	}
 }
