@@ -28,10 +28,17 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 
+import br.com.projetopicii.grafo.Grafo;
+import br.com.projetopicii.algoritmo.Dijkstra;
 import br.com.projetopicii.auxiliaries.CellRenderer;
+import br.com.projetopicii.model.CaminhoBiblioteca;
 import br.com.projetopicii.model.LivrosTableModel;
+import br.com.projetopicii.model.bean.Estante;
 import br.com.projetopicii.model.bean.Livro;
+import br.com.projetopicii.model.bean.Terminal;
+import br.com.projetopicii.model.dao.EstanteDao;
 import br.com.projetopicii.model.dao.LivroDao;
+import br.com.projetopicii.model.dao.TerminalDao;
 import br.com.projetopicii.pictures.ImageController;
 
 public class BuscarLivrosWindow extends AbstractWindowFrame {
@@ -50,22 +57,37 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 
 	// Banco de dados (Livros)
 	LivroDao livroDao;
+	EstanteDao estanteDao;
+	TerminalDao terminalDao;
 
 	// JTable.
 	private JTable tableLivros;
 	private TableModel livrosTableModel;
 	private JScrollPane scrollpaneTable;
 	private ArrayList<Livro> arrayLivros = new ArrayList<>();
+	private ArrayList<Estante> arrayEstantes = new ArrayList<>();
+	private ArrayList<CaminhoBiblioteca> listCB = new ArrayList<>();
+	private Terminal terminal = null;
 	private String tituloSelecionado;
+	private String generoSelecionado;
 
 	// Tamanho da Tela.
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	
+
 	// Desktop tela principal.
 	private JDesktopPane desktop;
-	
+
 	// Frames
 	private ResultadoCaminhoWindow frameResultadoCaminhoWindow;
+
+	// Criação da variavel grafo para calculo do dijkstra
+	Grafo grafo;
+
+	// Quantidade de livros afins por estante
+	int[] quantidadeLivrosAfim;
+	
+	//Indices do menor/melhor caminho
+	ArrayList<Integer> indicesMenorCaminho = null;
 
 	// Tecla ENTER.
 	KeyAdapter acao = new KeyAdapter() {
@@ -83,15 +105,21 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 		super.setClosable(false);
 		setContentPane(new NewContentPane());
 		setLayout(null);
-		
+
 		livrosTableModel = new LivrosTableModel();
 		livroDao = new LivroDao();
-				
+
 		arrayLivros = livroDao.pegarLivrosCadastrados();
 		((LivrosTableModel) livrosTableModel).limpar();
 		((LivrosTableModel) livrosTableModel).addRow(arrayLivros);
 		this.desktop = desktop;
-
+		
+		estanteDao = new EstanteDao();
+		arrayEstantes = estanteDao.pegarArrayEstantes(false);
+		
+		terminalDao = new TerminalDao();
+		terminal = terminalDao.pegarTerminal();
+		
 		criarComponentes();
 	}
 
@@ -121,16 +149,16 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 
 				if (radiosBusca.getSelection() == r_titulo.getModel()) {
 
-					// Buscar por título.					
+					// Buscar por título.
 					arrayLivros = livroDao.pegarLivrosCadastrados(txfBusca.getText().toUpperCase(), "titulo");
 					((LivrosTableModel) livrosTableModel).addRow(arrayLivros);
-					
+
 				} else if (radiosBusca.getSelection() == r_autor.getModel()) {
 
 					// Buscar por autor.
 					arrayLivros = livroDao.pegarLivrosCadastrados(txfBusca.getText().toUpperCase(), "autor");
 					((LivrosTableModel) livrosTableModel).addRow(arrayLivros);
-					
+
 				} else {
 
 					// Buscar por gênero.
@@ -166,10 +194,35 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 
 		btnGerarLocalizacao = new JButton(new AbstractAction("Gerar Localização") {
 			private static final long serialVersionUID = -6208535404081754764L;
-
+			Dijkstra djk;
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frameResultadoCaminhoWindow = new ResultadoCaminhoWindow(tituloSelecionado);
+				// TODO:Implementar chamada do dijkstra aqui.
+
+				criarCaminhoBiblioteca();
+				for(int i =0;i<listCB.size();i++) {
+					System.out.println(listCB.get(i).getEstanteOrigem() + " --- " + listCB.get(i).getEstanteDestino());
+					System.out.println("Distancia: " + listCB.get(i).getDistancia());
+					System.out.println("Quantidade de livros afins: " + listCB.get(i).getQuantidadeLivrosAfim());
+					
+					System.out.println("================================\n\n");
+				}
+				grafo = new Grafo();
+				try {
+					grafo.montarGrafo(listCB);
+					djk = new Dijkstra(grafo, arrayEstantes.get(0).getId(), buscaIndice(tituloSelecionado));
+					indicesMenorCaminho = djk.pegarMenorCaminho();
+					
+					for(int i = 0; i < indicesMenorCaminho.size();i++) {
+						System.out.println(indicesMenorCaminho.get(i));
+					}
+					
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				frameResultadoCaminhoWindow = new ResultadoCaminhoWindow(tituloSelecionado,indicesMenorCaminho);
 				abrirFrame(frameResultadoCaminhoWindow);
 			}
 		});
@@ -235,7 +288,7 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 				habilitarBotaoGerarLocalizacao();
 
 				if (table.getSelectedRow() != -1) {
-
+					generoSelecionado = table.getValueAt(table.getSelectedRow(), 2).toString();
 					tituloSelecionado = table.getValueAt(table.getSelectedRow(), 0).toString();
 				}
 			}
@@ -244,8 +297,35 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 		// Double Click na linha
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				Dijkstra djk;
+				
 				if (e.getClickCount() == 2) {
-					frameResultadoCaminhoWindow = new ResultadoCaminhoWindow(tituloSelecionado);
+					// TODO:Implementar chamada do dijkstra aqui.
+
+					criarCaminhoBiblioteca();
+					for(int i =0;i<listCB.size();i++) {
+						System.out.println(listCB.get(i).getEstanteOrigem() + " --- " + listCB.get(i).getEstanteDestino());
+						System.out.println("Distancia: " + listCB.get(i).getDistancia());
+						System.out.println("Quantidade de livros afins: " + listCB.get(i).getQuantidadeLivrosAfim());
+						
+						System.out.println("================================\n\n");
+					}
+					grafo = new Grafo();
+					try {
+						grafo.montarGrafo(listCB);
+						djk = new Dijkstra(grafo, arrayEstantes.get(0).getId(), 4);
+						indicesMenorCaminho = djk.pegarMenorCaminho();
+						
+						for(int i = 0; i < indicesMenorCaminho.size();i++) {
+							System.out.println(indicesMenorCaminho.get(i));
+						}
+						
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					frameResultadoCaminhoWindow = new ResultadoCaminhoWindow(tituloSelecionado,indicesMenorCaminho);
 					abrirFrame(frameResultadoCaminhoWindow);
 				}
 			}
@@ -281,14 +361,14 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 		}
 
 	}
-	
-	private void abrirFrame(AbstractWindowFrame frame) {		
+
+	private void abrirFrame(AbstractWindowFrame frame) {
 		boolean frameJaExiste = false;
 
 		// Percorre todos os frames adicionados
 		for (JInternalFrame addedFrame : desktop.getAllFrames()) {
 			// Se o frame a ser adicionado já estiver aberto
-			if (addedFrame.getTitle().equals(frame.getTitle())) {				
+			if (addedFrame.getTitle().equals(frame.getTitle())) {
 				frame = (AbstractWindowFrame) addedFrame;
 				frameJaExiste = true;
 
@@ -305,7 +385,73 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 			frame.setMaximum(true);
 			frame.setVisible(true);
 		} catch (PropertyVetoException e) {
-			JOptionPane.showMessageDialog(rootPane, "Houve um erro ao abrir a janela", "", JOptionPane.ERROR_MESSAGE, null);
+			JOptionPane.showMessageDialog(rootPane, "Houve um erro ao abrir a janela", "", JOptionPane.ERROR_MESSAGE,
+					null);
 		}
+	}
+
+	// Alimenta caminho da biblioteca
+	public void criarCaminhoBiblioteca() {
+		quantidadeLivrosAfim = new int[arrayEstantes.size()];
+		buscarQuantidadeLivrosAfimPorEstante(generoSelecionado);
+		
+		for (int i = 0; i < arrayEstantes.size(); i++) {
+			for (int j = 0; j < arrayEstantes.size(); j++) {
+				//Verifica se não é a mesma estante
+				if(arrayEstantes.get(i).getNome().equals(arrayEstantes.get(j).getNome())) {
+					continue;
+				}
+				
+				//Caso não seja...Adiciona a distancia entre os vertices
+				CaminhoBiblioteca CM = new CaminhoBiblioteca();
+				CM.setCodigoOrigem(arrayEstantes.get(i).getId());
+				CM.setCodigoDestino(arrayEstantes.get(j).getId());
+				CM.setEstanteOrigem(arrayEstantes.get(i).getNome());
+				CM.setEstanteDestino(arrayEstantes.get(j).getNome());
+				
+				//Chama método para calculo da distancia entre dois pontos
+				CM.setDistancia(calcularDistancia(arrayEstantes.get(i).getCoordenadaX(),
+								arrayEstantes.get(i).getCoordenadaY(),
+								arrayEstantes.get(j).getCoordenadaX(),
+								arrayEstantes.get(j).getCoordenadaY()));
+				
+				CM.setQuantidadeLivrosAfim(quantidadeLivrosAfim[i]);
+				
+				listCB.add(CM);
+			}
+		}
+	}
+
+	//Busca quantidade de livros afim de acordo com o selecionado na busca
+	public void buscarQuantidadeLivrosAfimPorEstante(String generoSelecionado) {
+
+		for (int i = 0; i < arrayEstantes.size(); i++) {
+			int cont = 0;
+
+			for (int j = 0; j < arrayEstantes.get(i).getLivros().size(); j++) {
+				if (arrayEstantes.get(i).getLivros().get(j).getGenero().equals(generoSelecionado)) {
+					cont++;
+				}
+			}
+			quantidadeLivrosAfim[i] = cont;
+			cont = 0;
+		}
+	}
+	
+	//Calcula distancia pelo método euclidiano
+	public double calcularDistancia(double x1,double y1,double x2,double y2) {
+		return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+	}
+	
+	public int buscaIndice(String tituloSelecionado) {
+		for(int i = 0;i<arrayEstantes.size();i++) {
+			for(int j = 0;j<arrayEstantes.get(i).getLivros().size();j++) {
+			if(tituloSelecionado.equals(arrayEstantes.get(i).getLivros().get(j).getTitulo())) {
+				return arrayEstantes.get(i).getLivros().get(j).getId();
+				}
+			}
+		}
+		
+		return 0;
 	}
 }

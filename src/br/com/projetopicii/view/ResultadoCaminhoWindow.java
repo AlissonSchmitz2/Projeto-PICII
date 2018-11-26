@@ -51,7 +51,7 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 	private JPanel jPanelBalao;
 	private JLabel jLabelAux;
 
-	public ResultadoCaminhoWindow(String tituloSelecionado) {
+	public ResultadoCaminhoWindow(String tituloSelecionado,ArrayList<Integer> idsPintar) {
 
 		// TODO: Pensar em um nome melhor para a tela.	
 		super("Resultado da Pesquisa");
@@ -63,7 +63,7 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 		idEstanteAlvo = livroDao.pegarIdEstante(tituloSelecionado);
 
 		// TODO: Utilizar o dijkstra para recuperar os ids das estantes que devem ser pintadas.
-		// idsPintar = Dijkstra;
+		this.idsPintar = idsPintar;
 
 		super.setContentPane(new NewContentPane());
 		setLayout(null);

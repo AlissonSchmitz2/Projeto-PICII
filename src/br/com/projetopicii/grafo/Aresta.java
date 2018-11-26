@@ -1,12 +1,13 @@
 package br.com.projetopicii.grafo;
 
 public class Aresta {
-	private int codOrigin;
-	private int codDestino;
-	private String origem;
+	private int    codOrigin;
+	private int    codDestino;
+	private int    quantidadeLivrosAfim;
+	private double  pesoAresta;
+	private float  distancia;
+	private String estanteOrigem;
 	private String estanteDestino;
-	private float pesoAresta;
-	private float distancia;
 	
 	public int getCodOrigin() {
 		return codOrigin;
@@ -24,11 +25,11 @@ public class Aresta {
 		this.codDestino = codDestino;
 	}
 	
-	public float getPesoAresta() {
+	public double getPesoAresta() {
 		return pesoAresta;
 	}
 
-	public void setPesoAresta(float pesoAresta) {
+	public void setPesoAresta(double pesoAresta) {
 		this.pesoAresta = pesoAresta;
 	}
 
@@ -40,12 +41,12 @@ public class Aresta {
 		this.distancia = distancia;
 	}
 	
-	public void setEstante(String estanteOrigem) {
-		this.origem = estanteOrigem;	
+	public void setEstanteOrigem(String estanteOrigem) {
+		this.estanteOrigem = estanteOrigem;	
 	} 
 	
-	public String getEstante() {
-		return origem;
+	public String getEstanteOrigem() {
+		return estanteOrigem;
 	}
 	
 	public void setEstanteDestino(String estanteDestino) {
@@ -55,5 +56,12 @@ public class Aresta {
 	public String getEstanteDestino() {
 		return estanteDestino;
 	}
-	
+
+	public int getQuantidadeLivros() {
+		return quantidadeLivrosAfim;
+	}
+
+	public void setQuantidadeLivros(int quantidadeLivros) {
+		this.quantidadeLivrosAfim = quantidadeLivros;
+	}
 }

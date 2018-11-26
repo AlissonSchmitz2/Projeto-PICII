@@ -6,7 +6,8 @@ import java.util.List;
 public class Vertice{
         
 	
-	private float distancia;
+	private double distancia;
+	private int quantidadeLivrosAfim;
 	private int codigo;
 	private boolean verticeVisitado = false;
 	private Vertice pai = null;
@@ -20,10 +21,10 @@ public class Vertice{
 		aresta.add(novaAresta);
 	}
 	
-	public float getDistancia() {
+	public double getDistancia() {
 		return distancia;
 	}
-	public void setDistancia(float distancia) {
+	public void setDistancia(double distancia) {
 		this.distancia = distancia;
 	}
 	public boolean isVerticeVisitado() {
@@ -48,5 +49,15 @@ public class Vertice{
 	public void setCodigo(int codOrigin) {
 		this.codigo = codOrigin;
 	}
+
+	public int getQuantidadeLivrosAfim() {
+		return quantidadeLivrosAfim;
+	}
+
+	public void setQuantidadeLivrosAfim(int quantidadeLivrosAfim) {
+		this.quantidadeLivrosAfim = quantidadeLivrosAfim;
+	}
+	
+	
 	
 }
