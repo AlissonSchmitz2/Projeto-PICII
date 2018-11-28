@@ -1,0 +1,3 @@
+delete from usuario
+delete from terminalpesquisa
+update estante set coordenadax = 0, coordenaday = 0

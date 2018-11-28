@@ -112,9 +112,15 @@ public class LoginWindow extends JFrame {
 				return;
 			}
 			Usuario u = new Usuario();
+			Usuario u2 = new Usuario();
 			UsuarioDao uD = new UsuarioDao(this);
+			u2 = uD.pegarUsuarioPorLogin(login);
 			
-			u = uD.pegarUsuarioPorLogin(login);
+			if(u2 != null) {
+				u.setId(u2.getId());
+			}
+			u.setLogin(login);
+			u.setSenha(senha);
 			uD.checkLogin(u, mW);
 		} catch (Exception message) {
 			JOptionPane.showMessageDialog(null, "Erro: " + message);

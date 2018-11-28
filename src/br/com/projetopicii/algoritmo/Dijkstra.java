@@ -195,8 +195,13 @@ public class Dijkstra {
 		ArrayList<Integer> res = new ArrayList<Integer>();
 		
 		while (codigoDestino != codigoInicio) {
-			res.add(vertices.get(codigoDestino).getPai().getCodigo());
-			codigoDestino = pegarIndiceVertice(vertices.get(codigoDestino).getPai().getCodigo(), vertices);
+			
+			if(codigoDestino != -1) {
+				res.add(vertices.get(codigoDestino).getPai().getCodigo());			
+				codigoDestino = pegarIndiceVertice(vertices.get(codigoDestino).getPai().getCodigo(), vertices);
+			}
+			
+			
 		}
 		
 		return res;

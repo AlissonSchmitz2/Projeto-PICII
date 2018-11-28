@@ -119,6 +119,36 @@ public class LivroDao {
 		return listaLivro;
 	}
 	
+	// Recupera o livro de acordo com o nome.
+	public Livro pegarLivroPorNome(String valorBusca) {
+		Livro livro = new Livro();
+		
+		try {			
+
+			stmt = con.prepareStatement("SELECT * FROM livro WHERE titulo = ?");
+			stmt.setString(1, valorBusca);
+
+			rS = stmt.executeQuery();
+			while (rS.next()) {
+
+				livro = new Livro();
+				livro.setId(rS.getInt("id"));
+				livro.setTitulo(rS.getString("titulo"));
+				livro.setAutor(rS.getString("autor"));
+				livro.setGenero(rS.getString("genero"));
+				livro.setAnoLancamento(rS.getInt("ano_lancamento"));
+				livro.setNumPaginas(rS.getInt("numero_paginas"));
+				livro.setId_Estante(rS.getInt("id_estante"));
+				livro.setIdioma(rS.getString("idioma"));
+			}
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return livro;
+	}
+	
 	// Recupera o livro de acordo com o Id.
 	public Livro pegarLivroPorId(int idLivro) {
 		

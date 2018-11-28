@@ -155,13 +155,14 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 	// Verde = estante onde o livro pesquisado está.
 	// Vermelho = estantes sugeridas.
 	private void pintarEstantes() {		
-		
-		hashDeEstantes.get(idEstanteAlvo).setBackground(new Color(39, 248, 75));
-
 		for (int i = 0; i < idsPintar.size(); i++) {
 
 			hashDeEstantes.get(idsPintar.get(i)).setBackground(new Color(255, 85, 85));
 		}
+		
+		hashDeEstantes.get(idEstanteAlvo).setBackground(new Color(39, 248, 75));
+
+		
 	}
 
 }

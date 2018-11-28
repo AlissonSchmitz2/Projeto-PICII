@@ -93,7 +93,7 @@ public class ListarUsuariosWindow extends AbstractGridWindow implements Observer
 			public void actionPerformed(ActionEvent e) {
 					uD = new UsuarioDao();
 				
-				// Não permite que o usuário logado exclua o seu próprio perfil.	
+				// Não permite que o usuário logado exclua o seu próprio perfil.
 				if (idSelecionado.equals(usuarioLogado.getId().toString())) {
 
 					JOptionPane.showMessageDialog(rootPane, "O usuário logado não pode ser excluído!", "Alerta",
@@ -150,7 +150,7 @@ public class ListarUsuariosWindow extends AbstractGridWindow implements Observer
 					listaUsuarios = uD.pegarUsuarios();
 					model.addListaDeUsuarios(listaUsuarios);
 				} catch (Exception e2) {
-					System.err.printf("Erro ao iniciar lista de alunos: %s.\n", e2.getMessage());
+					System.err.printf("Erro ao iniciar lista de usuários: %s.\n", e2.getMessage());
 				}
 			}
 		});
@@ -165,7 +165,7 @@ public class ListarUsuariosWindow extends AbstractGridWindow implements Observer
 					try {
 						model.addListaDeUsuarios(listaUsuarios);
 					} catch (Exception e2) {
-						System.err.printf("Erro ao iniciar lista de alunos: %s.\n", e2.getMessage());
+						System.err.printf("Erro ao iniciar lista de usuários: %s.\n", e2.getMessage());
 					}
 				}
 			}
@@ -224,7 +224,7 @@ public class ListarUsuariosWindow extends AbstractGridWindow implements Observer
 			listaUsuarios = uD.pegarUsuarios();
 			model.addListaDeUsuarios(listaUsuarios);
 		} catch (Exception e) {
-			System.err.printf("Erro ao iniciar lista de alunos: %s.\n", e.getMessage());
+			System.err.printf("Erro ao iniciar lista de usuários: %s.\n", e.getMessage());
 		}
 
 		grid = new JScrollPane(jTableUsuarios);

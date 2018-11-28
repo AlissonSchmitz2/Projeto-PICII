@@ -220,7 +220,7 @@ public class ListarEstantesWindow extends AbstractGridWindow implements Observer
 			listaEstantes = eD.pegarArrayEstantes(true);
 			model.addListaDeEstantes(listaEstantes);
 		} catch (Exception e) {
-			System.err.printf("Erro ao iniciar lista de estates: %s.\n", e.getMessage());
+			System.err.printf("Erro ao iniciar lista de estantes: %s.\n", e.getMessage());
 		}
 
 		grid = new JScrollPane(jTableEstantes);

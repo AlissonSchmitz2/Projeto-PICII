@@ -67,7 +67,6 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 	private ArrayList<Livro> arrayLivros = new ArrayList<>();
 	private ArrayList<Estante> arrayEstantes = new ArrayList<>();
 	private ArrayList<CaminhoBiblioteca> listCB = new ArrayList<>();
-	private Terminal terminal = null;
 	private String tituloSelecionado;
 	private String generoSelecionado;
 
@@ -118,7 +117,6 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 		arrayEstantes = estanteDao.pegarArrayEstantes(false);
 		
 		terminalDao = new TerminalDao();
-		terminal = terminalDao.pegarTerminal();
 		
 		criarComponentes();
 	}
@@ -194,37 +192,34 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 
 		btnGerarLocalizacao = new JButton(new AbstractAction("Gerar Localização") {
 			private static final long serialVersionUID = -6208535404081754764L;
-			Dijkstra djk;
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO:Implementar chamada do dijkstra aqui.
-
-				criarCaminhoBiblioteca();
-				for(int i =0;i<listCB.size();i++) {
-					System.out.println(listCB.get(i).getEstanteOrigem() + " --- " + listCB.get(i).getEstanteDestino());
-					System.out.println("Distancia: " + listCB.get(i).getDistancia());
-					System.out.println("Quantidade de livros afins: " + listCB.get(i).getQuantidadeLivrosAfim());
+					Dijkstra djk;
+				
+					criarCaminhoBiblioteca();
 					
-					System.out.println("================================\n\n");
-				}
-				grafo = new Grafo();
-				try {
-					grafo.montarGrafo(listCB);
-					djk = new Dijkstra(grafo, arrayEstantes.get(0).getId(), buscaIndice(tituloSelecionado));
-					indicesMenorCaminho = djk.pegarMenorCaminho();
-					
-					for(int i = 0; i < indicesMenorCaminho.size();i++) {
-						System.out.println(indicesMenorCaminho.get(i));
+					grafo = new Grafo();
+					try {
+						grafo.montarGrafo(listCB);
+						livroDao = new LivroDao();
+						Livro livro = livroDao.pegarLivroPorNome(tituloSelecionado);
+						System.out.println(livro.getId_Estante());
+						djk = new Dijkstra(grafo, arrayEstantes.get(0).getId(), livro.getId_Estante());
+						indicesMenorCaminho = djk.pegarMenorCaminho();
+						
+						for(int i = 0; i < indicesMenorCaminho.size();i++) {
+							System.out.println(indicesMenorCaminho.get(i));
+						}
+						
+					} catch (Exception e1) {
+						e1.printStackTrace();
 					}
 					
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					frameResultadoCaminhoWindow = new ResultadoCaminhoWindow(tituloSelecionado,indicesMenorCaminho);
+					abrirFrame(frameResultadoCaminhoWindow);
 				}
-				frameResultadoCaminhoWindow = new ResultadoCaminhoWindow(tituloSelecionado,indicesMenorCaminho);
-				abrirFrame(frameResultadoCaminhoWindow);
-			}
+			
 		});
 		btnGerarLocalizacao.setBounds((int) (screenSize.getWidth() / 2) + 255, (int) (screenSize.getHeight() / 2) - 235,
 				150, 25);
@@ -300,20 +295,16 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 				Dijkstra djk;
 				
 				if (e.getClickCount() == 2) {
-					// TODO:Implementar chamada do dijkstra aqui.
 
 					criarCaminhoBiblioteca();
-					for(int i =0;i<listCB.size();i++) {
-						System.out.println(listCB.get(i).getEstanteOrigem() + " --- " + listCB.get(i).getEstanteDestino());
-						System.out.println("Distancia: " + listCB.get(i).getDistancia());
-						System.out.println("Quantidade de livros afins: " + listCB.get(i).getQuantidadeLivrosAfim());
-						
-						System.out.println("================================\n\n");
-					}
+					
 					grafo = new Grafo();
 					try {
 						grafo.montarGrafo(listCB);
-						djk = new Dijkstra(grafo, arrayEstantes.get(0).getId(), 4);
+						livroDao = new LivroDao();
+						Livro livro = livroDao.pegarLivroPorNome(tituloSelecionado);
+						System.out.println(livro.getId_Estante());
+						djk = new Dijkstra(grafo, arrayEstantes.get(0).getId(), livro.getId_Estante());
 						indicesMenorCaminho = djk.pegarMenorCaminho();
 						
 						for(int i = 0; i < indicesMenorCaminho.size();i++) {
@@ -321,7 +312,6 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 						}
 						
 					} catch (Exception e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					
@@ -396,7 +386,13 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 		buscarQuantidadeLivrosAfimPorEstante(generoSelecionado);
 		
 		for (int i = 0; i < arrayEstantes.size(); i++) {
-			for (int j = 0; j < arrayEstantes.size(); j++) {
+			int cont = 0;
+			for (int j = i; j < arrayEstantes.size(); j++) {
+				++cont;
+				
+				if(cont == 4) {
+					break;
+				}
 				//Verifica se não é a mesma estante
 				if(arrayEstantes.get(i).getNome().equals(arrayEstantes.get(j).getNome())) {
 					continue;
@@ -409,11 +405,21 @@ public class BuscarLivrosWindow extends AbstractWindowFrame {
 				CM.setEstanteOrigem(arrayEstantes.get(i).getNome());
 				CM.setEstanteDestino(arrayEstantes.get(j).getNome());
 				
+				if(quantidadeLivrosAfim[i] == 0) {
+					CM.setDistancia(calcularDistancia(arrayEstantes.get(i).getCoordenadaX(),
+							arrayEstantes.get(i).getCoordenadaY(),
+							arrayEstantes.get(j).getCoordenadaX(),
+							arrayEstantes.get(j).getCoordenadaY()));
+				}
 				//Chama método para calculo da distancia entre dois pontos
-				CM.setDistancia(calcularDistancia(arrayEstantes.get(i).getCoordenadaX(),
-								arrayEstantes.get(i).getCoordenadaY(),
-								arrayEstantes.get(j).getCoordenadaX(),
-								arrayEstantes.get(j).getCoordenadaY()));
+				else {
+					System.out.println(quantidadeLivrosAfim[i]);
+					CM.setDistancia(calcularDistancia(arrayEstantes.get(i).getCoordenadaX(),
+							arrayEstantes.get(i).getCoordenadaY(),
+							arrayEstantes.get(j).getCoordenadaX(),
+							arrayEstantes.get(j).getCoordenadaY())/quantidadeLivrosAfim[i]);
+				}
+								
 				
 				CM.setQuantidadeLivrosAfim(quantidadeLivrosAfim[i]);
 				

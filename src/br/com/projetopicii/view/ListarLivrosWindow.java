@@ -138,7 +138,7 @@ public class ListarLivrosWindow extends AbstractGridWindow implements ObserverLi
 					listaLivros = lD.pegarLivrosCadastrados();
 					model.addListaDeLivros(listaLivros);
 				} catch (Exception e2) {
-					System.err.printf("Erro ao iniciar lista de alunos: %s.\n", e2.getMessage());
+					System.err.printf("Erro ao iniciar lista de livros: %s.\n", e2.getMessage());
 				}
 			}
 		});
@@ -152,7 +152,7 @@ public class ListarLivrosWindow extends AbstractGridWindow implements ObserverLi
 					try {
 						model.addListaDeLivros(listaLivros);
 					} catch (Exception e2) {
-						System.err.printf("Erro ao iniciar lista de alunos: %s.\n", e2.getMessage());
+						System.err.printf("Erro ao iniciar lista de livros: %s.\n", e2.getMessage());
 					}
 				}
 			}
@@ -211,7 +211,7 @@ public class ListarLivrosWindow extends AbstractGridWindow implements ObserverLi
 			listaLivros = lD.pegarLivrosCadastrados();
 			model.addListaDeLivros(listaLivros);
 		} catch (Exception e) {
-			System.err.printf("Erro ao iniciar lista de alunos: %s.\n", e.getMessage());
+			System.err.printf("Erro ao iniciar lista de livros: %s.\n", e.getMessage());
 		}
 
 		grid = new JScrollPane(jTableLivros);
