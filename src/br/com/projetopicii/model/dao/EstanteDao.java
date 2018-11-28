@@ -85,15 +85,23 @@ public class EstanteDao {
 		return arrayEstantes;
 	}
 	
-	// Método para a busca da listagem.
-	// TODO: Encontrar uma forma de pesquisar em todas as colunas ao mesmo tempo.
+	// Método para a busca na listagem de estantes.
 	public ArrayList<Estante> pegarArrayEstantes(String valorBusca) {
 
 		try {
-
 			
-			stmt = con.prepareStatement("Select * from estante where id = ? or nome like ?");
-			stmt.setInt(1, Integer.parseInt(valorBusca));
+			stmt = con.prepareStatement("SELECT * FROM estante WHERE (id = ?) OR (UPPER(nome) LIKE ?) OR (coordenadax = ?) OR"
+					+ "(coordenaday = ?)");
+			try {
+				stmt.setInt(1, Integer.parseInt(valorBusca));
+				stmt.setInt(3, Integer.parseInt(valorBusca));
+				stmt.setInt(4, Integer.parseInt(valorBusca));
+			} catch (Exception e) {
+				stmt.setInt(1, -1);
+				stmt.setInt(3, -1);
+				stmt.setInt(4, -1);
+			}
+			
 			stmt.setString(2, "%" + valorBusca + "%");
 
 			rS = stmt.executeQuery();

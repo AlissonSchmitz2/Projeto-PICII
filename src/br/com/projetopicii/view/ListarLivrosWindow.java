@@ -134,14 +134,15 @@ public class ListarLivrosWindow extends AbstractGridWindow implements ObserverLi
 				txfBuscar.setText("");
 				model.limpar();
 				try {
+					LivroDao lD = new LivroDao();
+					listaLivros = lD.pegarLivrosCadastrados();
 					model.addListaDeLivros(listaLivros);
 				} catch (Exception e2) {
 					System.err.printf("Erro ao iniciar lista de alunos: %s.\n", e2.getMessage());
 				}
 			}
 		});
-		
-		//Enter para limpar
+				
 		btnLimparBusca.addKeyListener(new KeyAdapter() {
 			public void keyPressed(java.awt.event.KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -159,8 +160,11 @@ public class ListarLivrosWindow extends AbstractGridWindow implements ObserverLi
 	}
 
 	public void buscarLivros() {
-		//Limpa a lista.
-		model.limpar();				
+		
+		LivroDao lD = new LivroDao();
+		listaLivros = lD.pegarLivrosCadastrados(txfBuscar.getText().toUpperCase());
+		model.limpar();
+		model.addListaDeLivros(listaLivros);			
 	}
 	
 	private void abrirFrame(AbstractWindowFrame frame) {

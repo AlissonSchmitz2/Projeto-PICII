@@ -53,7 +53,6 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 
 	public ResultadoCaminhoWindow(String tituloSelecionado,ArrayList<Integer> idsPintar) {
 
-		// TODO: Pensar em um nome melhor para a tela.	
 		super("Resultado da Pesquisa");
 		
 		arrayEstantes = estanteDao.pegarArrayEstantes(false);
@@ -153,8 +152,8 @@ public class ResultadoCaminhoWindow extends AbstractWindowFrame {
 
 	// Pinta as estantes que o usuário deve seguir de acordo com os ids retornados
 	// pelo dijkstra.
-	// Azul = estante onde o livro pesquisado está.
-	// Vermelho = estantes a serem seguidas até a estante azul.
+	// Verde = estante onde o livro pesquisado está.
+	// Vermelho = estantes sugeridas.
 	private void pintarEstantes() {		
 		
 		hashDeEstantes.get(idEstanteAlvo).setBackground(new Color(39, 248, 75));

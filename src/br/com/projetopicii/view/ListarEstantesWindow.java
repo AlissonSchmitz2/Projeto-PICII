@@ -144,7 +144,9 @@ public class ListarEstantesWindow extends AbstractGridWindow implements Observer
 				txfBuscar.setText("");
 				model.limpar();
 				try {
-
+					eD = new EstanteDao();
+					listaEstantes = eD.pegarArrayEstantes(false);
+					listaEstantes = eD.pegarArrayEstantes(true);					
 					model.addListaDeEstantes(listaEstantes);
 				} catch (Exception e2) {
 					System.err.printf("Erro ao iniciar lista de alunos: %s.\n", e2.getMessage());
@@ -172,7 +174,7 @@ public class ListarEstantesWindow extends AbstractGridWindow implements Observer
 	public void buscarEstantes() {
 
 		eD = new EstanteDao();
-		listaEstantes = eD.pegarArrayEstantes(txfBuscar.getText());		
+		listaEstantes = eD.pegarArrayEstantes(txfBuscar.getText().toUpperCase());		
 		model.limpar();				
 		model.addListaDeEstantes(listaEstantes);
 	}

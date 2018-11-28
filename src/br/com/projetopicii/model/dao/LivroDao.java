@@ -73,6 +73,52 @@ public class LivroDao {
 		return listaLivro;
 	}
 	
+	// Método para busca na listagem de livros.
+	public ArrayList<Livro> pegarLivrosCadastrados(String valorBusca) {
+		try {
+
+			stmt = con.prepareStatement("SELECT * FROM livro WHERE (id = ?) OR (UPPER(titulo) LIKE ?) OR (UPPER(autor) LIKE ?)"
+					+ "OR (UPPER(genero) LIKE ?) OR (UPPER(idioma) LIKE ?) OR (ano_lancamento = ?) OR (numero_paginas = ?)"
+					+ "OR (id_estante = ?)");
+			stmt.setString(2, "%" + valorBusca + "%");
+			stmt.setString(3, "%" + valorBusca + "%");
+			stmt.setString(4, "%" + valorBusca + "%");
+			stmt.setString(5, "%" + valorBusca + "%");
+			
+			try {
+				stmt.setInt(1, Integer.parseInt(valorBusca));
+				stmt.setInt(6, Integer.parseInt(valorBusca));
+				stmt.setInt(7, Integer.parseInt(valorBusca));
+				stmt.setInt(8, Integer.parseInt(valorBusca));
+			} catch (Exception e) {
+				stmt.setInt(1, -1);
+				stmt.setInt(6, -1);
+				stmt.setInt(7, -1);
+				stmt.setInt(8, -1);
+			}
+			rS = stmt.executeQuery();
+
+			while (rS.next()) {
+
+				Livro livro = new Livro();
+				livro.setId(rS.getInt("id"));
+				livro.setTitulo(rS.getString("titulo"));
+				livro.setAutor(rS.getString("autor"));
+				livro.setGenero(rS.getString("genero"));
+				livro.setAnoLancamento(rS.getInt("ano_lancamento"));
+				livro.setNumPaginas(rS.getInt("numero_paginas"));
+				livro.setId_Estante(rS.getInt("id_estante"));
+				livro.setIdioma(rS.getString("idioma"));
+				listaLivro.add(livro);
+			}
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return listaLivro;
+	}
+	
 	// Recupera o livro de acordo com o Id.
 	public Livro pegarLivroPorId(int idLivro) {
 		

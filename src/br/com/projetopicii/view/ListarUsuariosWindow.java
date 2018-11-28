@@ -146,7 +146,8 @@ public class ListarUsuariosWindow extends AbstractGridWindow implements Observer
 				txfBuscar.setText("");
 				model.limpar();
 				try {
-
+					UsuarioDao uD = new UsuarioDao();
+					listaUsuarios = uD.pegarUsuarios();
 					model.addListaDeUsuarios(listaUsuarios);
 				} catch (Exception e2) {
 					System.err.printf("Erro ao iniciar lista de alunos: %s.\n", e2.getMessage());
@@ -172,8 +173,11 @@ public class ListarUsuariosWindow extends AbstractGridWindow implements Observer
 	}
 
 	public void buscarUsuarios() {
-		//Limpa a lista.
-		model.limpar();				
+		
+		UsuarioDao uD = new UsuarioDao();
+		listaUsuarios = uD.pegarUsuarios(txfBuscar.getText().toUpperCase());
+		model.limpar();
+		model.addListaDeUsuarios(listaUsuarios);				
 	}
 	
 	private void abrirFrame(AbstractWindowFrame frame) {

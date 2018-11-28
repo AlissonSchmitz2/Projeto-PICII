@@ -118,6 +118,36 @@ public class UsuarioDao {
 		return arrayUsuario;
 	}
 	
+	public ArrayList<Usuario> pegarUsuarios(String valorBusca) {
+		try {
+			stmt = con.prepareStatement("SELECT * FROM usuario WHERE (id = ?) OR (UPPER(nome) LIKE ?)");
+			stmt.setString(2, "%" + valorBusca + "%");
+			
+			try {
+				stmt.setInt(1, Integer.parseInt(valorBusca));
+			} catch (Exception e) {
+				stmt.setInt(1, -1);
+			}
+			
+			rS = stmt.executeQuery();
+
+			while (rS.next()) {
+
+				Usuario usuario = new Usuario();
+				usuario.setId(rS.getInt("id"));
+				usuario.setLogin(rS.getString("nome"));
+				usuario.setSenha(rS.getString("senha"));
+
+				arrayUsuario.add(usuario);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return arrayUsuario;
+	}
+	
 	public Usuario pegarUsuarioPorLogin(String login) {
 				
 		Usuario usuario = null;
