@@ -36,7 +36,6 @@ public class MainWindow extends JFrame {
 	public MainWindow() {
 		super();
 		
-		new Splash();
 		lW = new LoginWindow(this);
 		
 		desktop = new JDesktopPane();

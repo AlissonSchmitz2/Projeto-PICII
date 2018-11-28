@@ -149,7 +149,7 @@ public class ListarEstantesWindow extends AbstractGridWindow implements Observer
 					listaEstantes = eD.pegarArrayEstantes(true);					
 					model.addListaDeEstantes(listaEstantes);
 				} catch (Exception e2) {
-					System.err.printf("Erro ao iniciar lista de alunos: %s.\n", e2.getMessage());
+					System.err.printf("Erro ao iniciar lista de estantes: %s.\n", e2.getMessage());
 				}
 			}
 		});
@@ -164,7 +164,7 @@ public class ListarEstantesWindow extends AbstractGridWindow implements Observer
 					try {
 						model.addListaDeEstantes(listaEstantes);
 					} catch (Exception e2) {
-						System.err.printf("Erro ao iniciar lista de alunos: %s.\n", e2.getMessage());
+						System.err.printf("Erro ao iniciar lista de estantes: %s.\n", e2.getMessage());
 					}
 				}
 			}
@@ -207,13 +207,9 @@ public class ListarEstantesWindow extends AbstractGridWindow implements Observer
 		jTableEstantes.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					estante = new Estante();
-					eD = new EstanteDao();
-					estante = eD.pegarEstantePorId(Integer.parseInt(idSelecionado));
-					
-					if (estante instanceof Estante) {
-						abrirEdicaoEstante(estante);
-					}
+					EstanteDao eD = new EstanteDao();
+					ListarLivrosPorEstanteWindow frameListarLivros = new ListarLivrosPorEstanteWindow (eD.pegarEstantePorId(Integer.parseInt(idSelecionado)));
+					abrirFrame(frameListarLivros);
 				}
 			}
 		});
@@ -224,7 +220,7 @@ public class ListarEstantesWindow extends AbstractGridWindow implements Observer
 			listaEstantes = eD.pegarArrayEstantes(true);
 			model.addListaDeEstantes(listaEstantes);
 		} catch (Exception e) {
-			System.err.printf("Erro ao iniciar lista de alunos: %s.\n", e.getMessage());
+			System.err.printf("Erro ao iniciar lista de estates: %s.\n", e.getMessage());
 		}
 
 		grid = new JScrollPane(jTableEstantes);
